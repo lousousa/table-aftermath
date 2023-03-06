@@ -17,7 +17,7 @@ export default function Home() {
   const [payersList, setPayersList] = useState<Payer[]>([])
   const [itemsList, setItemsList] = useState<Item[]>([])
   const [paymentsList, setPaymentsList] = useState<Payment[]>([])
-  const [newItem, setNewItem] = useState<ItemFormModel>(null)
+  const [newItem, setNewItem] = useState<ItemFormModel | null>(null)
 
   useEffect(() => {
     if (!payersCount) return
@@ -72,7 +72,10 @@ export default function Home() {
           )}
 
           {newItem && (
-            <AddItemForm />
+            <AddItemForm
+              newItem={newItem}
+              setNewItem={setNewItem}
+            />
           )}
         </div>
       )}

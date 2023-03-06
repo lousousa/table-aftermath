@@ -16,6 +16,6 @@ export type Payment = {
   price: number
 }
 
-export type ItemFormModel = null | (Item & {
+export type ItemFormModel = Item & {
   payedByAll: boolean
-})
+}

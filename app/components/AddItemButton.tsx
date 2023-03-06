@@ -2,7 +2,7 @@ import { Item, ItemFormModel } from '@/app/types'
 
 type Props = {
   itemsList: Item[]
-  setNewItem: React.Dispatch<React.SetStateAction<ItemFormModel>>
+  setNewItem: React.Dispatch<React.SetStateAction<ItemFormModel | null>>
 }
 
 export default function AddItemButton({itemsList, setNewItem}: Props) {

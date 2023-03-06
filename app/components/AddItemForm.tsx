@@ -1,7 +1,37 @@
-export default function AddItemForm() {
+import { ItemFormModel } from '@/app/types'
+
+type Props = {
+  newItem: ItemFormModel,
+  setNewItem: React.Dispatch<React.SetStateAction<ItemFormModel | null>>
+}
+
+export default function AddItemForm({newItem, setNewItem}: Props) {
   const saveItem = (e: React.SyntheticEvent) => {
     e.preventDefault()
-    console.log('save item')
+    console.log(newItem)
+  }
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const input: {[key: string]: string | boolean | number} = {}
+
+    if (e.target.type === 'checkbox')
+      input[e.target.name] = e.target.checked
+
+    if (e.target.type === 'text')
+      input[e.target.name] = e.target.value
+
+    if (e.target.type === 'number') {
+      let value: number | string = ''
+
+      if (e.target.value !== value) {
+        value = parseFloat(e.target.value)
+        if (isNaN(value)) value = 0
+      }
+
+      input[e.target.name] = value
+    }
+
+    setNewItem({...newItem, ...input})
   }
 
   return (
@@ -10,16 +40,33 @@ export default function AddItemForm() {
     >
       <div>
         <label>preço:</label>
-        <input />
+
+        <input
+          name="price"
+          type="number"
+          value={newItem.price}
+          onChange={handleInputChange}
+        />
       </div>
 
       <div>
         <label>título (opcional):</label>
-        <input />
+
+        <input
+          name="name"
+          value={newItem.name}
+          onChange={handleInputChange}
+        />
       </div>
 
       <div>
-        <input type="checkbox"/>
+        <input
+          name="payedByAll"
+          type="checkbox"
+          checked={newItem.payedByAll}
+          onChange={handleInputChange}
+        />
+
         <label>todos pagam?</label>
       </div>
 
