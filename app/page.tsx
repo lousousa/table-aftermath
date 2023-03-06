@@ -23,21 +23,13 @@ type Payment = {
   price: number
 }
 
+import PayerCountInput from '@/app/components/PayersCountInput'
+
 export default function Home() {
   const [payersCount, setPayersCount] = useState<number | ''>(0)
   const [payersList, setPayersList] = useState<Payer[]>([])
   const [itemsList, setItemsList] = useState<Item[]>([])
   const [paymentList, setPaymentList] = useState<Payment[]>([])
-
-  const onPayersCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value === '')
-      return setPayersCount('')
-
-    let count = parseInt(e.target.value)
-    if (isNaN(count)) count = 0
-
-    setPayersCount(count)
-  }
 
   const addItem = () => {
     const list = [...itemsList]
@@ -110,22 +102,10 @@ export default function Home() {
     <div
       className={inter.className}
     >
-      <div
-        className='p-2'
-      >
-        <label
-          className='mr-2'
-        >
-          quantidade de pagantes:
-        </label>
-
-        <input
-          className='border border-gray-600 outline-none'
-          value={payersCount}
-          type='number'
-          onChange={onPayersCountChange}
-        />
-      </div>
+      <PayerCountInput
+        payersCount={payersCount}
+        setPayersCount={setPayersCount}
+      />
 
       {payersCount > 0 && (
         <div>
