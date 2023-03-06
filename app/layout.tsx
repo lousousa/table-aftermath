@@ -2,7 +2,7 @@ import './globals.css'
 
 export const metadata = {
   title: 'Table Aftermath',
-  description: 'A tool for help to divide and calculate the bar bill',
+  description: 'A tool for help to divide and calculate the actually bar bill.',
 }
 
 export default function RootLayout({
