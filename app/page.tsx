@@ -146,9 +146,10 @@ export default function Home() {
 
             {itemsList.map((item) => (
               <div
+                key={'item_' + item.id}
                 className='flex'
               >
-                <div key={'item_' + item.id}>
+                <div>
                   {item.price}
                 </div>
 
