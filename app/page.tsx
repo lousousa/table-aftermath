@@ -7,6 +7,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 import PayerCountInput from '@/app/components/PayersCountInput'
 import InputGrid from '@/app/components/InputGrid'
+import AddItemButton from '@/app/components/AddItemButton'
 import { Payer, Item, Payment } from '@/app/types'
 
 export default function Home() {
@@ -14,13 +15,6 @@ export default function Home() {
   const [payersList, setPayersList] = useState<Payer[]>([])
   const [itemsList, setItemsList] = useState<Item[]>([])
   const [paymentsList, setPaymentsList] = useState<Payment[]>([])
-
-  const addItem = () => {
-    const list = [...itemsList]
-    list.push({ id: list.length + 1, price: 10 })
-
-    setItemsList(list)
-  }
 
   let checkTotal = 0
   const showResults = () => {
@@ -83,11 +77,10 @@ export default function Home() {
           <div
             className='flex flex-col items-start'
           >
-            <button
-              onClick={() => addItem()}
-            >
-              (+) adicionar item
-            </button>
+            <AddItemButton
+              itemsList={itemsList}
+              setItemsList={setItemsList}
+            />
 
             {itemsList.length > 0 && (
               <button
