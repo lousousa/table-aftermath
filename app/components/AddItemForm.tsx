@@ -1,15 +1,16 @@
-import { ItemFormModel } from '@/app/types'
+import { Item, ItemFormModel } from '@/app/types'
 
 type Props = {
   newItem: ItemFormModel,
-  setNewItem: React.Dispatch<React.SetStateAction<ItemFormModel | null>>
+  setNewItem: React.Dispatch<React.SetStateAction<ItemFormModel | null>>,
+  setItemsList: React.Dispatch<React.SetStateAction<Item[]>>
 }
 
-export default function AddItemForm({newItem, setNewItem}: Props) {
-  const saveItem = (e: React.SyntheticEvent) => {
-    e.preventDefault()
-    console.log(newItem)
-  }
+export default function AddItemForm({
+  newItem,
+  setNewItem,
+  setItemsList
+}: Props) {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input: {[key: string]: string | boolean | number} = {}
@@ -32,6 +33,13 @@ export default function AddItemForm({newItem, setNewItem}: Props) {
     }
 
     setNewItem({...newItem, ...input})
+  }
+
+  const saveItem = (e: React.SyntheticEvent) => {
+    e.preventDefault()
+
+    setItemsList(itemList => [...itemList, newItem])
+    setNewItem(null)
   }
 
   return (

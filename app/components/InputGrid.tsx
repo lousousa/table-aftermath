@@ -3,14 +3,12 @@ import { Payer, Item, Payment } from '@/app/types'
 type Props = {
   payersList: Payer[],
   itemsList: Item[],
-  paymentsList: Payment[],
   setPaymentsList: React.Dispatch<React.SetStateAction<Payment[]>>
 }
 
 export default function InputGrid({
   payersList,
   itemsList,
-  paymentsList,
   setPaymentsList
 }: Props) {
   const checkItem = (
@@ -19,18 +17,18 @@ export default function InputGrid({
     itemId: number,
     price: number
   ) => {
-    let list = [...paymentsList]
+    setPaymentsList(list => {
+      if (e.target.checked) {
+        list.push({ payerId, itemId, price })
+      } else {
+        list = list.filter(payment =>
+          payment.payerId !== payerId &&
+          payment.itemId !== itemId
+        )
+      }
 
-    if (e.target.checked) {
-      list.push({ payerId, itemId, price })
-    } else {
-      list = list.filter(payment =>
-        payment.payerId !== payerId &&
-        payment.itemId !== itemId
-      )
-    }
-
-    setPaymentsList(list)
+      return list
+    })
   }
 
   return (
