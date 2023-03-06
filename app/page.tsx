@@ -8,6 +8,7 @@ const inter = Inter({ subsets: ['latin'] })
 import PayerCountInput from '@/app/components/PayersCountInput'
 import InputGrid from '@/app/components/InputGrid'
 import AddItemButton from '@/app/components/AddItemButton'
+import ShowResultsButton from '@/app/components/ShowResultsButton'
 import { Payer, Item, Payment } from '@/app/types'
 
 export default function Home() {
@@ -15,31 +16,6 @@ export default function Home() {
   const [payersList, setPayersList] = useState<Payer[]>([])
   const [itemsList, setItemsList] = useState<Item[]>([])
   const [paymentsList, setPaymentsList] = useState<Payment[]>([])
-
-  let checkTotal = 0
-  const showResults = () => {
-    checkTotal = 0
-
-    const payersByItem:{[itemId: number]: number} = {}
-
-    itemsList.forEach(item => {
-      const filter = paymentsList.filter(payment => payment.itemId === item.id)
-      payersByItem[item.id] = filter.length
-    })
-
-    payersList.forEach(payer => {
-      let total = 0
-      const filter = paymentsList.filter(payment => payment.payerId === payer.id)
-      filter.forEach(item => {
-        total += item.price / payersByItem[item.itemId]
-      })
-
-      console.log(payer.name + ':' , total.toFixed(2))
-      checkTotal += total
-    })
-
-    console.log('TOTAL: ', checkTotal.toFixed(2))
-  }
 
   useEffect(() => {
     if (!payersCount) return
@@ -83,11 +59,11 @@ export default function Home() {
             />
 
             {itemsList.length > 0 && (
-              <button
-                onClick={() => showResults()}
-              >
-                resultado
-              </button>
+              <ShowResultsButton
+                payersList={payersList}
+                itemsList={itemsList}
+                paymentsList={paymentsList}
+              />
             )}
           </div>
         </div>

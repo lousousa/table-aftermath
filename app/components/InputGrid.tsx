@@ -1,4 +1,3 @@
-
 import { Payer, Item, Payment } from '@/app/types'
 
 type Props = {
