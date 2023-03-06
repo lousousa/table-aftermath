@@ -9,13 +9,15 @@ import PayerCountInput from '@/app/components/PayersCountInput'
 import InputGrid from '@/app/components/InputGrid'
 import AddItemButton from '@/app/components/AddItemButton'
 import ShowResultsButton from '@/app/components/ShowResultsButton'
-import { Payer, Item, Payment } from '@/app/types'
+import AddItemForm from '@/app/components/AddItemForm'
+import { Payer, Item, Payment, ItemFormModel } from '@/app/types'
 
 export default function Home() {
   const [payersCount, setPayersCount] = useState<number | ''>(0)
   const [payersList, setPayersList] = useState<Payer[]>([])
   const [itemsList, setItemsList] = useState<Item[]>([])
   const [paymentsList, setPaymentsList] = useState<Payment[]>([])
+  const [newItem, setNewItem] = useState<ItemFormModel>(null)
 
   useEffect(() => {
     if (!payersCount) return
@@ -50,22 +52,28 @@ export default function Home() {
             setPaymentsList={setPaymentsList}
           />
 
-          <div
-            className='flex flex-col items-start'
-          >
-            <AddItemButton
-              itemsList={itemsList}
-              setItemsList={setItemsList}
-            />
-
-            {itemsList.length > 0 && (
-              <ShowResultsButton
-                payersList={payersList}
+          {!newItem && (
+            <div
+              className='flex flex-col items-start'
+            >
+              <AddItemButton
                 itemsList={itemsList}
-                paymentsList={paymentsList}
+                setNewItem={setNewItem}
               />
-            )}
-          </div>
+
+              {itemsList.length > 0 && (
+                <ShowResultsButton
+                  payersList={payersList}
+                  itemsList={itemsList}
+                  paymentsList={paymentsList}
+                />
+              )}
+            </div>
+          )}
+
+          {newItem && (
+            <AddItemForm />
+          )}
         </div>
       )}
     </div>

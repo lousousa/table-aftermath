@@ -1,16 +1,18 @@
-import { Item } from '@/app/types'
+import { Item, ItemFormModel } from '@/app/types'
 
 type Props = {
-  itemsList: Item[],
-  setItemsList: React.Dispatch<React.SetStateAction<Item[]>>
+  itemsList: Item[]
+  setNewItem: React.Dispatch<React.SetStateAction<ItemFormModel>>
 }
 
-export default function AddItemButton({itemsList, setItemsList}: Props) {
+export default function AddItemButton({itemsList, setNewItem}: Props) {
   const addItem = () => {
-    const list = [...itemsList]
-    list.push({ id: list.length + 1, price: 10 })
-
-    setItemsList(list)
+    setNewItem({
+      id: itemsList.length + 1,
+      price: 0,
+      name: '',
+      payedByAll: true
+    })
   }
 
   return (

@@ -15,3 +15,7 @@ export type Payment = {
   itemId: number,
   price: number
 }
+
+export type ItemFormModel = null | (Item & {
+  payedByAll: boolean
+})
