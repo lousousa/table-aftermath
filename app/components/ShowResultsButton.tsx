@@ -21,12 +21,19 @@ export default function ShowResultsButton({payersList, itemsList, paymentsList}:
     payersList.forEach(payer => {
       let total = 0
       const filter = paymentsList.filter(payment => payment.payerId === payer.id)
+      let calculation = ''
+
       filter.forEach(payment => {
         const item = itemsList.find(item => item.id === payment.itemId)
-        if (item) total += item.price / payersByItem[item.id]
+        if (item) {
+          total += item.price / payersByItem[item.id]
+
+          if (calculation.length) calculation += '+'
+          calculation += `${item.price}/${payersByItem[item.id]}`
+        }
       })
 
-      console.log(payer.name + ':' , total.toFixed(2))
+      console.log(payer.name + ':' ,calculation ,'=' , total.toFixed(2))
       checkTotal += total
     })
 
