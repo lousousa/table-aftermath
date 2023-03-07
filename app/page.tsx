@@ -10,14 +10,14 @@ import InputGrid from '@/app/components/InputGrid'
 import AddItemButton from '@/app/components/AddItemButton'
 import ShowResultsButton from '@/app/components/ShowResultsButton'
 import AddItemForm from '@/app/components/AddItemForm'
-import { Payer, Item, Payment, ItemFormModel } from '@/app/types'
+import { Payer, Item, Payment } from '@/app/types'
 
 export default function Home() {
   const [payersCount, setPayersCount] = useState<number | ''>(0)
   const [payersList, setPayersList] = useState<Payer[]>([])
   const [itemsList, setItemsList] = useState<Item[]>([])
   const [paymentsList, setPaymentsList] = useState<Payment[]>([])
-  const [newItem, setNewItem] = useState<ItemFormModel | null>(null)
+  const [newItem, setNewItem] = useState<Item | null>(null)
 
   useEffect(() => {
     if (!payersCount) return

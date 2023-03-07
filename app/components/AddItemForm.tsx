@@ -1,8 +1,8 @@
-import { Item, ItemFormModel } from '@/app/types'
+import { Item } from '@/app/types'
 
 type Props = {
-  newItem: ItemFormModel,
-  setNewItem: React.Dispatch<React.SetStateAction<ItemFormModel | null>>,
+  newItem: Item,
+  setNewItem: React.Dispatch<React.SetStateAction<Item | null>>,
   setItemsList: React.Dispatch<React.SetStateAction<Item[]>>
 }
 

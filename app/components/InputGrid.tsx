@@ -15,16 +15,14 @@ export default function InputGrid({
   const checkItem = (
     e: React.ChangeEvent<HTMLInputElement>,
     payerId: number,
-    itemId: number,
-    price: number
+    itemId: number
   ) => {
     setPaymentsList(list => {
       if (e.target.checked) {
         const find = list.find(payment =>
           payment.payerId === payerId && payment.itemId === itemId)
 
-        if (find) find.price = price
-        else list.push({ payerId, itemId, price })
+        if (!find) list.push({ payerId, itemId })
       } else {
         list = list.filter(payment =>
           payment.payerId !== payerId &&
@@ -65,7 +63,7 @@ export default function InputGrid({
             <div key={`payment_input_${payer.id}_${item.id}`}>
               <input
                 type='checkbox'
-                onChange={(e) => checkItem(e, payer.id, item.id, item.price)}
+                onChange={(e) => checkItem(e, payer.id, item.id)}
               />
             </div>
           ))}

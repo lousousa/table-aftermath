@@ -21,8 +21,9 @@ export default function ShowResultsButton({payersList, itemsList, paymentsList}:
     payersList.forEach(payer => {
       let total = 0
       const filter = paymentsList.filter(payment => payment.payerId === payer.id)
-      filter.forEach(item => {
-        total += item.price / payersByItem[item.itemId]
+      filter.forEach(payment => {
+        const item = itemsList.find(item => item.id === payment.itemId)
+        if (item) total += item.price / payersByItem[item.id]
       })
 
       console.log(payer.name + ':' , total.toFixed(2))

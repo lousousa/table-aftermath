@@ -6,15 +6,11 @@ export type Payer = {
 export type Item = {
   id: number,
   price: number,
-  name?: string
+  name?: string,
+  payedByAll?: boolean
 }
 
 export type Payment = {
   payerId: number,
-  itemId: number,
-  price: number
-}
-
-export type ItemFormModel = Item & {
-  payedByAll: boolean
+  itemId: number
 }
