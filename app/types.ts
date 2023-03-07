@@ -1,7 +1,6 @@
 export type Payer = {
   id: number,
-  name: string,
-  payments: number[]
+  name: string
 }
 
 export type Item = {

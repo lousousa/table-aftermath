@@ -26,8 +26,7 @@ export default function Home() {
     for(let i = 0; i < Math.min(payersCount, 10); i++) {
       payersList.push({
         id: i + 1,
-        name: String.fromCharCode(65 + i),
-        payments: []
+        name: String.fromCharCode(65 + i)
       })
     }
 

@@ -54,6 +54,7 @@ export default function AddItemForm({
           type="number"
           value={newItem.price}
           onChange={handleInputChange}
+          autoFocus
         />
       </div>
 

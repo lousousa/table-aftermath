@@ -11,6 +11,7 @@ export default function InputGrid({
   itemsList,
   setPaymentsList
 }: Props) {
+
   const checkItem = (
     e: React.ChangeEvent<HTMLInputElement>,
     payerId: number,
@@ -19,7 +20,11 @@ export default function InputGrid({
   ) => {
     setPaymentsList(list => {
       if (e.target.checked) {
-        list.push({ payerId, itemId, price })
+        const find = list.find(payment =>
+          payment.payerId === payerId && payment.itemId === itemId)
+
+        if (find) find.price = price
+        else list.push({ payerId, itemId, price })
       } else {
         list = list.filter(payment =>
           payment.payerId !== payerId &&
