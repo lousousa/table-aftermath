@@ -14,3 +14,14 @@ export type Payment = {
   payerId: number,
   itemId: number
 }
+
+type PayerResultData = {
+  payer: Payer,
+  calculation: string,
+  amount: number
+}
+
+export type Results = {
+  payersData: PayerResultData[],
+  total: number
+}
