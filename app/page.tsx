@@ -38,51 +38,49 @@ export default function Home() {
     <div
       className={inter.className}
     >
-      {!results && (
-        <div>
-          <PayerCountInput
-            payersCount={payersCount}
-            setPayersCount={setPayersCount}
-          />
-          {payersCount > 0 && (
-            <div>
-              <InputGrid
-                payersList={payersList}
-                itemsList={itemsList}
-                setPaymentsList={setPaymentsList}
-              />
+      <div>
+        <PayerCountInput
+          payersCount={payersCount}
+          setPayersCount={setPayersCount}
+        />
+        {payersCount > 0 && (
+          <div>
+            <InputGrid
+              payersList={payersList}
+              itemsList={itemsList}
+              setPaymentsList={setPaymentsList}
+            />
 
-              {!newItem && (
-                <div
-                  className='flex flex-col items-start'
-                >
-                  <AddItemButton
-                    itemsList={itemsList}
-                    setNewItem={setNewItem}
-                  />
-
-                  {itemsList.length > 0 && (
-                    <ShowResultsButton
-                      payersList={payersList}
-                      itemsList={itemsList}
-                      paymentsList={paymentsList}
-                      setResults={setResults}
-                    />
-                  )}
-                </div>
-              )}
-
-              {newItem && (
-                <AddItemForm
-                  newItem={newItem}
+            {!newItem && (
+              <div
+                className='flex flex-col items-start'
+              >
+                <AddItemButton
+                  itemsList={itemsList}
                   setNewItem={setNewItem}
-                  setItemsList={setItemsList}
                 />
-              )}
-            </div>
-          )}
-        </div>
-      )}
+
+                {itemsList.length > 0 && (
+                  <ShowResultsButton
+                    payersList={payersList}
+                    itemsList={itemsList}
+                    paymentsList={paymentsList}
+                    setResults={setResults}
+                  />
+                )}
+              </div>
+            )}
+
+            {newItem && (
+              <AddItemForm
+                newItem={newItem}
+                setNewItem={setNewItem}
+                setItemsList={setItemsList}
+              />
+            )}
+          </div>
+        )}
+      </div>
 
       {results && (
         <div>
@@ -99,12 +97,6 @@ export default function Home() {
           <p>
             {results.total}
           </p>
-
-          <button
-            onClick={() => {setResults(null)}}
-          >
-            clear results
-          </button>
         </div>
       )}
     </div>

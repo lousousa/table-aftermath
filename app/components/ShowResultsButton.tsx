@@ -58,7 +58,7 @@ export default function ShowResultsButton({
     <button
       onClick={() => showResults()}
     >
-      resultado
+      atualizar resultado
     </button>
   )
 }
