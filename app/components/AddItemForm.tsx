@@ -1,4 +1,5 @@
 import { Payer, Item, Payment } from '@/app/types'
+import { useState } from 'react'
 
 type Props = {
   payersList: Payer[],
@@ -16,11 +17,14 @@ export default function AddItemForm({
   setPaymentsList
 }: Props) {
 
+  const [paidByAll, setPaidByAll] = useState<boolean>(true)
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input: {[key: string]: string | boolean | number} = {}
 
-    if (e.target.type === 'checkbox')
-      input[e.target.name] = e.target.checked
+    if (e.target.name === 'paidByAll') {
+      setPaidByAll(e.target.checked)
+    }
 
     if (e.target.type === 'text')
       input[e.target.name] = e.target.value
@@ -96,7 +100,7 @@ export default function AddItemForm({
         <input
           name="paidByAll"
           type="checkbox"
-          checked={true}
+          checked={paidByAll}
           onChange={handleInputChange}
         />
 
