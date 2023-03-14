@@ -1,4 +1,5 @@
 import { Payer, Item, Payment, Results } from '@/app/types'
+import { useEffect } from 'react'
 
 type Props = {
   payersList: Payer[],
@@ -59,11 +60,9 @@ export default function ShowResultsButton({
     setResults(results)
   }
 
+  useEffect(showResults, [paymentsList])
+
   return (
-    <button
-      onClick={() => showResults()}
-    >
-      atualizar resultado
-    </button>
+    <></>
   )
 }
