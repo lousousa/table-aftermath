@@ -9,7 +9,7 @@ type Props = {
 export default function ResultsSection({results, itemsList}: Props) {
   const [checkedResults, setCheckedResults] = useState('')
 
-  const add10Percent = (value: number) => value + value * .1
+  const add10Percent = (value: number) => (value + value * .1).toFixed(2)
 
   useEffect(() => {
     if (!results) return

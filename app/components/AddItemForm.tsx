@@ -1,6 +1,8 @@
 import { Payer, Item, Payment } from '@/app/types'
 import { useState } from 'react'
 
+import CurrencyInput from '@/app/components/CurrencyInput'
+
 type Props = {
   payersList: Payer[],
   newItem: Item,
@@ -18,6 +20,7 @@ export default function AddItemForm({
 }: Props) {
 
   const [paidByAll, setPaidByAll] = useState<boolean>(true)
+  const [price, setPrice] = useState<string>('')
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input: {[key: string]: string | boolean | number} = {}
@@ -28,17 +31,6 @@ export default function AddItemForm({
 
     if (e.target.type === 'text')
       input[e.target.name] = e.target.value
-
-    if (e.target.type === 'number') {
-      let value: number | string = ''
-
-      if (e.target.value !== value) {
-        value = parseFloat(e.target.value)
-        if (isNaN(value)) value = 0
-      }
-
-      input[e.target.name] = value
-    }
 
     setNewItem({...newItem, ...input})
   }
@@ -66,6 +58,8 @@ export default function AddItemForm({
       return paymentsList
     })
 
+    newItem.price = parseFloat(price)
+
     setItemsList(itemList => [...itemList, newItem])
     setNewItem(null)
   }
@@ -77,12 +71,10 @@ export default function AddItemForm({
       <div>
         <label>preço:</label>
 
-        <input
-          name="price"
-          type="number"
-          value={newItem.price}
-          onChange={handleInputChange}
-          autoFocus
+        <CurrencyInput
+          setStateAction={setPrice}
+          maxLength={6}
+          autoFocus={true}
         />
       </div>
 
