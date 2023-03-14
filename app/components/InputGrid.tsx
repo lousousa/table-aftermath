@@ -112,7 +112,7 @@ export default function InputGrid({
         >
           <div>
             {item.title && (
-              <span>{item.title + '; '}</span>
+              <span>{item.title + ' - '}</span>
             )}
 
             <span>{formatCurrency(item.price) + ': '}</span>

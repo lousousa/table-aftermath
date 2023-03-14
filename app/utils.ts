@@ -1,2 +1,2 @@
 export const formatCurrency = (value: number | string) =>
-    `R$ ${value.toString().replace('.', ',')}`
+    `R$ ${parseFloat(value.toString()).toFixed(2).replace('.', ',')}`
