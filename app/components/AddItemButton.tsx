@@ -10,8 +10,7 @@ export default function AddItemButton({itemsList, setNewItem}: Props) {
     setNewItem({
       id: itemsList.length + 1,
       price: 0,
-      name: '',
-      payedByAll: true
+      name: ''
     })
   }
 

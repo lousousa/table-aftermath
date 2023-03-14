@@ -48,6 +48,7 @@ export default function Home() {
             <InputGrid
               payersList={payersList}
               itemsList={itemsList}
+              paymentsList={paymentsList}
               setPaymentsList={setPaymentsList}
             />
 
@@ -73,9 +74,11 @@ export default function Home() {
 
             {newItem && (
               <AddItemForm
+                payersList={payersList}
                 newItem={newItem}
                 setNewItem={setNewItem}
                 setItemsList={setItemsList}
+                setPaymentsList={setPaymentsList}
               />
             )}
           </div>

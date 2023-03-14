@@ -1,15 +1,19 @@
-import { Item } from '@/app/types'
+import { Payer, Item, Payment } from '@/app/types'
 
 type Props = {
+  payersList: Payer[],
   newItem: Item,
   setNewItem: React.Dispatch<React.SetStateAction<Item | null>>,
-  setItemsList: React.Dispatch<React.SetStateAction<Item[]>>
+  setItemsList: React.Dispatch<React.SetStateAction<Item[]>>,
+  setPaymentsList: React.Dispatch<React.SetStateAction<Payment[]>>
 }
 
 export default function AddItemForm({
+  payersList,
   newItem,
   setNewItem,
-  setItemsList
+  setItemsList,
+  setPaymentsList
 }: Props) {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,6 +41,26 @@ export default function AddItemForm({
 
   const saveItem = (e: React.SyntheticEvent) => {
     e.preventDefault()
+
+    const checkboxPaidByAll: HTMLInputElement | null =
+      document.querySelector('form [name=paidByAll]')
+
+    setPaymentsList(paymentsList => {
+      payersList.forEach(payer => {
+        const find = paymentsList.find(payment =>
+          payment.payerId === payer.id &&
+          payment.itemId === newItem.id
+        )
+
+        if (!find) paymentsList.push({
+          payerId: payer.id,
+          itemId: newItem.id,
+          paid: Boolean(checkboxPaidByAll?.checked)
+        })
+      })
+
+      return paymentsList
+    })
 
     setItemsList(itemList => [...itemList, newItem])
     setNewItem(null)
@@ -70,9 +94,9 @@ export default function AddItemForm({
 
       <div>
         <input
-          name="payedByAll"
+          name="paidByAll"
           type="checkbox"
-          checked={newItem.payedByAll}
+          checked={true}
           onChange={handleInputChange}
         />
 

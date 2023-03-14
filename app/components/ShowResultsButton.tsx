@@ -17,21 +17,26 @@ export default function ShowResultsButton({
   let checkTotal = 0
   const showResults = () => {
     checkTotal = 0
-
-    const payersByItem:{[itemId: number]: number} = {}
     const results: Results = { payersData: [], total: 0 }
+    const payersByItem:{[itemId: number]: number} = {}
 
     itemsList.forEach(item => {
-      const filter = paymentsList.filter(payment => payment.itemId === item.id)
+      const filter = paymentsList.filter(payment =>
+        payment.itemId === item.id && payment.paid
+      )
+
       payersByItem[item.id] = filter.length
     })
 
     payersList.forEach(payer => {
+      const payerPayments = paymentsList.filter(payment =>
+        payment.payerId === payer.id && payment.paid
+      )
+
       let amount = 0
-      const filter = paymentsList.filter(payment => payment.payerId === payer.id)
       let calculation = ''
 
-      filter.forEach(payment => {
+      payerPayments.forEach(payment => {
         const item = itemsList.find(item => item.id === payment.itemId)
         if (item) {
           amount += item.price / payersByItem[item.id]
