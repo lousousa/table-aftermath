@@ -55,7 +55,7 @@ export default function Home() {
 
             {!newItem && (
               <div
-                className='flex flex-col items-start'
+                className='flex flex-col items-start mt-4'
               >
                 <AddItemButton
                   itemsList={itemsList}

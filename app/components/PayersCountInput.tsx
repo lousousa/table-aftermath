@@ -15,9 +15,7 @@ export default function payerCountInput({ payersCount, setPayersCount }: Props) 
   }
 
   return (
-    <div
-      className='p-2'
-    >
+    <div>
       <label
         className='mr-2'
       >

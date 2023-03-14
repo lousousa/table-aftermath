@@ -1,4 +1,5 @@
 import { Payer, Item, Payment, Results } from '@/app/types'
+import { formatCurrency } from '@/app/utils'
 import { useEffect, useRef } from 'react'
 
 type Props = {
@@ -91,7 +92,7 @@ export default function InputGrid({
   return (
     <div>
       <div
-        className='flex'
+        className='mt-4 flex'
       >
         <div />
 
@@ -114,7 +115,7 @@ export default function InputGrid({
               <span>{item.title + '; '}</span>
             )}
 
-            <span>{item.price + ': '}</span>
+            <span>{formatCurrency(item.price) + ': '}</span>
           </div>
 
           {payersList.map((payer) => (

@@ -30,7 +30,7 @@ export default function AddItemForm({
     }
 
     if (e.target.type === 'text')
-      input[e.target.name] = e.target.value
+      input[e.target.name] = e.target.value.trim()
 
     setNewItem({...newItem, ...input})
   }

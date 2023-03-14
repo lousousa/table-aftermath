@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Item, Results } from '../types'
+import { Item, Results } from '@/app/types'
+import { formatCurrency } from '@/app/utils'
 
 type Props = {
   results: Results | null,
@@ -19,27 +20,35 @@ export default function ResultsSection({results, itemsList}: Props) {
     )
 
     if (results?.total !== itemsTotal)
-      return setCheckedResults(`total pago: ${results.total} (falta ${itemsTotal - results?.total})`)
+      return setCheckedResults(`total pago: ${formatCurrency(results.total)}
+        (falta ${formatCurrency(itemsTotal - results?.total)})`)
 
-    return setCheckedResults(`total pago: ${results.total} (${add10Percent(results.total)})`)
+    return setCheckedResults(`total pago: ${formatCurrency(results.total)}
+      (${formatCurrency(add10Percent(results.total))})`)
   }, [itemsList, results])
 
   return (
     <>
       {results && (
-        <div>
+        <div
+          className='mt-4'
+        >
           {results.payersData.map((payerData) => (
             <div
               key={`results_payer_${payerData.payer.id}`}
             >
               <p>
-                {payerData.payer.name}: {payerData.calculation} = {payerData.amount} ({add10Percent(payerData.amount)})
+                {payerData.payer.name}: {payerData.calculation} =&nbsp;
+                {formatCurrency(payerData.amount)}&nbsp;
+                ({formatCurrency(add10Percent(payerData.amount))})
               </p>
             </div>
           ))}
 
           {checkedResults.length && (
-            <p>
+            <p
+              className='mt-4'
+            >
               {checkedResults}
             </p>
           )}
