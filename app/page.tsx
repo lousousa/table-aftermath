@@ -9,6 +9,7 @@ import PayerCountInput from '@/app/components/PayersCountInput'
 import InputGrid from '@/app/components/InputGrid'
 import AddItemButton from '@/app/components/AddItemButton'
 import AddItemForm from '@/app/components/AddItemForm'
+import ResultsSection from '@/app/components/ResultsSection'
 import { Payer, Item, Payment, Results } from '@/app/types'
 
 export default function Home() {
@@ -18,7 +19,6 @@ export default function Home() {
   const [paymentsList, setPaymentsList] = useState<Payment[]>([])
   const [newItem, setNewItem] = useState<Item | null>(null)
   const [results, setResults] = useState<Results | null>(null)
-  const [checkedResults, setCheckedResults] = useState('')
 
   useEffect(() => {
     if (!payersCount) return
@@ -33,19 +33,6 @@ export default function Home() {
 
     setPayersList(payersList)
   }, [payersCount])
-
-  useEffect(() => {
-    if (!results) return
-
-    const itemsTotal = itemsList.reduce((accumulator, current) =>
-      accumulator += current.price, 0
-    )
-
-    if (results?.total !== itemsTotal)
-      return setCheckedResults(`total pago: ${results?.total} (falta ${itemsTotal - results?.total})`)
-
-    return setCheckedResults(`total pago: ${results?.total}`)
-  }, [itemsList, results])
 
   return (
     <div
@@ -90,25 +77,10 @@ export default function Home() {
         )}
       </div>
 
-      {results && (
-        <div>
-          {results.payersData.map((payerData) => (
-            <div
-              key={`results_payer_${payerData.payer.id}`}
-            >
-              <p>
-                {payerData.payer.name}: {payerData.calculation} = {payerData.amount}
-              </p>
-            </div>
-          ))}
-
-          {checkedResults.length && (
-            <p>
-              {checkedResults}
-            </p>
-          )}
-        </div>
-      )}
+      <ResultsSection
+        itemsList={itemsList}
+        results={results}
+      />
     </div>
   )
 }
