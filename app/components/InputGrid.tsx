@@ -109,7 +109,11 @@ export default function InputGrid({
           className='flex'
         >
           <div>
-            {item.price}
+            {item.title && (
+              <span>{item.title + '; '}</span>
+            )}
+
+            <span>{item.price + ': '}</span>
           </div>
 
           {payersList.map((payer) => (

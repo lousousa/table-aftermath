@@ -6,7 +6,7 @@ export type Payer = {
 export type Item = {
   id: number,
   price: number,
-  name?: string
+  title?: string
 }
 
 export type Payment = {

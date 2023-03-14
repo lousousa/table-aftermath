@@ -90,8 +90,8 @@ export default function AddItemForm({
         <label>título (opcional):</label>
 
         <input
-          name="name"
-          value={newItem.name}
+          name="title"
+          value={newItem.title}
           onChange={handleInputChange}
         />
       </div>
