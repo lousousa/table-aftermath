@@ -72,11 +72,12 @@ export default function InputGrid({
         }
       })
 
-      results.payersData.push({
-        payer,
-        calculation,
-        amount: parseFloat(amount.toFixed(2))
-      })
+      if (amount > 0)
+        results.payersData.push({
+          payer,
+          calculation,
+          amount: parseFloat(amount.toFixed(2))
+        })
 
       checkTotal.current += amount
     })
