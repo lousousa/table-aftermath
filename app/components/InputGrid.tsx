@@ -1,17 +1,20 @@
-import { Payer, Item, Payment } from '@/app/types'
+import { Payer, Item, Payment, Results } from '@/app/types'
+import { useEffect, useRef } from 'react'
 
 type Props = {
   payersList: Payer[],
   itemsList: Item[],
   paymentsList: Payment[],
-  setPaymentsList: React.Dispatch<React.SetStateAction<Payment[]>>
+  setPaymentsList: React.Dispatch<React.SetStateAction<Payment[]>>,
+  setResults: React.Dispatch<React.SetStateAction<Results | null>>
 }
 
 export default function InputGrid({
   payersList,
   itemsList,
   paymentsList,
-  setPaymentsList
+  setPaymentsList,
+  setResults
 }: Props) {
 
   const findPayment = (payerId: number, itemId: number) => {
@@ -34,6 +37,55 @@ export default function InputGrid({
       return [...list]
     })
   }
+
+  let checkTotal = useRef(0)
+  const showResults = () => {
+    if (!paymentsList.length) return
+
+    checkTotal.current = 0
+    const results: Results = { payersData: [], total: 0 }
+    const payersByItem:{[itemId: number]: number} = {}
+
+    itemsList.forEach(item => {
+      const filter = paymentsList.filter(payment =>
+        payment.itemId === item.id && payment.paid
+      )
+
+      payersByItem[item.id] = filter.length
+    })
+
+    payersList.forEach(payer => {
+      const payerPayments = paymentsList.filter(payment =>
+        payment.payerId === payer.id && payment.paid
+      )
+
+      let amount = 0
+      let calculation = ''
+
+      payerPayments.forEach(payment => {
+        const item = itemsList.find(item => item.id === payment.itemId)
+        if (item) {
+          amount += item.price / payersByItem[item.id]
+
+          if (calculation.length) calculation += '+'
+          calculation += `${item.price}/${payersByItem[item.id]}`
+        }
+      })
+
+      results.payersData.push({
+        payer,
+        calculation,
+        amount: parseFloat(amount.toFixed(2))
+      })
+
+      checkTotal.current += amount
+    })
+
+    results.total = parseFloat(checkTotal.current.toFixed(2))
+    setResults(results)
+  }
+
+  useEffect(showResults, [paymentsList, itemsList, payersList, setResults])
 
   return (
     <div>

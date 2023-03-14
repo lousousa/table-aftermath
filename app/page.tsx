@@ -8,7 +8,6 @@ const inter = Inter({ subsets: ['latin'] })
 import PayerCountInput from '@/app/components/PayersCountInput'
 import InputGrid from '@/app/components/InputGrid'
 import AddItemButton from '@/app/components/AddItemButton'
-import ShowResultsButton from '@/app/components/ShowResultsButton'
 import AddItemForm from '@/app/components/AddItemForm'
 import { Payer, Item, Payment, Results } from '@/app/types'
 
@@ -50,6 +49,7 @@ export default function Home() {
               itemsList={itemsList}
               paymentsList={paymentsList}
               setPaymentsList={setPaymentsList}
+              setResults={setResults}
             />
 
             {!newItem && (
@@ -60,15 +60,6 @@ export default function Home() {
                   itemsList={itemsList}
                   setNewItem={setNewItem}
                 />
-
-                {itemsList.length > 0 && (
-                  <ShowResultsButton
-                    payersList={payersList}
-                    itemsList={itemsList}
-                    paymentsList={paymentsList}
-                    setResults={setResults}
-                  />
-                )}
               </div>
             )}
 
