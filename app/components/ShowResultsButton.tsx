@@ -15,6 +15,8 @@ export default function ShowResultsButton({
   setResults
 }: Props) {
 
+  const showResultsAutomatically = true
+
   let checkTotal = 0
   const showResults = () => {
     checkTotal = 0
@@ -60,9 +62,19 @@ export default function ShowResultsButton({
     setResults(results)
   }
 
-  useEffect(showResults, [paymentsList])
+  if (showResultsAutomatically) {
+    useEffect(showResults, [paymentsList])
+  }
 
   return (
-    <></>
+    <>
+      {!showResultsAutomatically && (
+        <button
+          onClick={() => showResults()}
+        >
+          atualizar resultado
+        </button>
+      )}
+    </>
   )
 }
