@@ -35,6 +35,11 @@ export default function AddItemForm({
     setNewItem({...newItem, ...input})
   }
 
+  const handleCancel = (e: React.MouseEvent) => {
+    e.preventDefault()
+    setNewItem(null)
+  }
+
   const saveItem = (e: React.SyntheticEvent) => {
     e.preventDefault()
 
@@ -66,6 +71,7 @@ export default function AddItemForm({
 
   return (
     <form
+      className='mt-4'
       onSubmit={saveItem}
     >
       <div>
@@ -96,11 +102,22 @@ export default function AddItemForm({
           onChange={handleInputChange}
         />
 
-        <label>todos pagam?</label>
+        <label
+          className='ml-2'
+        >
+          todos pagam?
+        </label>
       </div>
 
       <button>
         adicionar
+      </button>
+
+      <button
+        className='ml-4'
+        onClick={handleCancel}
+      >
+        cancelar
       </button>
     </form>
   )
