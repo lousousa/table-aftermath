@@ -18,6 +18,7 @@ export default function Home() {
   const [paymentsList, setPaymentsList] = useState<Payment[]>([])
   const [newItem, setNewItem] = useState<Item | null>(null)
   const [results, setResults] = useState<Results | null>(null)
+  const [checkedResults, setCheckedResults] = useState('')
 
   useEffect(() => {
     if (!payersCount) return
@@ -32,6 +33,19 @@ export default function Home() {
 
     setPayersList(payersList)
   }, [payersCount])
+
+  useEffect(() => {
+    if (!results) return
+
+    const itemsTotal = itemsList.reduce((accumulator, current) =>
+      accumulator += current.price, 0
+    )
+
+    if (results?.total !== itemsTotal)
+      return setCheckedResults(`total pago: ${results?.total} (falta ${itemsTotal - results?.total})`)
+
+    return setCheckedResults(`total pago: ${results?.total}`)
+  }, [itemsList, results])
 
   return (
     <div
@@ -88,9 +102,11 @@ export default function Home() {
             </div>
           ))}
 
-          <p>
-            {results.total}
-          </p>
+          {checkedResults.length && (
+            <p>
+              {checkedResults}
+            </p>
+          )}
         </div>
       )}
     </div>
