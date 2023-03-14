@@ -36,7 +36,7 @@ export default function Home() {
 
   return (
     <div
-      className={inter.className}
+      className={`p-4 ${inter.className}`}
     >
       <div>
         <PayerCountInput

@@ -9,6 +9,8 @@ type Props = {
 export default function ResultsSection({results, itemsList}: Props) {
   const [checkedResults, setCheckedResults] = useState('')
 
+  const add10Percent = (value: number) => value + value * .1
+
   useEffect(() => {
     if (!results) return
 
@@ -17,9 +19,9 @@ export default function ResultsSection({results, itemsList}: Props) {
     )
 
     if (results?.total !== itemsTotal)
-      return setCheckedResults(`total pago: ${results?.total} (falta ${itemsTotal - results?.total})`)
+      return setCheckedResults(`total pago: ${results.total} (falta ${itemsTotal - results?.total})`)
 
-    return setCheckedResults(`total pago: ${results?.total}`)
+    return setCheckedResults(`total pago: ${results.total} (${add10Percent(results.total)})`)
   }, [itemsList, results])
 
   return (
@@ -31,7 +33,7 @@ export default function ResultsSection({results, itemsList}: Props) {
               key={`results_payer_${payerData.payer.id}`}
             >
               <p>
-                {payerData.payer.name}: {payerData.calculation} = {payerData.amount}
+                {payerData.payer.name}: {payerData.calculation} = {payerData.amount} ({add10Percent(payerData.amount)})
               </p>
             </div>
           ))}
