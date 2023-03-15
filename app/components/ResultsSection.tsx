@@ -20,10 +20,10 @@ export default function ResultsSection({results, itemsList}: Props) {
     )
 
     if (results?.total !== itemsTotal)
-      return setCheckedResults(`total pago: ${formatCurrency(results.total)}
+      return setCheckedResults(`total: ${formatCurrency(results.total)}
         (falta ${formatCurrency(itemsTotal - results?.total)})`)
 
-    return setCheckedResults(`total pago: ${formatCurrency(results.total)}
+    return setCheckedResults(`total: ${formatCurrency(results.total)}
       (${formatCurrency(add10Percent(results.total))})`)
   }, [itemsList, results])
 

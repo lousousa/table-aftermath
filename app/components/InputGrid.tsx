@@ -1,6 +1,7 @@
 import { Payer, Item, Payment, Results } from '@/app/types'
 import { formatCurrency } from '@/app/utils'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import EditPayerForm from '@/app/components/EditPayerForm'
 
 type Props = {
   payersList: Payer[],
@@ -17,6 +18,9 @@ export default function InputGrid({
   setPaymentsList,
   setResults
 }: Props) {
+
+  const [payerOnEdit, setPayerOnEdit] = useState(0)
+  let checkTotal = useRef(0)
 
   const findPayment = (payerId: number, itemId: number) => {
     return paymentsList.find(payment =>
@@ -39,7 +43,6 @@ export default function InputGrid({
     })
   }
 
-  let checkTotal = useRef(0)
   const showResults = () => {
     if (!paymentsList.length) return
 
@@ -94,16 +97,22 @@ export default function InputGrid({
       <div
         className='mt-4 flex'
       >
-        <div />
-
         {payersList.map((payer) => (
           <div
             key={'payer_' + payer.id}
+            className='mr-2 cursor-pointer'
+            onClick={() => setPayerOnEdit(payer.id)}
           >
             {payer.name}
           </div>
         ))}
       </div>
+
+      {payerOnEdit > 0 && (
+        <EditPayerForm
+          setPayerOnEdit={setPayerOnEdit}
+        />
+      )}
 
       {itemsList.map((item) => (
         <div
