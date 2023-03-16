@@ -3,7 +3,10 @@ import { useSelector, useDispatch } from 'react-redux'
 import { formatCurrency } from '@/app/utils'
 import { Results } from '@/app/types'
 
+import EditPayerForm from '@/app/components/EditPayerForm'
+
 import { togglePaid, setResults } from '@/app/store/reducers/payments'
+import { setStagingPayer } from '@/app/store/reducers/payers'
 import type { RootState } from '@/app/store'
 
 export default function InputGrid() {
@@ -80,6 +83,11 @@ export default function InputGrid() {
     dispatch(setResults(results))
   }
 
+  const openPayerEditForm = (payerId: number) => {
+    const payer = payersList.find(payer => payer.id === payerId)
+    dispatch(setStagingPayer(payer))
+  }
+
   useEffect(showResults, [dispatch, payersList, itemsList, paymentsList])
 
   return (
@@ -91,16 +99,19 @@ export default function InputGrid() {
           <div
             key={'payer_' + payer.id}
             className='mr-2 cursor-pointer'
+            onClick={() => openPayerEditForm(payer.id)}
           >
             {payer.name}
           </div>
         ))}
       </div>
 
+      <EditPayerForm />
+
       {itemsList.map((item) => (
         <div
           key={'item_' + item.id}
-          className='flex'
+          className='flex mt-4'
         >
           <div>
             {item.title && (

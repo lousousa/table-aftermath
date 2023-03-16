@@ -16,7 +16,7 @@ export default function AddItemForm() {
   const [price, setPrice] = useState<string>('')
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const input: {[key: string]: string | boolean | number} = {}
+    const input: {[key: string]: string | boolean} = {}
 
     if (e.target.name === 'paidByAll') {
       setPaidByAll(e.target.checked)
