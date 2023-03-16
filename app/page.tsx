@@ -32,7 +32,7 @@ export default function Home() {
         name: String.fromCharCode(65 + i)
       }))
     }
-  }, [payersCount])
+  }, [dispatch, payersCount])
 
   return (
     <div

@@ -80,7 +80,7 @@ export default function InputGrid() {
     dispatch(setResults(results))
   }
 
-  useEffect(showResults, [payersList, itemsList, paymentsList])
+  useEffect(showResults, [dispatch, payersList, itemsList, paymentsList])
 
   return (
     <div>

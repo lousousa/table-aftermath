@@ -1,17 +1,17 @@
 'use client'
 
 import { ReactNode } from 'react'
-import { Provider } from 'react-redux'
+import { Provider as ReduxProvider } from 'react-redux'
 import { store } from '@/app/store'
 
 type Props = {
   children: ReactNode
 }
 
-export default ({ children }: Props) => {
+export default function Provider ({ children }: Props) {
   return (
-    <Provider store={store}>
+    <ReduxProvider store={store}>
       {children}
-    </Provider>
+    </ReduxProvider>
   )
 }

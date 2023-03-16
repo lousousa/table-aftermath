@@ -1,5 +1,3 @@
-'use client'
-
 import { Payment, Results } from '@/app/types'
 import { createSlice } from '@reduxjs/toolkit'
 
