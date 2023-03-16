@@ -1,23 +1,7 @@
-import { useEffect } from 'react'
-
-type Props = {
-  setPayerOnEdit: React.Dispatch<React.SetStateAction<number>>
-}
-
-export default function EditPayerForm({setPayerOnEdit}: Props) {
+export default function EditPayerForm() {
   const handleCancel = (e: React.MouseEvent) => {
     e.preventDefault()
-    setPayerOnEdit(0)
   }
-
-  useEffect(() => {
-    setPayerOnEdit((payerId: number) => {
-      // todo: find payer on the state management
-      console.log(payerId)
-
-      return payerId
-    })
-  }, [setPayerOnEdit])
 
   return (
     <form>

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef } from 'react'
 
 type Props = {
   setStateAction: React.Dispatch<React.SetStateAction<string>>,

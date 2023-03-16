@@ -1,39 +1,39 @@
 import { useEffect, useState } from 'react'
-import { Item, Results } from '@/app/types'
+import { useSelector } from 'react-redux'
 import { formatCurrency } from '@/app/utils'
 
-type Props = {
-  results: Results | null,
-  itemsList: Item[]
-}
+import type { RootState } from '@/app/store'
 
-export default function ResultsSection({results, itemsList}: Props) {
+export default function ResultsSection() {
+  const itemsList = useSelector((state: RootState) => state.items.list)
+  const currentResults = useSelector((state: RootState) => state.payments.results)
+
   const [checkedResults, setCheckedResults] = useState('')
 
   const add10Percent = (value: number) => (value + value * .1).toFixed(2)
 
   useEffect(() => {
-    if (!results) return
+    if (!currentResults) return
 
     const itemsTotal = itemsList.reduce((accumulator, current) =>
       accumulator += current.price, 0
     )
 
-    if (results?.total !== itemsTotal)
-      return setCheckedResults(`total: ${formatCurrency(results.total)}
-        (falta ${formatCurrency(itemsTotal - results?.total)})`)
+    if (currentResults.total !== itemsTotal)
+      return setCheckedResults(`total: ${formatCurrency(currentResults.total)}
+        (falta ${formatCurrency(itemsTotal - currentResults.total)})`)
 
-    return setCheckedResults(`total: ${formatCurrency(results.total)}
-      (${formatCurrency(add10Percent(results.total))})`)
-  }, [itemsList, results])
+    return setCheckedResults(`total: ${formatCurrency(currentResults.total)}
+      (${formatCurrency(add10Percent(currentResults.total))})`)
+  }, [itemsList, currentResults])
 
   return (
     <>
-      {results && (
+      {currentResults && (
         <div
           className='mt-4'
         >
-          {results.payersData.map((payerData) => (
+          {currentResults.payersData.map((payerData) => (
             <div
               key={`results_payer_${payerData.payer.id}`}
             >

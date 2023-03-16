@@ -1,17 +1,18 @@
-import { Item } from '@/app/types'
+import { useSelector, useDispatch } from 'react-redux'
 
-type Props = {
-  itemsList: Item[]
-  setNewItem: React.Dispatch<React.SetStateAction<Item | null>>
-}
+import { setStagingItem } from '@/app/store/reducers/items'
+import type { RootState } from '@/app/store'
 
-export default function AddItemButton({itemsList, setNewItem}: Props) {
+export default function AddItemButton() {
+  const itemsList = useSelector((state: RootState) => state.items.list)
+  const dispatch = useDispatch()
+
   const addItem = () => {
-    setNewItem({
+    dispatch(setStagingItem({
       id: itemsList.length + 1,
       price: 0,
       title: ''
-    })
+    }))
   }
 
   return (

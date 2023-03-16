@@ -1,46 +1,36 @@
-import { Payer, Item, Payment, Results } from '@/app/types'
+import { useEffect, useRef } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { formatCurrency } from '@/app/utils'
-import { useEffect, useRef, useState } from 'react'
-import EditPayerForm from '@/app/components/EditPayerForm'
+import { Results } from '@/app/types'
 
-type Props = {
-  payersList: Payer[],
-  itemsList: Item[],
-  paymentsList: Payment[],
-  setPaymentsList: React.Dispatch<React.SetStateAction<Payment[]>>,
-  setResults: React.Dispatch<React.SetStateAction<Results | null>>
-}
+import { togglePaid, setResults } from '@/app/store/reducers/payments'
+import type { RootState } from '@/app/store'
 
-export default function InputGrid({
-  payersList,
-  itemsList,
-  paymentsList,
-  setPaymentsList,
-  setResults
-}: Props) {
+export default function InputGrid() {
+  const payersList = useSelector((state: RootState) => state.payers.list)
+  const itemsList = useSelector((state: RootState) => state.items.list)
+  const paymentsList = useSelector((state: RootState) => state.payments.list)
+  const dispatch = useDispatch()
 
-  const [payerOnEdit, setPayerOnEdit] = useState(0)
   let checkTotal = useRef(0)
 
   const findPayment = (payerId: number, itemId: number) => {
     return paymentsList.find(payment =>
-        payment.payerId === payerId &&
-        payment.itemId === itemId
-      )
+      payment.payerId === payerId &&
+      payment.itemId === itemId
+    )
   }
 
   const checkItem = (
-    e: React.ChangeEvent<HTMLInputElement>,
     payerId: number,
-    itemId: number
+    itemId: number,
+    e: React.ChangeEvent<HTMLInputElement>
   ) => {
-
-    setPaymentsList(list => {
-      const payment = findPayment(payerId, itemId)
-      if (payment) payment.paid = e.target.checked
-
-      return [...list]
-    })
+    dispatch(togglePaid({
+      payerId,
+      itemId,
+      paid: e.target.checked
+    }))
   }
 
   const showResults = () => {
@@ -87,10 +77,10 @@ export default function InputGrid({
     })
 
     results.total = parseFloat(checkTotal.current.toFixed(2))
-    setResults(results)
+    dispatch(setResults(results))
   }
 
-  useEffect(showResults, [paymentsList, itemsList, payersList, setResults])
+  useEffect(showResults, [payersList, itemsList, paymentsList])
 
   return (
     <div>
@@ -101,18 +91,11 @@ export default function InputGrid({
           <div
             key={'payer_' + payer.id}
             className='mr-2 cursor-pointer'
-            onClick={() => setPayerOnEdit(payer.id)}
           >
             {payer.name}
           </div>
         ))}
       </div>
-
-      {payerOnEdit > 0 && (
-        <EditPayerForm
-          setPayerOnEdit={setPayerOnEdit}
-        />
-      )}
 
       {itemsList.map((item) => (
         <div
@@ -132,7 +115,7 @@ export default function InputGrid({
               <input
                 type='checkbox'
                 checked={findPayment(payer.id, item.id)?.paid}
-                onChange={(e) => checkItem(e, payer.id, item.id)}
+                onChange={(e) => checkItem(payer.id, item.id, e)}
               />
             </div>
           ))}

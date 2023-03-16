@@ -1,23 +1,16 @@
-import { Payer, Item, Payment } from '@/app/types'
 import { useState } from 'react'
-
+import { useSelector, useDispatch } from 'react-redux'
 import CurrencyInput from '@/app/components/CurrencyInput'
 
-type Props = {
-  payersList: Payer[],
-  newItem: Item,
-  setNewItem: React.Dispatch<React.SetStateAction<Item | null>>,
-  setItemsList: React.Dispatch<React.SetStateAction<Item[]>>,
-  setPaymentsList: React.Dispatch<React.SetStateAction<Payment[]>>
-}
+import { setStagingItem, clearStagingItem, persistStagingItem } from '@/app/store/reducers/items'
+import { addPayment } from '@/app/store/reducers/payments'
+import type { RootState } from '@/app/store'
 
-export default function AddItemForm({
-  payersList,
-  newItem,
-  setNewItem,
-  setItemsList,
-  setPaymentsList
-}: Props) {
+export default function AddItemForm() {
+  const payersList = useSelector((state: RootState) => state.payers.list)
+  const paymentsList = useSelector((state: RootState) => state.payments.list)
+  const currentItem = useSelector((state: RootState) => state.items.stagingItem)
+  const dispatch = useDispatch()
 
   const [paidByAll, setPaidByAll] = useState<boolean>(true)
   const [price, setPrice] = useState<string>('')
@@ -32,41 +25,39 @@ export default function AddItemForm({
     if (e.target.type === 'text')
       input[e.target.name] = e.target.value.trim()
 
-    setNewItem({...newItem, ...input})
+    dispatch(setStagingItem({...input}))
   }
 
   const handleCancel = (e: React.MouseEvent) => {
     e.preventDefault()
-    setNewItem(null)
+    dispatch(clearStagingItem())
   }
 
   const saveItem = (e: React.SyntheticEvent) => {
     e.preventDefault()
 
+    if (!currentItem) return
+
     const checkboxPaidByAll: HTMLInputElement | null =
       document.querySelector('form [name=paidByAll]')
 
-    setPaymentsList(paymentsList => {
-      payersList.forEach(payer => {
-        const find = paymentsList.find(payment =>
-          payment.payerId === payer.id &&
-          payment.itemId === newItem.id
-        )
+    payersList.forEach(payer => {
+      const find = paymentsList.find(payment =>
+        payment.payerId === payer.id &&
+        payment.itemId === currentItem.id
+      )
 
-        if (!find) paymentsList.push({
+      if (!find) {
+        dispatch(addPayment({
           payerId: payer.id,
-          itemId: newItem.id,
+          itemId: currentItem.id,
           paid: Boolean(checkboxPaidByAll?.checked)
-        })
-      })
-
-      return paymentsList
+        }))
+      }
     })
 
-    newItem.price = parseFloat(price)
-
-    setItemsList(itemList => [...itemList, newItem])
-    setNewItem(null)
+    dispatch(setStagingItem({ price: parseFloat(price) }))
+    dispatch(persistStagingItem())
   }
 
   return (
@@ -89,7 +80,7 @@ export default function AddItemForm({
 
         <input
           name="title"
-          value={newItem.title}
+          value={currentItem?.title}
           onChange={handleInputChange}
         />
       </div>

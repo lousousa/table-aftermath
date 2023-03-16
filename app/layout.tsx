@@ -1,4 +1,5 @@
-import './globals.css'
+import '@/app/globals.css'
+import Provider from '@/app/store/provider'
 
 export const metadata = {
   title: 'Table Aftermath',
@@ -12,7 +13,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Provider>
+          {children}
+        </Provider>
+      </body>
     </html>
   )
 }
