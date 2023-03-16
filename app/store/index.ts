@@ -1,5 +1,3 @@
-'use client'
-
 import { configureStore } from '@reduxjs/toolkit'
 
 import payers from '@/app/store/reducers/payers'
