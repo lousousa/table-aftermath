@@ -108,30 +108,34 @@ export default function InputGrid() {
 
       <EditPayerForm />
 
-      {itemsList.map((item) => (
-        <div
-          key={'item_' + item.id}
-          className='flex mt-4'
-        >
-          <div>
-            {item.title && (
-              <span>{item.title + ' - '}</span>
-            )}
+      <div
+        className='mt-4'
+      >
+        {itemsList.map((item) => (
+          <div
+            key={'item_' + item.id}
+            className='flex'
+          >
+            <div>
+              {item.title && (
+                <span>{item.title + ' - '}</span>
+              )}
 
-            <span>{formatCurrency(item.price) + ': '}</span>
-          </div>
-
-          {payersList.map((payer) => (
-            <div key={`payment_input_${payer.id}_${item.id}`}>
-              <input
-                type='checkbox'
-                checked={findPayment(payer.id, item.id)?.paid}
-                onChange={(e) => checkItem(payer.id, item.id, e)}
-              />
+              <span>{formatCurrency(item.price) + ': '}</span>
             </div>
-          ))}
-        </div>
-      ))}
+
+            {payersList.map((payer) => (
+              <div key={`payment_input_${payer.id}_${item.id}`}>
+                <input
+                  type='checkbox'
+                  checked={findPayment(payer.id, item.id)?.paid}
+                  onChange={(e) => checkItem(payer.id, item.id, e)}
+                />
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
