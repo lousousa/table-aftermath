@@ -7,7 +7,7 @@ import EditPayerForm from '@/app/components/EditPayerForm'
 
 import { togglePaid, setResults } from '@/app/store/reducers/payments'
 import { setStagingPayer } from '@/app/store/reducers/payers'
-import { setStagingItem } from '@/app/store/reducers/items'
+import { setStagingItem, removeItemById } from '@/app/store/reducers/items'
 import type { RootState } from '@/app/store'
 
 export default function InputGrid() {
@@ -94,6 +94,10 @@ export default function InputGrid() {
     dispatch(setStagingItem(item))
   }
 
+  const removeItem = (itemId: number) => {
+    dispatch(removeItemById(itemId))
+  }
+
   useEffect(showResults, [dispatch, payersList, itemsList, paymentsList])
 
   return (
@@ -123,7 +127,7 @@ export default function InputGrid() {
             className='flex'
           >
             <div
-              className='cursor-pointer'
+              className='cursor-pointer mr-2'
               onClick={() => editItem(item.id)}
             >
               {item.title && (
@@ -142,6 +146,13 @@ export default function InputGrid() {
                 />
               </div>
             ))}
+
+            <button
+              className='ml-2'
+              onClick={() => removeItem(item.id)}
+            >
+              (X)
+            </button>
           </div>
         ))}
       </div>

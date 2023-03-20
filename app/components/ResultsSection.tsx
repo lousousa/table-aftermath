@@ -19,7 +19,7 @@ export default function ResultsSection() {
       accumulator += current.price, 0
     )
 
-    if (currentResults.total !== itemsTotal)
+    if (currentResults.total !== parseFloat(itemsTotal.toFixed(2)))
       return setCheckedResults(`total: ${formatCurrency(currentResults.total)}
         (falta ${formatCurrency(itemsTotal - currentResults.total)})`)
 

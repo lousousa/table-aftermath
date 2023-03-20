@@ -45,6 +45,9 @@ const slice = createSlice({
     },
     clearStagingItem: (state) => {
       state.stagingItem = null
+    },
+    removeItemById: (state, action) => {
+      state.list = state.list.filter(item => item.id !== action.payload)
     }
   }
 })
@@ -52,7 +55,8 @@ const slice = createSlice({
 export const {
   setStagingItem,
   persistStagingItem,
-  clearStagingItem
+  clearStagingItem,
+  removeItemById
 } = slice.actions
 
 export default slice.reducer

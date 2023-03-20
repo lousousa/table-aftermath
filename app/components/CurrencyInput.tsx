@@ -48,12 +48,11 @@ export default function CurrencyInput({
   useEffect(() => {
     if (!inputRef.current) return
 
-    if (initialValue) {
-      inputRef.current.value = initialValue.toFixed(2).replace('.', ',')
-      return
-    }
+    const value = initialValue ? initialValue.toFixed(2).replace('.', ',') : '0,00'
 
-    inputRef.current.value = '0,00'
+    inputRef.current.value = value
+
+    setStateAction(parseFloat(value.replace(',', '.')).toFixed(2))
   }, [inputRef])
 
   return (

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import CurrencyInput from '@/app/components/CurrencyInput'
 
@@ -18,9 +18,8 @@ export default function AddItemForm() {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input: {[key: string]: string | boolean} = {}
 
-    if (e.target.name === 'paidByAll') {
+    if (e.target.name === 'paidByAll')
       setPaidByAll(e.target.checked)
-    }
 
     if (e.target.type === 'text')
       input[e.target.name] = e.target.value
@@ -62,12 +61,6 @@ export default function AddItemForm() {
     dispatch(persistStagingItem())
   }
 
-  useEffect(() => {
-    if (currentItem) {
-      setPrice(currentItem.price.toFixed(2).replace('.', ','))
-    }
-  }, [currentItem, setPrice])
-
   return (
     <form
       className='mt-4'
@@ -85,7 +78,7 @@ export default function AddItemForm() {
       </div>
 
       <div>
-        <label>título (opcional):</label>
+        <label>descrição (opcional):</label>
 
         <input
           name="title"
