@@ -11,7 +11,8 @@ export default function AddItemButton() {
     dispatch(setStagingItem({
       id: itemsList.length + 1,
       price: 0,
-      title: ''
+      title: '',
+      isCreating: true
     }))
   }
 

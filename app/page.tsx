@@ -7,7 +7,7 @@ import { Inter } from 'next/font/google'
 import PayerCountInput from '@/app/components/PayersCountInput'
 import InputGrid from '@/app/components/InputGrid'
 import AddItemButton from '@/app/components/AddItemButton'
-import AddItemForm from '@/app/components/AddItemForm'
+import SaveItemForm from '@/app/components/SaveItemForm'
 import ResultsSection from '@/app/components/ResultsSection'
 
 import { addPayer, clearPayers } from '@/app/store/reducers/payers'
@@ -56,7 +56,7 @@ export default function Home() {
             )}
 
             {currentItem && (
-              <AddItemForm />
+              <SaveItemForm />
             )}
           </div>
         )}

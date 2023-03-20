@@ -29,7 +29,7 @@ export default function ResultsSection() {
 
   return (
     <>
-      {currentResults && (
+      {currentResults && currentResults.total > 0 && (
         <div
           className='mt-4'
         >

@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 type ItemsState = {
   list: Item[],
-  stagingItem: Item | null
+  stagingItem: Item & { isCreating: boolean } | null
 }
 
 const initialState: ItemsState = {
@@ -27,7 +27,19 @@ const slice = createSlice({
     },
     persistStagingItem: (state) => {
       if (state.stagingItem) {
-        state.list.push(state.stagingItem)
+        state.stagingItem.title = state.stagingItem.title?.trim()
+
+        if (state.stagingItem.isCreating) {
+          state.stagingItem.isCreating = false
+          state.list.push(state.stagingItem)
+        } else {
+          const item = state.list.find(item =>
+            item.id === state.stagingItem?.id
+          )
+
+          if (item) Object.assign(item, state.stagingItem)
+        }
+
         state.stagingItem = null
       }
     },

@@ -30,12 +30,12 @@ const slice = createSlice({
     },
     persistStagingPayer: (state) => {
       if (state.stagingPayer) {
-        let found = state.list.find(payer =>
+        let payer = state.list.find(payer =>
           payer.id === state.stagingPayer?.id
         )
 
-        if (found) {
-          Object.assign(found, state.stagingPayer)
+        if (payer) {
+          Object.assign(payer, state.stagingPayer)
           state.stagingPayer = null
         }
       }

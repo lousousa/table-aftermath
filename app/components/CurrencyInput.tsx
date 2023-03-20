@@ -3,10 +3,16 @@ import { useEffect, useRef } from 'react'
 type Props = {
   setStateAction: React.Dispatch<React.SetStateAction<string>>,
   maxLength: number,
-  autoFocus: boolean
+  autoFocus?: boolean,
+  initialValue?: number
 }
 
-export default function CurrencyInput({setStateAction, maxLength, autoFocus}: Props) {
+export default function CurrencyInput({
+  setStateAction,
+  maxLength,
+  autoFocus,
+  initialValue
+}: Props) {
   const inputRef = useRef<HTMLInputElement | null>(null)
 
   const inputCaretToLastPosition = (e: React.SyntheticEvent<HTMLInputElement>) => {
@@ -41,6 +47,11 @@ export default function CurrencyInput({setStateAction, maxLength, autoFocus}: Pr
 
   useEffect(() => {
     if (!inputRef.current) return
+
+    if (initialValue) {
+      inputRef.current.value = initialValue.toFixed(2).replace('.', ',')
+      return
+    }
 
     inputRef.current.value = '0,00'
   }, [inputRef])

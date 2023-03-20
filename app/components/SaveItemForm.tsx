@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import CurrencyInput from '@/app/components/CurrencyInput'
 
@@ -23,7 +23,7 @@ export default function AddItemForm() {
     }
 
     if (e.target.type === 'text')
-      input[e.target.name] = e.target.value.trim()
+      input[e.target.name] = e.target.value
 
     dispatch(setStagingItem({...input}))
   }
@@ -38,27 +38,35 @@ export default function AddItemForm() {
 
     if (!currentItem) return
 
-    const checkboxPaidByAll: HTMLInputElement | null =
-      document.querySelector('form [name=paidByAll]')
+    if (currentItem.isCreating) {
+      const checkboxPaidByAll: HTMLInputElement | null =
+        document.querySelector('form [name=paidByAll]')
 
-    payersList.forEach(payer => {
-      const find = paymentsList.find(payment =>
-        payment.payerId === payer.id &&
-        payment.itemId === currentItem.id
-      )
+      payersList.forEach(payer => {
+        const find = paymentsList.find(payment =>
+          payment.payerId === payer.id &&
+          payment.itemId === currentItem.id
+        )
 
-      if (!find) {
-        dispatch(addPayment({
-          payerId: payer.id,
-          itemId: currentItem.id,
-          paid: Boolean(checkboxPaidByAll?.checked)
-        }))
-      }
-    })
+        if (!find) {
+          dispatch(addPayment({
+            payerId: payer.id,
+            itemId: currentItem.id,
+            paid: Boolean(checkboxPaidByAll?.checked)
+          }))
+        }
+      })
+    }
 
-    dispatch(setStagingItem({ price: parseFloat(price) }))
+    dispatch(setStagingItem({ price: parseFloat(price.replace(',', '.')) }))
     dispatch(persistStagingItem())
   }
+
+  useEffect(() => {
+    if (currentItem) {
+      setPrice(currentItem.price.toFixed(2).replace('.', ','))
+    }
+  }, [currentItem, setPrice])
 
   return (
     <form
@@ -72,6 +80,7 @@ export default function AddItemForm() {
           setStateAction={setPrice}
           maxLength={6}
           autoFocus={true}
+          initialValue={currentItem?.price}
         />
       </div>
 
@@ -85,23 +94,25 @@ export default function AddItemForm() {
         />
       </div>
 
-      <div>
-        <input
-          name="paidByAll"
-          type="checkbox"
-          checked={paidByAll}
-          onChange={handleInputChange}
-        />
+      {currentItem?.isCreating && (
+        <div>
+          <input
+            name="paidByAll"
+            type="checkbox"
+            checked={paidByAll}
+            onChange={handleInputChange}
+          />
 
-        <label
-          className='ml-2'
-        >
-          todos pagam?
-        </label>
-      </div>
+          <label
+            className='ml-2'
+          >
+            todos pagam?
+          </label>
+        </div>
+      )}
 
       <button>
-        adicionar
+        salvar
       </button>
 
       <button

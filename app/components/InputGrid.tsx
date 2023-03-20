@@ -7,6 +7,7 @@ import EditPayerForm from '@/app/components/EditPayerForm'
 
 import { togglePaid, setResults } from '@/app/store/reducers/payments'
 import { setStagingPayer } from '@/app/store/reducers/payers'
+import { setStagingItem } from '@/app/store/reducers/items'
 import type { RootState } from '@/app/store'
 
 export default function InputGrid() {
@@ -83,9 +84,14 @@ export default function InputGrid() {
     dispatch(setResults(results))
   }
 
-  const openPayerEditForm = (payerId: number) => {
+  const editPayer = (payerId: number) => {
     const payer = payersList.find(payer => payer.id === payerId)
     dispatch(setStagingPayer(payer))
+  }
+
+  const editItem = (itemId: number) => {
+    const item = itemsList.find(item => item.id === itemId)
+    dispatch(setStagingItem(item))
   }
 
   useEffect(showResults, [dispatch, payersList, itemsList, paymentsList])
@@ -99,7 +105,7 @@ export default function InputGrid() {
           <div
             key={'payer_' + payer.id}
             className='mr-2 cursor-pointer'
-            onClick={() => openPayerEditForm(payer.id)}
+            onClick={() => editPayer(payer.id)}
           >
             {payer.name}
           </div>
@@ -116,7 +122,10 @@ export default function InputGrid() {
             key={'item_' + item.id}
             className='flex'
           >
-            <div>
+            <div
+              className='cursor-pointer'
+              onClick={() => editItem(item.id)}
+            >
               {item.title && (
                 <span>{item.title + ' - '}</span>
               )}
