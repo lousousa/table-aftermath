@@ -37,6 +37,9 @@ const slice = createSlice({
       } else
         state.results = action.payload
     },
+    removePaymentByItemId: (state, action) => {
+      state.list = state.list.filter(item => item.itemId !== action.payload)
+    },
     reset: () => {
       return initialState
     }
@@ -47,6 +50,7 @@ export const {
   addPayment,
   togglePaid,
   setResults,
+  removePaymentByItemId,
   reset
 } = slice.actions
 

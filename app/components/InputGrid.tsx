@@ -5,7 +5,7 @@ import { Results } from '@/app/types'
 
 import EditPayerForm from '@/app/components/EditPayerForm'
 
-import { togglePaid, setResults } from '@/app/store/reducers/payments'
+import { togglePaid, setResults, removePaymentByItemId, reset as resetPayments } from '@/app/store/reducers/payments'
 import { setStagingPayer, clearStagingPayer } from '@/app/store/reducers/payers'
 import { setStagingItem, clearStagingItem, removeItemById } from '@/app/store/reducers/items'
 import type { RootState } from '@/app/store'
@@ -108,6 +108,12 @@ export default function InputGrid() {
 
   const removeItem = (itemId: number) => {
     dispatch(removeItemById(itemId))
+
+    if (itemsList.length === 1) {
+      dispatch(resetPayments())
+    } else {
+      dispatch(removePaymentByItemId(itemId))
+    }
   }
 
   useEffect(showResults, [dispatch, payersList, itemsList, paymentsList])
