@@ -62,12 +62,6 @@ export default function ResultsSection() {
             </div>
           ))}
 
-          <div
-            className='mt-4'
-          >
-            <ResultsOptions />
-          </div>
-
           {checkedResults.length && (
             <p
               className='mt-4'
@@ -75,6 +69,12 @@ export default function ResultsSection() {
               {checkedResults}
             </p>
           )}
+
+          <div
+            className='mt-4'
+          >
+            <ResultsOptions />
+          </div>
         </div>
       )}
     </>

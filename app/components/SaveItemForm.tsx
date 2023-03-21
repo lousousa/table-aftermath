@@ -90,6 +90,7 @@ export default function AddItemForm() {
       {currentItem?.isCreating && (
         <div>
           <input
+            id="paid_by_all_checkbox"
             name="paidByAll"
             type="checkbox"
             checked={paidByAll}
@@ -97,7 +98,8 @@ export default function AddItemForm() {
           />
 
           <label
-            className='ml-2'
+            className="ml-2"
+            htmlFor="paid_by_all_checkbox"
           >
             todos pagam?
           </label>

@@ -17,12 +17,14 @@ export default function ResultsOptions() {
     <div>
       <div>
         <input
+          id="10_percent_checkbox"
           type="checkbox"
           onChange={handleShow10Percent}
         />
 
         <label
           className="ml-2"
+          htmlFor="10_percent_checkbox"
         >
           incluir 10% ┻━┻ ヘ╰( •̀ε•́ ╰)
         </label>
@@ -30,12 +32,14 @@ export default function ResultsOptions() {
 
       <div>
         <input
+          id="calculation_checkbox"
           type="checkbox"
           onChange={handleShowCalculation}
         />
 
         <label
           className="ml-2"
+          htmlFor="calculation_checkbox"
         >
           exibir cálculos ¯\_(ツ)_/¯
         </label>
