@@ -1,21 +1,46 @@
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+
+import { reset as resetPayers } from '@/app/store/reducers/payers'
+import { reset as resetItems } from '@/app/store/reducers/items'
+import { reset as resetPayments } from '@/app/store/reducers/payments'
+
 type Props = {
-  payersCount: number | '',
   setPayersCount: React.Dispatch<React.SetStateAction<number | ''>>
 }
 
-export default function payerCountInput({ payersCount, setPayersCount }: Props) {
+export default function payerCountInput({ setPayersCount }: Props) {
+  const dispatch = useDispatch()
+
+  const [currentCount, setCurrentCount] = useState('')
+
   const onPayersCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value === '')
-      return setPayersCount('')
+      return setCurrentCount('')
 
     let count = parseInt(e.target.value)
-    if (isNaN(count)) count = 0
+    if (isNaN(count) || count === 0) count = 1
+    if (count > 10) count = 10
 
-    setPayersCount(count)
+    setCurrentCount(count.toString())
+  }
+
+  const handleSubmit = (e: React.SyntheticEvent) => {
+    e.preventDefault()
+
+    if (!currentCount.length) return
+
+    dispatch(resetPayers())
+    dispatch(resetItems())
+    dispatch(resetPayments())
+
+    setPayersCount(parseInt(currentCount))
   }
 
   return (
-    <div>
+    <form
+      onSubmit={handleSubmit}
+    >
       <label
         className='mr-2'
       >
@@ -24,10 +49,16 @@ export default function payerCountInput({ payersCount, setPayersCount }: Props) 
 
       <input
         className='border border-gray-600 outline-none'
-        value={payersCount}
-        type='number'
+        value={currentCount}
         onChange={onPayersCountChange}
+        type='tel'
       />
-    </div>
+
+      <button
+        className='ml-2'
+      >
+        confirmar
+      </button>
+    </form>
   )
 }

@@ -41,7 +41,6 @@ export default function Home() {
     >
       <div>
         <PayerCountInput
-          payersCount={payersCount}
           setPayersCount={setPayersCount}
         />
         {payersCount > 0 && (

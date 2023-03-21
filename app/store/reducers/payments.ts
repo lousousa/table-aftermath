@@ -30,10 +30,18 @@ const slice = createSlice({
     },
     setResults: (state, action) => {
       state.results = action.payload
+    },
+    reset: () => {
+      return initialState
     }
   }
 })
 
-export const { addPayment, togglePaid, setResults } = slice.actions
+export const {
+  addPayment,
+  togglePaid,
+  setResults,
+  reset
+} = slice.actions
 
 export default slice.reducer

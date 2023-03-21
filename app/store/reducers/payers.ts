@@ -45,6 +45,9 @@ const slice = createSlice({
     },
     clearPayers: (state) => {
       state.list = []
+    },
+    reset: () => {
+      return initialState
     }
   }
 })
@@ -54,7 +57,8 @@ export const {
   setStagingPayer,
   persistStagingPayer,
   clearStagingPayer,
-  clearPayers
+  clearPayers,
+  reset
 } = slice.actions
 
 export default slice.reducer
