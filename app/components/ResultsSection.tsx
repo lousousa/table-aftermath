@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { formatCurrency } from '@/app/utils'
 
+import ResultsOptions from '@/app/components/ResultsOptions'
 import type { RootState } from '@/app/store'
 
 export default function ResultsSection() {
@@ -60,6 +61,12 @@ export default function ResultsSection() {
               </p>
             </div>
           ))}
+
+          <div
+            className='mt-4'
+          >
+            <ResultsOptions />
+          </div>
 
           {checkedResults.length && (
             <p

@@ -44,8 +44,7 @@ export default function InputGrid() {
     const payersByItem:{[itemId: number]: number} = {}
     const results: Results = {
       payersData: [],
-      total: 0,
-      show10Percent: true
+      total: 0
     }
 
     itemsList.forEach(item => {

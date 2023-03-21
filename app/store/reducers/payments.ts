@@ -29,7 +29,13 @@ const slice = createSlice({
       if (payment) payment.paid = paid
     },
     setResults: (state, action) => {
-      state.results = action.payload
+      if (state.results) {
+        state.results = {
+          ...state.results,
+          ...action.payload
+        }
+      } else
+        state.results = action.payload
     },
     reset: () => {
       return initialState
