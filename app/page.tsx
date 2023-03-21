@@ -49,7 +49,7 @@ export default function Home() {
 
             {!currentItem && !currentPayer && (
               <div
-                className='flex flex-col items-start mt-4'
+                className='mt-4'
               >
                 <AddItemButton />
               </div>

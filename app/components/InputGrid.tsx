@@ -131,28 +131,34 @@ export default function InputGrid() {
       <EditPayerForm />
 
       <div
-        className='mt-4'
+        className="mt-4"
       >
         {itemsList.map((item) => (
           <div
             key={'item_' + item.id}
-            className='flex'
+            className="flex"
           >
             <div
-              className='cursor-pointer mr-2'
+              className="cursor-pointer mr-2"
               onClick={() => editItem(item.id)}
             >
-              {item.title && (
-                <span>{item.title + ' - '}</span>
-              )}
+              <span
+                className="item-text-wrapper"
+              >
+                {item.title && (
+                  <span>{item.title + ' - '}</span>
+                )}
 
-              <span>{formatCurrency(item.price) + ': '}</span>
+                <span>{formatCurrency(item.price)}</span>
+              </span>
+
+              <span>: </span>
             </div>
 
             {payersList.map((payer) => (
               <div key={`payment_input_${payer.id}_${item.id}`}>
                 <input
-                  type='checkbox'
+                  type="checkbox"
                   checked={findPayment(payer.id, item.id)?.paid}
                   onChange={(e) => checkItem(payer.id, item.id, e)}
                 />
@@ -160,7 +166,7 @@ export default function InputGrid() {
             ))}
 
             <button
-              className='ml-2'
+              className="ml-2"
               onClick={() => removeItem(item.id)}
             >
               (X)

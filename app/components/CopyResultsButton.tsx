@@ -17,12 +17,11 @@ export default function CopyResultsButton() {
   }
 
   return (
-    <div>
-      <button
-        onClick={() => copyResults()}
-      >
-        copiar resultados
-      </button>
-    </div>
+    <button
+      className="block"
+      onClick={() => copyResults()}
+    >
+      copiar resultados
+    </button>
   )
 }

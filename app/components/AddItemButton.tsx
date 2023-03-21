@@ -16,6 +16,7 @@ export default function AddItemButton() {
 
   return (
     <button
+      className="block"
       onClick={() => addItem()}
     >
       (+) adicionar item

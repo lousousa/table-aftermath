@@ -4,6 +4,7 @@ import { formatCurrency } from '@/app/utils'
 
 import ResultsOptions from '@/app/components/ResultsOptions'
 import CopyResultsButton from '@/app/components/CopyResultsButton'
+import CopyItemsButton from '@/app/components/CopyItemsButton'
 import type { RootState } from '@/app/store'
 
 export default function ResultsSection() {
@@ -69,25 +70,21 @@ export default function ResultsSection() {
                     </span>
                   )}
 
-                  {
-                    currentResults.show10Percent &&
-                    currentResults.showCalculation &&
-                    (
-                      <span>
-                        {formatCurrency(payerData.amount)} ({formatCurrency(add10Percent(payerData.amount))})
-                      </span>
-                    )
-                  }
+                  {currentResults.show10Percent && (
+                    <>
+                      {currentResults.showCalculation && (
+                        <span>
+                          {formatCurrency(payerData.amount)} ({formatCurrency(add10Percent(payerData.amount))})
+                        </span>
+                      )}
 
-                  {
-                    currentResults.show10Percent &&
-                    !currentResults.showCalculation &&
-                    (
-                      <span>
-                        {formatCurrency(add10Percent(payerData.amount))}
-                      </span>
-                    )
-                  }
+                      {!currentResults.showCalculation && (
+                        <span>
+                          {formatCurrency(add10Percent(payerData.amount))}
+                        </span>
+                      )}
+                    </>
+                  )}
 
                   {!currentResults.show10Percent && (
                     <span>
@@ -111,6 +108,8 @@ export default function ResultsSection() {
             className='mt-4'
           >
             <ResultsOptions />
+
+            <CopyItemsButton />
 
             <CopyResultsButton />
           </div>
