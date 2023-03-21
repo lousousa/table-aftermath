@@ -9,7 +9,7 @@ type Props = {
   setPayersCount: React.Dispatch<React.SetStateAction<number | ''>>
 }
 
-export default function payerCountInput({ setPayersCount }: Props) {
+export default function PayerCountInput({ setPayersCount }: Props) {
   const dispatch = useDispatch()
 
   const [currentCount, setCurrentCount] = useState('')

@@ -53,7 +53,7 @@ export default function CurrencyInput({
     inputRef.current.value = value
 
     setStateAction(parseFloat(value.replace(',', '.')).toFixed(2))
-  }, [inputRef])
+  }, [inputRef, initialValue, setStateAction])
 
   return (
     <input
