@@ -6,8 +6,8 @@ import { Results } from '@/app/types'
 import EditPayerForm from '@/app/components/EditPayerForm'
 
 import { togglePaid, setResults } from '@/app/store/reducers/payments'
-import { setStagingPayer } from '@/app/store/reducers/payers'
-import { setStagingItem, removeItemById } from '@/app/store/reducers/items'
+import { setStagingPayer, clearStagingPayer } from '@/app/store/reducers/payers'
+import { setStagingItem, clearStagingItem, removeItemById } from '@/app/store/reducers/items'
 import type { RootState } from '@/app/store'
 
 export default function InputGrid() {
@@ -84,12 +84,21 @@ export default function InputGrid() {
     dispatch(setResults(results))
   }
 
+  const clearStagingData = () => {
+    dispatch(clearStagingPayer())
+    dispatch(clearStagingItem())
+  }
+
   const editPayer = (payerId: number) => {
+    clearStagingData()
+
     const payer = payersList.find(payer => payer.id === payerId)
     dispatch(setStagingPayer(payer))
   }
 
   const editItem = (itemId: number) => {
+    clearStagingData()
+
     const item = itemsList.find(item => item.id === itemId)
     dispatch(setStagingItem(item))
   }

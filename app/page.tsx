@@ -17,6 +17,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
   const currentItem = useSelector((state: RootState) => state.items.stagingItem)
+  const currentPayer = useSelector((state: RootState) => state.payers.stagingPayer)
   const dispatch = useDispatch()
 
   const [payersCount, setPayersCount] = useState<number | ''>(0)
@@ -47,7 +48,7 @@ export default function Home() {
           <div>
             <InputGrid />
 
-            {!currentItem && (
+            {!currentItem && !currentPayer && (
               <div
                 className='flex flex-col items-start mt-4'
               >
