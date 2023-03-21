@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import { formatCurrency } from '@/app/utils'
 
 import ResultsOptions from '@/app/components/ResultsOptions'
+import CopyResultsButton from '@/app/components/CopyResultsButton'
 import type { RootState } from '@/app/store'
 
 export default function ResultsSection() {
@@ -36,44 +37,50 @@ export default function ResultsSection() {
     <>
       {currentResults && currentResults.total > 0 && (
         <div
-          className='mt-4'
+          className="mt-4"
         >
-          {currentResults.payersData.map((payerData) => (
-            <div
-              key={`results_payer_${payerData.payer.id}`}
-            >
-              <p>
-                {payerData.payer.name}:&nbsp;
+          <div
+            id="results_content"
+          >
+            {currentResults.payersData.map((payerData) => (
+              <div
+                key={`results_payer_${payerData.payer.id}`}
+              >
+                <p>
+                  {payerData.payer.name}:&nbsp;
 
-                {currentResults.showCalculation && (
-                  <span>
-                    {payerData.calculation} =&nbsp;
-                  </span>
-                )}
+                  {currentResults.showCalculation && (
+                    <span>
+                      {payerData.calculation} =&nbsp;
+                    </span>
+                  )}
 
-                {formatCurrency(payerData.amount)}&nbsp;
+                  {formatCurrency(payerData.amount)}&nbsp;
 
-                {currentResults.show10Percent && (
-                  <span>
-                    ({formatCurrency(add10Percent(payerData.amount))})
-                  </span>
-                )}
+                  {currentResults.show10Percent && (
+                    <span>
+                      ({formatCurrency(add10Percent(payerData.amount))})
+                    </span>
+                  )}
+                </p>
+              </div>
+            ))}
+
+            {checkedResults.length && (
+              <p
+                className='mt-4'
+              >
+                {checkedResults}
               </p>
-            </div>
-          ))}
-
-          {checkedResults.length && (
-            <p
-              className='mt-4'
-            >
-              {checkedResults}
-            </p>
-          )}
+            )}
+          </div>
 
           <div
             className='mt-4'
           >
             <ResultsOptions />
+
+            <CopyResultsButton />
           </div>
         </div>
       )}
