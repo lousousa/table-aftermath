@@ -21,14 +21,28 @@ export default function ResultsSection() {
       accumulator += current.price, 0
     )
 
-    if (currentResults.total !== parseFloat(itemsTotal.toFixed(2)))
-      return setCheckedResults(`total: ${formatCurrency(currentResults.total)}
-        (falta ${formatCurrency(itemsTotal - currentResults.total)})`)
+    let checkedResults = ''
 
-    let checkedResults = `total: ${formatCurrency(currentResults.total)}`
+    if (currentResults.show10Percent) {
+      let totalAdd10Percent = parseFloat(add10Percent(currentResults.total))
+      let itemsAdd10Percent = parseFloat(add10Percent(itemsTotal))
 
-    if (currentResults.show10Percent)
-      checkedResults += ` (${formatCurrency(add10Percent(currentResults.total))})`
+      if (totalAdd10Percent !== itemsAdd10Percent) {
+        checkedResults = `total: ${formatCurrency(totalAdd10Percent)} (falta ${formatCurrency(itemsAdd10Percent - totalAdd10Percent)})`
+      } else {
+        if (currentResults.showCalculation) {
+          checkedResults = `total: ${formatCurrency(currentResults.total)} (${formatCurrency(totalAdd10Percent)})`
+        } else {
+          checkedResults = `total: ${formatCurrency(totalAdd10Percent)}`
+        }
+      }
+    } else {
+      if (currentResults.total !== parseFloat(itemsTotal.toFixed(2))) {
+        checkedResults = `total: ${formatCurrency(currentResults.total)} (falta ${formatCurrency(itemsTotal - currentResults.total)})`
+      } else {
+        checkedResults = `total: ${formatCurrency(currentResults.total)}`
+      }
+    }
 
     return setCheckedResults(checkedResults)
   }, [itemsList, currentResults])
@@ -55,11 +69,29 @@ export default function ResultsSection() {
                     </span>
                   )}
 
-                  {formatCurrency(payerData.amount)}&nbsp;
+                  {
+                    currentResults.show10Percent &&
+                    currentResults.showCalculation &&
+                    (
+                      <span>
+                        {formatCurrency(payerData.amount)} ({formatCurrency(add10Percent(payerData.amount))})
+                      </span>
+                    )
+                  }
 
-                  {currentResults.show10Percent && (
+                  {
+                    currentResults.show10Percent &&
+                    !currentResults.showCalculation &&
+                    (
+                      <span>
+                        {formatCurrency(add10Percent(payerData.amount))}
+                      </span>
+                    )
+                  }
+
+                  {!currentResults.show10Percent && (
                     <span>
-                      ({formatCurrency(add10Percent(payerData.amount))})
+                      {formatCurrency(payerData.amount)}
                     </span>
                   )}
                 </p>
