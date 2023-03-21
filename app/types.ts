@@ -23,5 +23,7 @@ type PayerResultData = {
 
 export type Results = {
   payersData: PayerResultData[],
-  total: number
+  total: number,
+  showCalculation?: boolean,
+  show10Percent?: boolean
 }

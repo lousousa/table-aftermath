@@ -41,8 +41,12 @@ export default function InputGrid() {
     if (!paymentsList.length) return
 
     checkTotal.current = 0
-    const results: Results = { payersData: [], total: 0 }
     const payersByItem:{[itemId: number]: number} = {}
+    const results: Results = {
+      payersData: [],
+      total: 0,
+      show10Percent: true
+    }
 
     itemsList.forEach(item => {
       const filter = paymentsList.filter(payment =>

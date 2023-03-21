@@ -23,8 +23,12 @@ export default function ResultsSection() {
       return setCheckedResults(`total: ${formatCurrency(currentResults.total)}
         (falta ${formatCurrency(itemsTotal - currentResults.total)})`)
 
-    return setCheckedResults(`total: ${formatCurrency(currentResults.total)}
-      (${formatCurrency(add10Percent(currentResults.total))})`)
+    let checkedResults = `total: ${formatCurrency(currentResults.total)}`
+
+    if (currentResults.show10Percent)
+      checkedResults += `(${formatCurrency(add10Percent(currentResults.total))})`
+
+    return setCheckedResults(checkedResults)
   }, [itemsList, currentResults])
 
   return (
@@ -38,9 +42,21 @@ export default function ResultsSection() {
               key={`results_payer_${payerData.payer.id}`}
             >
               <p>
-                {payerData.payer.name}: {payerData.calculation} =&nbsp;
+                {payerData.payer.name}:&nbsp;
+
+                {currentResults.showCalculation && (
+                  <span>
+                    {payerData.calculation} =&nbsp;
+                  </span>
+                )}
+
                 {formatCurrency(payerData.amount)}&nbsp;
-                ({formatCurrency(add10Percent(payerData.amount))})
+
+                {currentResults.show10Percent && (
+                  <span>
+                    ({formatCurrency(add10Percent(payerData.amount))})
+                  </span>
+                )}
               </p>
             </div>
           ))}
