@@ -26,7 +26,7 @@ export default function ResultsSection() {
     let checkedResults = `total: ${formatCurrency(currentResults.total)}`
 
     if (currentResults.show10Percent)
-      checkedResults += `(${formatCurrency(add10Percent(currentResults.total))})`
+      checkedResults += ` (${formatCurrency(add10Percent(currentResults.total))})`
 
     return setCheckedResults(checkedResults)
   }, [itemsList, currentResults])

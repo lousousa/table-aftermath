@@ -1,20 +1,23 @@
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { reset as resetPayers } from '@/app/store/reducers/payers'
 import { reset as resetItems } from '@/app/store/reducers/items'
 import { reset as resetPayments } from '@/app/store/reducers/payments'
+import type { RootState } from '@/app/store'
 
 type Props = {
   setPayersCount: React.Dispatch<React.SetStateAction<number | ''>>
 }
 
 export default function PayerCountInput({ setPayersCount }: Props) {
+  const payersList = useSelector((state: RootState) => state.payers.list)
+
   const dispatch = useDispatch()
 
   const [currentCount, setCurrentCount] = useState('')
 
-  const onPayersCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onPayersCountChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value === '')
       return setCurrentCount('')
 
@@ -47,18 +50,37 @@ export default function PayerCountInput({ setPayersCount }: Props) {
         quantidade de pagantes:
       </label>
 
-      <input
+      <select
         className='border border-gray-600 outline-none'
         value={currentCount}
         onChange={onPayersCountChange}
-        type='tel'
-      />
-
-      <button
-        className='ml-2'
       >
-        confirmar
-      </button>
+        {!currentCount.length && (
+          <option>
+            - selecione -
+          </option>
+        )}
+
+        { (new Array(10).fill(1)).map((_, idx) => (
+          <option
+            key={`current_count_${idx}`}
+          >
+            {idx + 1}
+          </option>
+        )) }
+      </select>
+
+      {
+        currentCount.length > 0 &&
+        payersList.length !== parseInt(currentCount) &&
+        (
+          <button
+            className='ml-2'
+          >
+            confirmar
+          </button>
+        )
+      }
     </form>
   )
 }
