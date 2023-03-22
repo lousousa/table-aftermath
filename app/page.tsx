@@ -37,32 +37,54 @@ export default function Home() {
 
   return (
     <div
-      className={`p-4 ${inter.className}`}
+      className={`${inter.className}`}
     >
-      <div>
-        <PayerCountInput
-          setPayersCount={setPayersCount}
-        />
-        {payersCount > 0 && (
-          <div>
-            <InputGrid />
+      <header
+        className="bg-gray-900"
+      >
+        <h1
+          className="font-medium text-2xl text-white p-4"
+        >
+          calculadora rústica
+        </h1>
+      </header>
 
-            {!currentItem && !currentPayer && (
-              <div
-                className='mt-4'
-              >
-                <AddItemButton />
-              </div>
-            )}
+      <div
+        className="p-4"
+      >
+        <div>
+          <PayerCountInput
+            setPayersCount={setPayersCount}
+          />
+          {payersCount > 0 && (
+            <div>
+              <InputGrid />
 
-            {currentItem && (
-              <SaveItemForm />
-            )}
-          </div>
-        )}
+              {!currentItem && !currentPayer && (
+                <div
+                  className='mt-4'
+                >
+                  <AddItemButton />
+                </div>
+              )}
+
+              {currentItem && (
+                <SaveItemForm />
+              )}
+            </div>
+          )}
+        </div>
+
+        <ResultsSection />
       </div>
 
-      <ResultsSection />
+      <footer
+        className="text-center mt-4 pt-4 border-gray-300 text-sm border-t-2"
+      >
+        <span>desenvolvido por </span>
+        <a className="font-bold" href="https://github.com/lousousa">@lousousa</a>
+        <span> ● 2023</span>
+      </footer>
     </div>
   )
 }

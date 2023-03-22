@@ -30,7 +30,7 @@ export default function SavePayerForm() {
     <>
       {currentPayer && (
         <form
-          className="mt-2 bg-gray-200 p-4 rounded"
+          className="mt-4 bg-gray-200 p-4 rounded"
           onSubmit={handleSubmit}
         >
           <div>
@@ -53,6 +53,7 @@ export default function SavePayerForm() {
             className="mt-2 text-right"
           >
             <button
+              type="button"
               className="text-red-600 underline font-bold"
               onClick={handleCancel}
             >

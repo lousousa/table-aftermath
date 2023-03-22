@@ -3,12 +3,11 @@ import { useSelector, useDispatch } from 'react-redux'
 import { formatCurrency } from '@/app/utils'
 import { Results } from '@/app/types'
 
-import SavePayerForm from '@/app/components/SavePayerForm'
-
 import { togglePaid, setResults, removePaymentByItemId, reset as resetPayments } from '@/app/store/reducers/payments'
-import { setStagingPayer, clearStagingPayer } from '@/app/store/reducers/payers'
 import { setStagingItem, clearStagingItem, removeItemById } from '@/app/store/reducers/items'
 import type { RootState } from '@/app/store'
+
+import PayersSection from '@/app/components/PayersSection'
 
 export default function InputGrid() {
   const payersList = useSelector((state: RootState) => state.payers.list)
@@ -87,20 +86,8 @@ export default function InputGrid() {
     dispatch(setResults(results))
   }
 
-  const clearStagingData = () => {
-    dispatch(clearStagingPayer())
-    dispatch(clearStagingItem())
-  }
-
-  const editPayer = (payerId: number) => {
-    clearStagingData()
-
-    const payer = payersList.find(payer => payer.id === payerId)
-    dispatch(setStagingPayer(payer))
-  }
-
   const editItem = (itemId: number) => {
-    clearStagingData()
+    dispatch(clearStagingItem())
 
     const item = itemsList.find(item => item.id === itemId)
     dispatch(setStagingItem(item))
@@ -120,27 +107,7 @@ export default function InputGrid() {
 
   return (
     <div>
-      <h2
-        className="mt-4 font-bold"
-      >
-        pagantes:
-      </h2>
-
-      <div
-        className="flex"
-      >
-        {payersList.map((payer) => (
-          <div
-            key={'payer_' + payer.id}
-            className='mr-4 cursor-pointer underline'
-            onClick={() => editPayer(payer.id)}
-          >
-            {payer.name}
-          </div>
-        ))}
-      </div>
-
-      <SavePayerForm />
+      <PayersSection />
 
       <div
         className="mt-4"
@@ -160,7 +127,7 @@ export default function InputGrid() {
             {itemsList.map((item) => (
               <div
                 key={'item_' + item.id}
-                className="flex pr-2 items-center w-full after:content-[''] after:w-full after:h-1 after:rounded after:bg-gray-400"
+                className="flex pr-2 items-center w-full after:content-[''] after:w-full after:h-1 after:rounded after:bg-gray-600"
               >
                 <div
                   className="item-text-wrapper cursor-pointer whitespace-nowrap pr-2"
@@ -176,9 +143,7 @@ export default function InputGrid() {
             ))}
           </div>
 
-          <div
-            className="pr-4"
-          >
+          <div>
             {itemsList.map((item) => (
               <div
                 key={'payer_grid_' + item.id}

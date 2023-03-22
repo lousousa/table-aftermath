@@ -42,7 +42,7 @@ export default function PayerCountInput({ setPayersCount }: Props) {
 
   return (
     <form
-      className="flex items-center"
+      className="flex items-center mt-4"
       onSubmit={handleSubmit}
     >
       <label

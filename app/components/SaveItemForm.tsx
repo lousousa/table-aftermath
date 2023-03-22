@@ -34,7 +34,6 @@ export default function AddItemForm() {
 
   const saveItem = (e: React.SyntheticEvent) => {
     e.preventDefault()
-    console.log('save item')
 
     if (!currentItem) return
 
