@@ -14,7 +14,15 @@ export default function ResultsOptions() {
   }
 
   return (
-    <div>
+    <div
+      className="mt-4"
+    >
+      <h2
+        className="font-bold"
+      >
+        opções:
+      </h2>
+
       <div>
         <input
           id="10_percent_checkbox"
@@ -26,7 +34,7 @@ export default function ResultsOptions() {
           className="ml-2"
           htmlFor="10_percent_checkbox"
         >
-          incluir 10% ┻━┻ ヘ╰( •̀ε•́ ╰)
+          incluir <b>10%</b> ┻━┻ ヘ╰( •̀ε•́ ╰)
         </label>
       </div>
 

@@ -45,7 +45,7 @@ export default function PayerCountInput({ setPayersCount }: Props) {
       onSubmit={handleSubmit}
     >
       <label
-        className='mr-2'
+        className='mr-2 font-bold'
       >
         quantidade de pagantes:
       </label>

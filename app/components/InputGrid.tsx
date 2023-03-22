@@ -120,13 +120,19 @@ export default function InputGrid() {
 
   return (
     <div>
+      <h2
+        className="mt-4 font-bold"
+      >
+        pagantes:
+      </h2>
+
       <div
-        className='mt-4 flex'
+        className="flex"
       >
         {payersList.map((payer) => (
           <div
             key={'payer_' + payer.id}
-            className='mr-2 cursor-pointer'
+            className='mr-4 cursor-pointer'
             onClick={() => editPayer(payer.id)}
           >
             {payer.name}
@@ -139,6 +145,12 @@ export default function InputGrid() {
       <div
         className="mt-4"
       >
+        <h2
+          className="font-bold"
+        >
+          items / pagamentos:
+        </h2>
+
         {itemsList.map((item) => (
           <div
             key={'item_' + item.id}
@@ -152,13 +164,13 @@ export default function InputGrid() {
                 className="item-text-wrapper"
               >
                 {item.title && (
-                  <span>{item.title + ' - '}</span>
+                  <span>{item.title + ': '}</span>
                 )}
 
                 <span>{formatCurrency(item.price)}</span>
               </span>
 
-              <span>: </span>
+              <span> - </span>
             </div>
 
             {payersList.map((payer) => (

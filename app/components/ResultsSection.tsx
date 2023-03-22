@@ -54,6 +54,12 @@ export default function ResultsSection() {
         <div
           className="mt-4"
         >
+          <h2
+            className="font-bold"
+          >
+            divisão:
+          </h2>
+
           <div
             id="results_content"
           >
@@ -97,17 +103,23 @@ export default function ResultsSection() {
 
             {checkedResults.length && (
               <p
-                className='mt-4'
+                className="mt-4"
               >
                 {checkedResults}
               </p>
             )}
           </div>
 
+          <ResultsOptions />
+
           <div
-            className='mt-4'
+            className="mt-4"
           >
-            <ResultsOptions />
+            <h2
+              className="font-bold"
+            >
+              compartilhar:
+            </h2>
 
             <CopyItemsButton />
 

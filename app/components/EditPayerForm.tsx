@@ -33,7 +33,7 @@ export default function EditPayerForm() {
           onSubmit={handleSubmit}
         >
           <div>
-            <label>name:</label>
+            <label>nome:</label>
 
             <input
               name='name'
