@@ -14,7 +14,7 @@ export default function CopyItemsButton() {
 
   return (
     <button
-      className="block"
+      className="block underline"
       onClick={() => copyItems()}
     >
       copiar itens

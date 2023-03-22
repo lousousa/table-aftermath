@@ -18,7 +18,7 @@ export default function CopyResultsButton() {
 
   return (
     <button
-      className="block"
+      className="block underline"
       onClick={() => copyResults()}
     >
       copiar resultados

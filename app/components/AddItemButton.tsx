@@ -16,7 +16,7 @@ export default function AddItemButton() {
 
   return (
     <button
-      className="block"
+      className="block underline"
       onClick={() => addItem()}
     >
       (+) adicionar item

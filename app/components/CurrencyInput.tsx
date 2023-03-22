@@ -4,14 +4,16 @@ type Props = {
   setStateAction: React.Dispatch<React.SetStateAction<string>>,
   maxLength: number,
   autoFocus?: boolean,
-  initialValue?: number
+  initialValue?: number,
+  customClasses?: string
 }
 
 export default function CurrencyInput({
   setStateAction,
   maxLength,
   autoFocus,
-  initialValue
+  initialValue,
+  customClasses
 }: Props) {
   const inputRef = useRef<HTMLInputElement | null>(null)
 
@@ -63,7 +65,7 @@ export default function CurrencyInput({
       onClick={inputCaretToLastPosition}
       onChange={handleChange}
       autoFocus={autoFocus}
-      className="text-right"
+      className={`text-right ${customClasses}`}
     />
   )
 }

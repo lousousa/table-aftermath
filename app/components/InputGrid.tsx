@@ -132,7 +132,7 @@ export default function InputGrid() {
         {payersList.map((payer) => (
           <div
             key={'payer_' + payer.id}
-            className='mr-4 cursor-pointer'
+            className='mr-4 cursor-pointer underline'
             onClick={() => editPayer(payer.id)}
           >
             {payer.name}
@@ -170,7 +170,7 @@ export default function InputGrid() {
                 <span>{formatCurrency(item.price)}</span>
               </span>
 
-              <span> - </span>
+              <span> &rarr; </span>
             </div>
 
             {payersList.map((payer) => (
@@ -184,7 +184,7 @@ export default function InputGrid() {
             ))}
 
             <button
-              className="ml-2"
+              className="ml-2 text-red-600 font-bold"
               onClick={() => removeItem(item.id)}
             >
               (X)

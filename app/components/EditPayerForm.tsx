@@ -4,7 +4,7 @@ import { clearStagingPayer, setStagingPayer, persistStagingPayer } from '@/app/s
 import type { RootState } from '@/app/store'
 
 export default function EditPayerForm() {
-  const currentPlayer = useSelector((state: RootState) => state.payers.stagingPayer)
+  const currentPayer = useSelector((state: RootState) => state.payers.stagingPayer)
   const dispatch = useDispatch()
 
   const handleCancel = (e: React.MouseEvent) => {
@@ -14,6 +14,7 @@ export default function EditPayerForm() {
 
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault()
+
     dispatch(persistStagingPayer())
   }
 
@@ -27,30 +28,40 @@ export default function EditPayerForm() {
 
   return (
     <>
-      {currentPlayer && (
+      {currentPayer && (
         <form
-          className='mt-4'
+          className="mt-4"
           onSubmit={handleSubmit}
         >
           <div>
-            <label>nome:</label>
+            <label
+              className="block"
+            >
+              nome:
+            </label>
 
             <input
-              name='name'
-              className='ml-2'
+              name="name"
+              className="border border-gray-600 outline-none px-2"
               onChange={handleInputChange}
-              value={currentPlayer.name}
+              value={currentPayer.name}
               autoFocus
             />
           </div>
 
-          <div>
-            <button>
-              salvar
-            </button>
+          <div
+            className="mt-2"
+          >
+            {currentPayer.name.length > 0 && (
+              <button
+                className="text-blue-600 underline font-bold mr-4"
+              >
+                salvar
+              </button>
+            )}
 
             <button
-              className='ml-4'
+              className="text-red-600 underline font-bold"
               onClick={handleCancel}
             >
               cancelar

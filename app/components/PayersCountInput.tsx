@@ -75,7 +75,7 @@ export default function PayerCountInput({ setPayersCount }: Props) {
         payersList.length !== parseInt(currentCount) &&
         (
           <button
-            className='ml-2'
+            className='ml-2 underline'
           >
             confirmar
           </button>
