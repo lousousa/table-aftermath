@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { clearStagingPayer, setStagingPayer, persistStagingPayer } from '@/app/store/reducers/payers'
 import type { RootState } from '@/app/store'
 
-export default function EditPayerForm() {
+export default function SavePayerForm() {
   const currentPayer = useSelector((state: RootState) => state.payers.stagingPayer)
   const dispatch = useDispatch()
 
@@ -30,7 +30,7 @@ export default function EditPayerForm() {
     <>
       {currentPayer && (
         <form
-          className="mt-4"
+          className="mt-2"
           onSubmit={handleSubmit}
         >
           <div>
@@ -42,7 +42,7 @@ export default function EditPayerForm() {
 
             <input
               name="name"
-              className="border border-gray-600 outline-none px-2"
+              className="border border-gray-600 outline-none px-2 text-right"
               onChange={handleInputChange}
               value={currentPayer.name}
               autoFocus

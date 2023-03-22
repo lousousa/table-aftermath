@@ -1,4 +1,8 @@
+import { useState } from 'react'
+
 export default function CopyResultsButton() {
+  const [copyCreated, setCopyCreated] = useState(false)
+
   const copyResults = async () => {
     try {
       const resultsContentElement = document.getElementById('results_content')
@@ -11,17 +15,31 @@ export default function CopyResultsButton() {
       text = `${text}\n\n${total}`
 
       await navigator.clipboard.writeText(text)
+
+      setCopyCreated(true)
+
+      window.setTimeout(() => setCopyCreated(false), 1500)
     } catch(err) {
       console.error('failed to copy', err)
     }
   }
 
   return (
-    <button
-      className="block underline"
-      onClick={() => copyResults()}
-    >
-      copiar resultados
-    </button>
+    <div>
+      <button
+        className="underline"
+        onClick={() => copyResults()}
+      >
+        copiar resultados
+      </button>
+
+      {copyCreated && (
+        <span
+          className="text-blue-300 font-bold ml-4"
+        >
+          copiado!
+        </span>
+      )}
+    </div>
   )
 }

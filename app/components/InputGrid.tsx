@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { formatCurrency } from '@/app/utils'
 import { Results } from '@/app/types'
 
-import EditPayerForm from '@/app/components/EditPayerForm'
+import SavePayerForm from '@/app/components/SavePayerForm'
 
 import { togglePaid, setResults, removePaymentByItemId, reset as resetPayments } from '@/app/store/reducers/payments'
 import { setStagingPayer, clearStagingPayer } from '@/app/store/reducers/payers'
@@ -140,7 +140,7 @@ export default function InputGrid() {
         ))}
       </div>
 
-      <EditPayerForm />
+      <SavePayerForm />
 
       <div
         className="mt-4"
@@ -176,6 +176,7 @@ export default function InputGrid() {
             {payersList.map((payer) => (
               <div key={`payment_input_${payer.id}_${item.id}`}>
                 <input
+                  className="mr-2"
                   type="checkbox"
                   checked={findPayment(payer.id, item.id)?.paid}
                   onChange={(e) => checkItem(payer.id, item.id, e)}
@@ -184,7 +185,7 @@ export default function InputGrid() {
             ))}
 
             <button
-              className="ml-2 text-red-600 font-bold"
+              className="text-red-600 font-bold"
               onClick={() => removeItem(item.id)}
             >
               (X)
