@@ -43,14 +43,14 @@ export default function Home() {
         className="bg-gray-900"
       >
         <h1
-          className="font-medium text-2xl text-white p-4"
+          className="font-medium text-2xl text-white p-4 mx-auto max-w-lg"
         >
           calculadora rústica
         </h1>
       </header>
 
       <div
-        className="p-4"
+        className="p-4 max-w-lg mx-auto"
       >
         <div>
           <PayerCountInput
