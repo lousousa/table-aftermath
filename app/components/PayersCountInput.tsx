@@ -42,7 +42,7 @@ export default function PayerCountInput({ setPayersCount }: Props) {
 
   return (
     <form
-      className="flex"
+      className="flex items-center"
       onSubmit={handleSubmit}
     >
       <label
@@ -76,6 +76,7 @@ export default function PayerCountInput({ setPayersCount }: Props) {
         payersList.length !== parseInt(currentCount) &&
         (
           <button
+            type="submit"
             className="ml-2 underline"
           >
             confirmar

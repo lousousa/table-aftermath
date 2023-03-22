@@ -61,6 +61,7 @@ export default function SavePayerForm() {
 
             {currentPayer.name.length > 0 && (
               <button
+                type="submit"
                 className="text-blue-600 underline font-bold ml-4"
               >
                 salvar

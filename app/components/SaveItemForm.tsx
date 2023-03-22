@@ -34,6 +34,7 @@ export default function AddItemForm() {
 
   const saveItem = (e: React.SyntheticEvent) => {
     e.preventDefault()
+    console.log('save item')
 
     if (!currentItem) return
 
@@ -122,13 +123,15 @@ export default function AddItemForm() {
         className="mt-2 text-right"
       >
         <button
+          type="button"
           className="text-red-600 underline font-bold"
           onClick={handleCancel}
         >
           cancelar
-      </button>
+        </button>
 
         <button
+          type="submit"
           className="text-blue-600 underline font-bold ml-4"
         >
           salvar
