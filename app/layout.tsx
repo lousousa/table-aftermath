@@ -2,8 +2,8 @@ import '@/app/globals.css'
 import Provider from '@/app/store/provider'
 
 export const metadata = {
-  title: 'Table Aftermath',
-  description: 'A tool for helping to divide and calculate the bar bill.',
+  title: 'calculadora de bar',
+  description: 'ferramenta para dividir e calcular a conta do bar.',
 }
 
 export default function RootLayout({

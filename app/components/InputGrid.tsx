@@ -151,47 +151,58 @@ export default function InputGrid() {
           items / pagamentos:
         </h2>
 
-        {itemsList.map((item) => (
+        <div
+          className="flex"
+        >
           <div
-            key={'item_' + item.id}
-            className="flex"
+            className="flex flex-wrap w-full"
           >
-            <div
-              className="cursor-pointer mr-2"
-              onClick={() => editItem(item.id)}
-            >
-              <span
-                className="item-text-wrapper"
+            {itemsList.map((item) => (
+              <div
+                className="flex pr-2 items-center w-full after:content-[''] after:w-full after:h-1 after:rounded after:bg-gray-400"
               >
-                {item.title && (
-                  <span>{item.title + ': '}</span>
-                )}
+                <div
+                  key={'item_' + item.id}
+                  className="item-text-wrapper cursor-pointer whitespace-nowrap pr-2"
+                  onClick={() => editItem(item.id)}
+                >
+                  {item.title && (
+                    <span>{item.title + ': '}</span>
+                  )}
 
-                <span>{formatCurrency(item.price)}</span>
-              </span>
-
-              <span> &rarr; </span>
-            </div>
-
-            {payersList.map((payer) => (
-              <div key={`payment_input_${payer.id}_${item.id}`}>
-                <input
-                  className="mr-2"
-                  type="checkbox"
-                  checked={findPayment(payer.id, item.id)?.paid}
-                  onChange={(e) => checkItem(payer.id, item.id, e)}
-                />
+                  <span>{formatCurrency(item.price)}</span>
+                </div>
               </div>
             ))}
-
-            <button
-              className="text-red-600 font-bold"
-              onClick={() => removeItem(item.id)}
-            >
-              (X)
-            </button>
           </div>
-        ))}
+
+          <div>
+            {itemsList.map((item) => (
+              <div
+                key={'player_grid_' + item.id}
+                className="flex"
+              >
+                {payersList.map((payer) => (
+                  <div key={`payment_input_${payer.id}_${item.id}`}>
+                    <input
+                      className="mr-2"
+                      type="checkbox"
+                      checked={findPayment(payer.id, item.id)?.paid}
+                      onChange={(e) => checkItem(payer.id, item.id, e)}
+                    />
+                  </div>
+                ))}
+
+                <button
+                  className="text-red-600"
+                  onClick={() => removeItem(item.id)}
+                >
+                  (X)
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   )
