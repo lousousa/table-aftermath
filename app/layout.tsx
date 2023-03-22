@@ -2,7 +2,7 @@ import '@/app/globals.css'
 import Provider from '@/app/store/provider'
 
 export const metadata = {
-  title: 'calculadora de bar',
+  title: 'calculadora rústica',
   description: 'ferramenta para dividir e calcular a conta do bar.',
 }
 
