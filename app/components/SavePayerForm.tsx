@@ -30,7 +30,7 @@ export default function SavePayerForm() {
     <>
       {currentPayer && (
         <form
-          className="mt-2"
+          className="mt-2 bg-gray-200 p-4 rounded"
           onSubmit={handleSubmit}
         >
           <div>
@@ -42,7 +42,7 @@ export default function SavePayerForm() {
 
             <input
               name="name"
-              className="border border-gray-600 outline-none px-2 text-right"
+              className="w-full rounded outline-none py-1 px-2 text-right"
               onChange={handleInputChange}
               value={currentPayer.name}
               autoFocus
@@ -50,22 +50,22 @@ export default function SavePayerForm() {
           </div>
 
           <div
-            className="mt-2"
+            className="mt-2 text-right"
           >
-            {currentPayer.name.length > 0 && (
-              <button
-                className="text-blue-600 underline font-bold mr-4"
-              >
-                salvar
-              </button>
-            )}
-
             <button
               className="text-red-600 underline font-bold"
               onClick={handleCancel}
             >
               cancelar
             </button>
+
+            {currentPayer.name.length > 0 && (
+              <button
+                className="text-blue-600 underline font-bold ml-4"
+              >
+                salvar
+              </button>
+            )}
           </div>
         </form>
       )}

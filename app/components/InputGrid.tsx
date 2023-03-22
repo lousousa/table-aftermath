@@ -179,7 +179,7 @@ export default function InputGrid() {
           <div>
             {itemsList.map((item) => (
               <div
-                key={'player_grid_' + item.id}
+                key={'payer_grid_' + item.id}
                 className="flex"
               >
                 {payersList.map((payer) => (

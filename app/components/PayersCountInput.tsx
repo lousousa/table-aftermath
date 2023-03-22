@@ -42,16 +42,17 @@ export default function PayerCountInput({ setPayersCount }: Props) {
 
   return (
     <form
+      className="flex"
       onSubmit={handleSubmit}
     >
       <label
-        className='mr-2 font-bold'
+        className="mr-2 font-bold whitespace-nowrap"
       >
         quantidade de pagantes:
       </label>
 
       <select
-        className='border border-gray-600 outline-none'
+        className="w-full rounded border border-gray-400 px-2 py-1 outline-none"
         value={currentCount}
         onChange={onPayersCountChange}
       >
@@ -75,7 +76,7 @@ export default function PayerCountInput({ setPayersCount }: Props) {
         payersList.length !== parseInt(currentCount) &&
         (
           <button
-            className='ml-2 underline'
+            className="ml-2 underline"
           >
             confirmar
           </button>

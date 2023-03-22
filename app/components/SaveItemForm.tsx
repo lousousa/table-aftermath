@@ -63,7 +63,7 @@ export default function AddItemForm() {
 
   return (
     <form
-      className="mt-4"
+      className="mt-4 bg-gray-200 p-4 rounded"
       onSubmit={saveItem}
     >
       <div>
@@ -78,13 +78,13 @@ export default function AddItemForm() {
           maxLength={6}
           autoFocus={true}
           initialValue={currentItem?.price}
-          customClasses="border border-gray-600 outline-none px-2"
+          customClasses="rounded outline-none py-1 px-2 w-full"
         />
       </div>
 
       <div>
         <label
-          className="block"
+          className="block mt-2"
         >
           descrição (opcional):
         </label>
@@ -93,13 +93,13 @@ export default function AddItemForm() {
           name="title"
           value={currentItem?.title}
           onChange={handleInputChange}
-          className="border border-gray-600 outline-none px-2 text-right"
+          className="rounded outline-none py-1 px-2 text-right w-full"
         />
       </div>
 
       {currentItem?.isCreating && (
         <div
-          className="mt-2"
+          className="mt-2 text-right"
         >
           <input
             id="paid_by_all_checkbox"
@@ -113,25 +113,25 @@ export default function AddItemForm() {
             className="ml-2"
             htmlFor="paid_by_all_checkbox"
           >
-            todos pagam?
+            todos pagam
           </label>
         </div>
       )}
 
       <div
-        className="mt-2"
+        className="mt-2 text-right"
       >
         <button
-          className="text-blue-600 underline font-bold"
-        >
-          salvar
-        </button>
-
-        <button
-          className="ml-4 text-red-600 underline font-bold"
+          className="text-red-600 underline font-bold"
           onClick={handleCancel}
         >
           cancelar
+      </button>
+
+        <button
+          className="text-blue-600 underline font-bold ml-4"
+        >
+          salvar
         </button>
       </div>
     </form>
