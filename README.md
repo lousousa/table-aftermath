@@ -15,7 +15,7 @@ I designed this app after a real situation I need to divide a bar bill amount be
 
 ## Preview
 
-Note: Since this version was intended to be **eventually** used by a (Brazilian) friend of mine, so I kept its language PT-BR and its currency BRL.
+Note: Since this version was intended to be **eventually** used by a (Brazilian) friend of mine, I kept its language PT-BR and its currency BRL.
 
 ![demo](https://user-images.githubusercontent.com/2921281/227338261-fd9b708b-ecd5-4a0c-a545-69bd6c405caf.gif)
 
