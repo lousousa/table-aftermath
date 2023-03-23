@@ -21,7 +21,7 @@ export default function SavePayerForm() {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input: {[key: string]: string} = {}
 
-    input[e.target.name] = e.target.value.trim()
+    input[e.target.name] = e.target.value
 
     dispatch(setStagingPayer({...input}))
   }

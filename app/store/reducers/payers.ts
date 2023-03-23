@@ -30,6 +30,8 @@ const slice = createSlice({
     },
     persistStagingPayer: (state) => {
       if (state.stagingPayer) {
+        state.stagingPayer.name = state.stagingPayer.name?.trim()
+
         let payer = state.list.find(payer =>
           payer.id === state.stagingPayer?.id
         )
