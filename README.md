@@ -4,7 +4,7 @@
 
 ## Overview
 
-I designed this app after a real situation I need to divide a bar bill amount between the people there, considering there were different items for each people. The app works by getting as input the list of the items which is paid for each person, visually organized as a matrix of checkboxes, then showing as output the current division of the total amount. It also provides some optional features, such as including 10% to the calculation and copying to the clipboard, as plain text, info like results, and items list.
+I designed this app after a real situation I need to divide a bar bill amount between the people there, considering there were different items for each people. The app works by getting as input the list of the items which is paid for each person, visually organized as a matrix of checkboxes, then showing as output the current division of the total amount. It also provides some optional features, such as including 10% to the calculation and copying to the clipboard, as plain text, info like results and items list.
 
 ## Featured stack:
 
@@ -15,9 +15,9 @@ I designed this app after a real situation I need to divide a bar bill amount be
 
 ## Preview
 
-Note: This version was intended to use in Brazil, so its language is PT-BR and its currency is BRL.
+Note: Since this version was intended to be used by me and eventually by a (Brazilian) friend of mine, so I kept its language PT-BR and its currency BRL.
 
-[TO DO]
+![demo](https://user-images.githubusercontent.com/2921281/227338261-fd9b708b-ecd5-4a0c-a545-69bd6c405caf.gif)
 
 ## Getting Started
 
