@@ -36,4 +36,4 @@ Then, open [http://localhost:3000](http://localhost:3000) with your browser to s
 
 ## That's it
 
-I developed it for personal use just to simplify this calculation/division job at bars and restaurants checking, but feel free to fork it and make your own custom needs. I hope you enjoy it too, let's have fun!
+I developed it for personal use just to simplify this calculation/division job at bars and restaurants checking, but feel free to fork it and make your own custom needs (or even use it as it is hehe). I hope you enjoy it too!
