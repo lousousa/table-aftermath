@@ -52,62 +52,66 @@ export default function ResultsSection() {
     <>
       {currentResults && currentResults.total > 0 && (
         <div
-          className="mt-4"
+          className="mt-6"
         >
-          <h2
-            className="font-bold"
-          >
-            divisão:
-          </h2>
-
           <div
-            id="results_content"
+            className="bg-gray-200 rounded p-4"
           >
-            {currentResults.payersData.map((payerData) => (
-              <div
-                key={`results_payer_${payerData.payer.id}`}
-              >
-                <p>
-                  {payerData.payer.name}:&nbsp;
+            <h2
+              className="font-bold"
+            >
+              divisão:
+            </h2>
 
-                  {currentResults.showCalculation && (
-                    <span>
-                      {payerData.calculation} =&nbsp;
-                    </span>
-                  )}
+            <div
+              id="results_content"
+            >
+              {currentResults.payersData.map((payerData) => (
+                <div
+                  key={`results_payer_${payerData.payer.id}`}
+                >
+                  <p>
+                    {payerData.payer.name}:&nbsp;
 
-                  {currentResults.show10Percent && (
-                    <>
-                      {currentResults.showCalculation && (
-                        <span>
-                          {formatCurrency(payerData.amount)} ({formatCurrency(add10Percent(payerData.amount))})
-                        </span>
-                      )}
+                    {currentResults.showCalculation && (
+                      <span>
+                        {payerData.calculation} =&nbsp;
+                      </span>
+                    )}
 
-                      {!currentResults.showCalculation && (
-                        <span>
-                          {formatCurrency(add10Percent(payerData.amount))}
-                        </span>
-                      )}
-                    </>
-                  )}
+                    {currentResults.show10Percent && (
+                      <>
+                        {currentResults.showCalculation && (
+                          <span>
+                            {formatCurrency(payerData.amount)} ({formatCurrency(add10Percent(payerData.amount))})
+                          </span>
+                        )}
 
-                  {!currentResults.show10Percent && (
-                    <span>
-                      {formatCurrency(payerData.amount)}
-                    </span>
-                  )}
+                        {!currentResults.showCalculation && (
+                          <span>
+                            {formatCurrency(add10Percent(payerData.amount))}
+                          </span>
+                        )}
+                      </>
+                    )}
+
+                    {!currentResults.show10Percent && (
+                      <span>
+                        {formatCurrency(payerData.amount)}
+                      </span>
+                    )}
+                  </p>
+                </div>
+              ))}
+
+              {checkedResults.length && (
+                <p
+                  className="mt-4 font-bold"
+                >
+                  {checkedResults}
                 </p>
-              </div>
-            ))}
-
-            {checkedResults.length && (
-              <p
-                className="mt-4"
-              >
-                {checkedResults}
-              </p>
-            )}
+              )}
+            </div>
           </div>
 
           <ResultsOptions />

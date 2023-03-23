@@ -2,8 +2,8 @@ import '@/app/globals.css'
 import Provider from '@/app/store/provider'
 
 export const metadata = {
-  title: 'calculadora rústica',
-  description: 'ferramenta para dividir e calcular a conta do bar.',
+  title: 'calculadora de bar',
+  description: 'ferramenta para calcular e dividir entre as pessoas a conta do bar.',
 }
 
 export default function RootLayout({
