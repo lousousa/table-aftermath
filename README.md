@@ -10,6 +10,7 @@ I designed this app after a real situation I need to divide a bar bill amount be
 
 - [Next.js](https://nextjs.org/)
 - [React](https://reactjs.org/)
+- [Redux](https://react-redux.js.org/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
 
