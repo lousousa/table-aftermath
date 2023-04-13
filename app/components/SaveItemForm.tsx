@@ -70,7 +70,7 @@ export default function AddItemForm() {
         <label
           className="block"
         >
-          preço:
+          price:
         </label>
 
         <CurrencyInput
@@ -86,7 +86,7 @@ export default function AddItemForm() {
         <label
           className="block mt-2"
         >
-          descrição (opcional):
+          description (optional):
         </label>
 
         <input
@@ -113,7 +113,7 @@ export default function AddItemForm() {
             className="ml-2"
             htmlFor="paid_by_all_checkbox"
           >
-            todos pagam
+            everyone pay it
           </label>
         </div>
       )}
@@ -126,14 +126,14 @@ export default function AddItemForm() {
           className="text-red-600 underline font-bold"
           onClick={handleCancel}
         >
-          cancelar
+          cancel
         </button>
 
         <button
           type="submit"
           className="text-blue-600 underline font-bold ml-4"
         >
-          salvar
+          save
         </button>
       </div>
     </form>

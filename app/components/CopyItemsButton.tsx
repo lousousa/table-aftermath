@@ -26,14 +26,14 @@ export default function CopyItemsButton() {
         className="underline"
         onClick={() => copyItems()}
       >
-        copiar itens
+        copy items
       </button>
 
       {copyCreated && (
         <span
           className="text-blue-300 font-bold ml-4"
         >
-          copiado!
+          copied!
         </span>
       )}
     </div>

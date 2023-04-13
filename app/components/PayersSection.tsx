@@ -23,7 +23,7 @@ export default function PayersSection() {
       <h2
         className="mt-4 mb-4 font-bold"
       >
-        pagantes:
+        payers:
       </h2>
 
       <div

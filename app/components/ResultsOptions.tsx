@@ -20,7 +20,7 @@ export default function ResultsOptions() {
       <h2
         className="font-bold"
       >
-        opções:
+        options:
       </h2>
 
       <div>
@@ -34,7 +34,7 @@ export default function ResultsOptions() {
           className="ml-2"
           htmlFor="10_percent_checkbox"
         >
-          incluir <b>10%</b> ┻━┻ ヘ╰( •̀ε•́ ╰)
+          include <b>10%</b> ┻━┻ ヘ╰( •̀ε•́ ╰)
         </label>
       </div>
 
@@ -49,7 +49,7 @@ export default function ResultsOptions() {
           className="ml-2"
           htmlFor="calculation_checkbox"
         >
-          exibir cálculos ¯\_(ツ)_/¯
+          show calculation ¯\_(ツ)_/¯
         </label>
       </div>
     </div>

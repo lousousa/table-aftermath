@@ -29,7 +29,7 @@ export default function ResultsSection() {
       let itemsAdd10Percent = parseFloat(add10Percent(itemsTotal))
 
       if (totalAdd10Percent !== itemsAdd10Percent) {
-        checkedResults = `total: ${formatCurrency(totalAdd10Percent)} (falta ${formatCurrency(itemsAdd10Percent - totalAdd10Percent)})`
+        checkedResults = `total: ${formatCurrency(totalAdd10Percent)} (left ${formatCurrency(itemsAdd10Percent - totalAdd10Percent)})`
       } else {
         if (currentResults.showCalculation) {
           checkedResults = `total: ${formatCurrency(currentResults.total)} (${formatCurrency(totalAdd10Percent)})`
@@ -39,7 +39,7 @@ export default function ResultsSection() {
       }
     } else {
       if (currentResults.total !== parseFloat(itemsTotal.toFixed(2))) {
-        checkedResults = `total: ${formatCurrency(currentResults.total)} (falta ${formatCurrency(itemsTotal - currentResults.total)})`
+        checkedResults = `total: ${formatCurrency(currentResults.total)} (left ${formatCurrency(itemsTotal - currentResults.total)})`
       } else {
         checkedResults = `total: ${formatCurrency(currentResults.total)}`
       }
@@ -60,7 +60,7 @@ export default function ResultsSection() {
             <h2
               className="font-bold"
             >
-              divisão:
+              division:
             </h2>
 
             <div
@@ -122,7 +122,7 @@ export default function ResultsSection() {
             <h2
               className="font-bold"
             >
-              compartilhar:
+              share:
             </h2>
 
             <CopyItemsButton />

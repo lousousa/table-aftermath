@@ -37,7 +37,7 @@ export default function SavePayerForm() {
             <label
               className="block"
             >
-              nome:
+              name:
             </label>
 
             <input
@@ -57,7 +57,7 @@ export default function SavePayerForm() {
               className="text-red-600 underline font-bold"
               onClick={handleCancel}
             >
-              cancelar
+              cancel
             </button>
 
             {currentPayer.name.length > 0 && (
@@ -65,7 +65,7 @@ export default function SavePayerForm() {
                 type="submit"
                 className="text-blue-600 underline font-bold ml-4"
               >
-                salvar
+                save
               </button>
             )}
           </div>

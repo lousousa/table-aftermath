@@ -115,7 +115,7 @@ export default function InputGrid() {
         <h2
           className="font-bold"
         >
-          items / pagamentos:
+          items / payments:
         </h2>
 
         <div

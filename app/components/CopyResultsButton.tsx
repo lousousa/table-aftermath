@@ -30,14 +30,14 @@ export default function CopyResultsButton() {
         className="underline"
         onClick={() => copyResults()}
       >
-        copiar resultados
+        copy results
       </button>
 
       {copyCreated && (
         <span
           className="text-blue-300 font-bold ml-4"
         >
-          copiado!
+          copied!
         </span>
       )}
     </div>

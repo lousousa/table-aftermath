@@ -19,7 +19,7 @@ export default function AddItemButton() {
       className="block underline text-blue-600 font-bold"
       onClick={() => addItem()}
     >
-      (+) adicionar item
+      (+) add item
     </button>
   )
 }

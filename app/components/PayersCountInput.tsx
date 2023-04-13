@@ -48,7 +48,7 @@ export default function PayerCountInput({ setPayersCount }: Props) {
       <label
         className="mr-2 font-bold whitespace-nowrap"
       >
-        quantidade de pagantes:
+        payers count:
       </label>
 
       <select
@@ -58,7 +58,7 @@ export default function PayerCountInput({ setPayersCount }: Props) {
       >
         {!currentCount.length && (
           <option>
-            - selecione -
+            - select -
           </option>
         )}
 
@@ -79,7 +79,7 @@ export default function PayerCountInput({ setPayersCount }: Props) {
             type="submit"
             className="ml-2 underline"
           >
-            confirmar
+            confirm
           </button>
         )
       }
