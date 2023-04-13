@@ -19,7 +19,7 @@ export default function PageHeader() {
         <h1
           className="text-2xl text-white"
         >
-          calculadora <b className="italic">~de bar~</b>
+          bar bill <b className="italic">calculator</b>
         </h1>
       </div>
     </header>
