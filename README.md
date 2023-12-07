@@ -4,7 +4,7 @@
 
 ## Overview
 
-I designed this app after a real situation I need to divide a bar bill amount between the people there, considering there were different items for each people. The app works by getting as input the list of the items which is paid for each person, visually organized as a matrix of checkboxes, then showing as output the current division of the total amount. It also provides some optional features, such as including 10% to the calculation and copying to the clipboard, as plain text, info like results and items list.
+I developed this application inspired by a real-life scenario where I had to split a bar bill among several people, taking into account the different items ordered by each individual. The app operates by receiving a detailed list of items paid for by each person, presented in a user-friendly matrix of checkboxes. It then displays the proportional division of the total bill. Additionally, it offers optional functionalities, such as adding a 10% surcharge to the total and providing a feature to copy both the calculated results and the itemized list to the clipboard in a straightforward, plain text format.
 
 ## Featured stack:
 
@@ -15,8 +15,6 @@ I designed this app after a real situation I need to divide a bar bill amount be
 - [Tailwind CSS](https://tailwindcss.com/)
 
 ## Preview
-
-Note: Since this version was intended to be **eventually** used by a (Brazilian) friend of mine, I kept its language PT-BR and its currency BRL.
 
 ![demo](https://user-images.githubusercontent.com/2921281/227338261-fd9b708b-ecd5-4a0c-a545-69bd6c405caf.gif)
 
@@ -36,4 +34,4 @@ Then, open [http://localhost:3000](http://localhost:3000) with your browser to s
 
 ## That's it
 
-I developed it for personal use just to simplify this calculation/division job at bars and restaurants checking, but feel free to fork it and make your own custom needs (or even use it as it is hehe). I hope you enjoy it too!
+I initially created this tool for my personal convenience, aiming to streamline the process of calculating and splitting bills at bars and restaurants. However, I welcome anyone to fork this project and tailor it to their specific requirements – or even use it as is, if it suits your needs! I hope you find it as enjoyable and useful as I do.
