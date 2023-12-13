@@ -9,6 +9,7 @@ import PageFooter from '@/app/components/PageFooter'
 import PayerCountInput from '@/app/components/PayersCountInput'
 import InputGrid from '@/app/components/InputGrid'
 import AddItemButton from '@/app/components/AddItemButton'
+import UploadReceiptImage from '@/app/components/UploadReceiptImage'
 import SaveItemForm from '@/app/components/SaveItemForm'
 import ResultsSection from '@/app/components/ResultsSection'
 
@@ -39,7 +40,7 @@ export default function Home() {
 
   return (
     <div
-      className={`${inter.className}`}
+      className={`${inter.className} w-fit min-w-full md:w-full`}
     >
       <PageHeader />
 
@@ -56,11 +57,19 @@ export default function Home() {
               <InputGrid />
 
               {!currentItem && !currentPayer && (
-                <div
-                  className='mt-4 flex justify-center'
-                >
-                  <AddItemButton />
-                </div>
+                <>
+                  <div
+                    className='mt-4 flex justify-center'
+                  >
+                    <UploadReceiptImage />
+                  </div>
+
+                  <div
+                    className='mt-4 flex justify-center'
+                  >
+                    <AddItemButton />
+                  </div>
+                </>
               )}
 
               {currentItem && (

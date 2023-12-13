@@ -130,7 +130,7 @@ export default function InputGrid() {
                 className="flex pr-2 items-center w-full after:content-[''] after:w-full after:h-1 after:rounded after:bg-gray-600"
               >
                 <div
-                  className="item-text-wrapper cursor-pointer whitespace-nowrap pr-2"
+                  className="item-text-wrapper text-sm cursor-pointer whitespace-nowrap pr-2"
                   onClick={() => editItem(item.id)}
                 >
                   {item.title && (
