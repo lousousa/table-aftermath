@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { formatCurrency, getPayersColors } from '@/app/utils'
-import { BinIcon } from '@/app/icons'
+import { TrashCanIcon, CheckMarkIcon } from '@/app/icons'
 import { Results, Payment } from '@/app/types'
 
 import { togglePaid, setResults, removePaymentByItemId, reset as resetPayments } from '@/app/store/reducers/payments'
@@ -184,17 +184,17 @@ export default function InputGrid() {
                 ))}
 
                 <button
-                  className="text-blue-600 ml-2 w-5 h-5"
+                  className="text-gray-600 ml-2 w-5 h-5"
                   onClick={() => toggleCheckingState(item.id)}
                 >
-                  (&)
+                  <CheckMarkIcon />
                 </button>
 
                 <button
-                  className="text-red-600 ml-2 w-5 h-5"
+                  className="text-red-600 ml-1 w-5 h-5"
                   onClick={() => removeItem(item.id)}
                 >
-                  <BinIcon />
+                  <TrashCanIcon />
                 </button>
               </div>
             ))}
