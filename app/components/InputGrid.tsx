@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { formatCurrency } from '@/app/utils'
+import { formatCurrency, getPayersColors } from '@/app/utils'
 import { Results } from '@/app/types'
 
 import { togglePaid, setResults, removePaymentByItemId, reset as resetPayments } from '@/app/store/reducers/payments'
@@ -144,15 +144,18 @@ export default function InputGrid() {
           </div>
 
           <div>
-            {itemsList.map((item) => (
+            {itemsList.map(item => (
               <div
                 key={'payer_grid_' + item.id}
                 className="flex"
               >
-                {payersList.map((payer) => (
-                  <div key={`payment_input_${payer.id}_${item.id}`}>
+                {payersList.map((payer, idx) => (
+                  <div
+                    key={`payment_input_${payer.id}_${item.id}`}
+                    className={`${getPayersColors()[idx]}`}
+                  >
                     <input
-                      className="mr-2"
+                      className="mx-1"
                       type="checkbox"
                       checked={findPayment(payer.id, item.id)?.paid}
                       onChange={(e) => checkItem(payer.id, item.id, e)}
@@ -161,7 +164,7 @@ export default function InputGrid() {
                 ))}
 
                 <button
-                  className="text-red-600"
+                  className="text-red-600 ml-1"
                   onClick={() => removeItem(item.id)}
                 >
                   (X)
