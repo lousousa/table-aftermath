@@ -1,8 +1,8 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { formatCurrency, getPayersColors } from '@/app/utils'
 import { BinIcon } from '@/app/icons'
-import { Results } from '@/app/types'
+import { Results, Payment } from '@/app/types'
 
 import { togglePaid, setResults, removePaymentByItemId, reset as resetPayments } from '@/app/store/reducers/payments'
 import { setStagingItem, clearStagingItem, removeItemById } from '@/app/store/reducers/items'
@@ -104,6 +104,25 @@ export default function InputGrid() {
     }
   }
 
+  const toggleCheckingState = (itemId: number) => {
+    const payments = paymentsList.filter(payment => payment.itemId === itemId)
+    const paidPayments = payments.filter(payment => payment.paid)
+    const unpaidPayments = payments.filter(payment => !payment.paid)
+
+    const setAllPaid = (payments: Payment[], flag = true) => {
+      payments.forEach(payment => {
+        dispatch(togglePaid({
+          payerId: payment.payerId,
+          itemId,
+          paid: flag
+        }))
+      })
+    }
+
+    const isAllPaymentsPaid = payments.length === paidPayments.length
+    setAllPaid(isAllPaymentsPaid ? paidPayments : unpaidPayments, !isAllPaymentsPaid)
+  }
+
   useEffect(showResults, [dispatch, payersList, itemsList, paymentsList])
 
   return (
@@ -156,13 +175,20 @@ export default function InputGrid() {
                     className={`${getPayersColors()[idx]}`}
                   >
                     <input
-                      className="mx-1"
+                      className="mx-1 cursor-pointer"
                       type="checkbox"
                       checked={findPayment(payer.id, item.id)?.paid}
                       onChange={(e) => checkItem(payer.id, item.id, e)}
                     />
                   </div>
                 ))}
+
+                <button
+                  className="text-blue-600 ml-2 w-5 h-5"
+                  onClick={() => toggleCheckingState(item.id)}
+                >
+                  (&)
+                </button>
 
                 <button
                   className="text-red-600 ml-2 w-5 h-5"
