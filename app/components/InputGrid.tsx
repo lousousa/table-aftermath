@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { formatCurrency, getPayersColors } from '@/app/utils'
+import { BinIcon } from '@/app/icons'
 import { Results } from '@/app/types'
 
 import { togglePaid, setResults, removePaymentByItemId, reset as resetPayments } from '@/app/store/reducers/payments'
@@ -147,7 +148,7 @@ export default function InputGrid() {
             {itemsList.map(item => (
               <div
                 key={'payer_grid_' + item.id}
-                className="flex"
+                className="flex items-center"
               >
                 {payersList.map((payer, idx) => (
                   <div
@@ -164,10 +165,10 @@ export default function InputGrid() {
                 ))}
 
                 <button
-                  className="text-red-600 ml-1"
+                  className="text-red-600 ml-2 w-5 h-5"
                   onClick={() => removeItem(item.id)}
                 >
-                  (X)
+                  <BinIcon />
                 </button>
               </div>
             ))}
