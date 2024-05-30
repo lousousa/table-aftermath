@@ -51,6 +51,7 @@ export default function Home() {
           <PayerCountInput
             setPayersCount={setPayersCount}
           />
+
           {payersCount > 0 && (
             <div>
               <InputGrid />
