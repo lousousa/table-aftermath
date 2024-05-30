@@ -1,4 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux'
+import { getPayersColors } from '@/app/utils'
 
 import SavePayerForm from '@/app/components/SavePayerForm'
 
@@ -29,10 +30,10 @@ export default function PayersSection() {
       <div
         className="flex"
       >
-        {payersList.map((payer) => (
+        {payersList.map((payer, idx) => (
           <div
             key={'payer_' + payer.id}
-            className='mr-2 cursor-pointer bg-gray-900 text-white rounded py-1 px-2 text-xs font-bold last-of-type:mr-0'
+            className={`mr-2 cursor-pointer text-gray-900 rounded py-1 px-2 text-xs font-bold last-of-type:mr-0 ${getPayersColors()[idx]}`}
             onClick={() => editPayer(payer.id)}
           >
             {payer.name}
