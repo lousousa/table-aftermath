@@ -5,7 +5,7 @@ export default function PageFooter() {
     >
       <span>desenvolvido por </span>
       <a className="font-bold" href="https://github.com/lousousa">@lousousa</a>
-      <span> ● v.1.0 ● 2023</span>
+      <span> ● v.1.1 ● 2024</span>
     </footer>
   )
 }
