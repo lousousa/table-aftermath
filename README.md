@@ -32,6 +32,37 @@ yarn dev
 
 Then, open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Google authentication
+
+The calculator remains available without logging in. Google login is available for features that require an authenticated account.
+
+1. Create a Google OAuth Client ID for a web application in Google Cloud Console.
+2. Add this redirect URI to the OAuth client:
+
+```text
+http://localhost:3000/api/auth/callback/google
+```
+
+3. Copy `.env.example` to `.env` and fill in:
+
+```env
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+NEXTAUTH_SECRET=
+NEXTAUTH_URL=http://localhost:3000
+```
+
+4. Copy `config/allowed-google-accounts.example.json` to `config/allowed-google-accounts.json` and add the Gmail accounts that are allowed to log in:
+
+```json
+[
+  "person@gmail.com",
+  "another.person@gmail.com"
+]
+```
+
+Accounts that are not listed will be redirected back to the app with a login warning.
+
 ## That's it
 
 I initially created this tool for my personal convenience, aiming to streamline the process of calculating and splitting bills at bars and restaurants. However, I welcome anyone to fork this project and tailor it to their specific requirements – or even use it as is, if it suits your needs! I hope you find it as enjoyable and useful as I do.
