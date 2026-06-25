@@ -7,9 +7,25 @@ import { addPayments } from "@/app/store/reducers/payments";
 import type { RootState } from "@/app/store";
 import type { Item, Payment } from "@/app/types";
 
-const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
-const ACCEPTED_IMAGE_EXTENSIONS = [".jpg", ".jpeg", ".png", ".webp"];
-const MAX_IMAGE_SIZE_BYTES = 8 * 1024 * 1024;
+const ACCEPTED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/heic",
+  "image/heif",
+];
+const ACCEPTED_IMAGE_EXTENSIONS = [
+  ".jpg",
+  ".jpeg",
+  ".png",
+  ".webp",
+  ".heic",
+  ".heif",
+];
+const MAX_UPLOAD_IMAGE_SIZE_BYTES = 4 * 1024 * 1024;
+const MAX_IMAGE_DIMENSION = 1800;
+const JPEG_QUALITY = 0.86;
+const MAX_IMPORTED_ITEM_TITLE_LENGTH = 20;
 
 type ReceiptExtraction = {
   receiptDetected: boolean;
@@ -23,7 +39,17 @@ type ReceiptExtraction = {
   warning: string | null;
 };
 
-const readFileAsDataUrl = (file: File) =>
+const isAcceptedImage = (file: File) => {
+  const fileName = file.name.toLowerCase();
+  const hasAcceptedType = ACCEPTED_IMAGE_TYPES.includes(file.type);
+  const hasAcceptedExtension = ACCEPTED_IMAGE_EXTENSIONS.some((extension) =>
+    fileName.endsWith(extension),
+  );
+
+  return hasAcceptedType || hasAcceptedExtension;
+};
+
+const readBlobAsDataUrl = (blob: Blob) =>
   new Promise<string>((resolve, reject) => {
     const reader = new FileReader();
 
@@ -33,8 +59,113 @@ const readFileAsDataUrl = (file: File) =>
     };
 
     reader.onerror = () => reject(new Error(t("receipt.readImageError")));
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(blob);
   });
+
+const loadImage = (file: File) =>
+  new Promise<HTMLImageElement>((resolve, reject) => {
+    const image = new Image();
+    const objectUrl = URL.createObjectURL(file);
+
+    image.onload = () => {
+      URL.revokeObjectURL(objectUrl);
+      resolve(image);
+    };
+
+    image.onerror = () => {
+      URL.revokeObjectURL(objectUrl);
+      reject(new Error(t("receipt.readImageError")));
+    };
+
+    image.src = objectUrl;
+  });
+
+const getResizedDimensions = (width: number, height: number) => {
+  const largestSide = Math.max(width, height);
+
+  if (largestSide <= MAX_IMAGE_DIMENSION) return { width, height };
+
+  const ratio = MAX_IMAGE_DIMENSION / largestSide;
+
+  return {
+    width: Math.round(width * ratio),
+    height: Math.round(height * ratio),
+  };
+};
+
+const canvasToJpegBlob = (canvas: HTMLCanvasElement) =>
+  new Promise<Blob>((resolve, reject) => {
+    canvas.toBlob(
+      (blob) => {
+        if (blob) resolve(blob);
+        else reject(new Error(t("receipt.readImageError")));
+      },
+      "image/jpeg",
+      JPEG_QUALITY,
+    );
+  });
+
+const prepareImageForUpload = async (file: File) => {
+  try {
+    const image = await loadImage(file);
+    const { width, height } = getResizedDimensions(
+      image.naturalWidth || image.width,
+      image.naturalHeight || image.height,
+    );
+
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+
+    const context = canvas.getContext("2d");
+    if (!context) throw new Error(t("receipt.readImageError"));
+
+    context.fillStyle = "#FFFFFF";
+    context.fillRect(0, 0, width, height);
+    context.drawImage(image, 0, 0, width, height);
+
+    const blob = await canvasToJpegBlob(canvas);
+
+    if (blob.size > MAX_UPLOAD_IMAGE_SIZE_BYTES) {
+      throw new Error(t("receipt.tooLarge"));
+    }
+
+    return readBlobAsDataUrl(blob);
+  } catch (error) {
+    throw new Error(getUserVisibleErrorMessage(error));
+  }
+};
+
+const getUserVisibleErrorMessage = (error: unknown) => {
+  const knownMessages = new Set([
+    t("receipt.readImageError"),
+    t("receipt.invalidType"),
+    t("receipt.tooLarge"),
+    t("receipt.processError"),
+    t("receipt.notDetected"),
+  ]);
+
+  if (error instanceof Error && knownMessages.has(error.message)) {
+    return error.message;
+  }
+
+  return t("receipt.processError");
+};
+
+const truncateItemTitle = (title: string) =>
+  title.trim().slice(0, MAX_IMPORTED_ITEM_TITLE_LENGTH);
+
+const parseJsonResponse = async (response: Response) => {
+  const responseText = await response.text();
+
+  if (!responseText) return null;
+
+  try {
+    return JSON.parse(responseText);
+  } catch {
+    return null;
+  }
+};
 
 export default function ReceiptUploader() {
   const payersList = useSelector((state: RootState) => state.payers.list);
@@ -59,7 +190,7 @@ export default function ReceiptUploader() {
     const now = Date.now();
     const items: Item[] = receiptItems.map((item, index) => ({
       id: now + index,
-      title: item.title,
+      title: truncateItemTitle(item.title),
       price: item.price,
     }));
 
@@ -85,14 +216,8 @@ export default function ReceiptUploader() {
 
     if (!file) return;
 
-    if (!ACCEPTED_IMAGE_TYPES.includes(file.type)) {
+    if (!isAcceptedImage(file)) {
       setError(t("receipt.invalidType"));
-      resetInput();
-      return;
-    }
-
-    if (file.size > MAX_IMAGE_SIZE_BYTES) {
-      setError(t("receipt.tooLarge"));
       resetInput();
       return;
     }
@@ -100,7 +225,7 @@ export default function ReceiptUploader() {
     setIsLoading(true);
 
     try {
-      const image = await readFileAsDataUrl(file);
+      const image = await prepareImageForUpload(file);
       const response = await fetch("/api/receipts/extract", {
         method: "POST",
         headers: {
@@ -109,13 +234,17 @@ export default function ReceiptUploader() {
         body: JSON.stringify({ image }),
       });
 
-      const data = await response.json();
+      const data = await parseJsonResponse(response);
 
       if (!response.ok) {
         throw new Error(t("receipt.processError"));
       }
 
-      const extraction = data as ReceiptExtraction;
+      const extraction = data as ReceiptExtraction | null;
+
+      if (!extraction) {
+        throw new Error(t("receipt.processError"));
+      }
 
       if (!extraction.receiptDetected || !extraction.items.length) {
         setError(extraction.warning ?? t("receipt.notDetected"));
@@ -131,9 +260,7 @@ export default function ReceiptUploader() {
         `${t("receipt.importedItems", { count: extraction.items.length })}${totalWarning}`,
       );
     } catch (error) {
-      setError(
-        error instanceof Error ? error.message : t("receipt.processError"),
-      );
+      setError(getUserVisibleErrorMessage(error));
     } finally {
       setIsLoading(false);
       resetInput();
