@@ -1,3 +1,6 @@
+import { readFile } from "fs/promises";
+import path from "path";
+
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
 
@@ -7,6 +10,7 @@ const OPENAI_CHAT_COMPLETIONS_URL =
   "https://api.openai.com/v1/chat/completions";
 const MAX_IMAGE_SIZE_BYTES = 8 * 1024 * 1024;
 const ALLOWED_IMAGE_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
+const DEFAULT_MOCK_RECEIPT_VARIANT = "matching-total";
 
 type ReceiptItem = {
   title: string;
@@ -44,6 +48,29 @@ const getImageMetadata = (image: string) => {
     base64: match[2],
     size: Buffer.byteLength(match[2], "base64"),
   };
+};
+
+const isDevMode = () => process.env.APP_MODE === "dev";
+
+const getMockVariant = () => {
+  const variant =
+    process.env.RECEIPT_EXTRACTION_MOCK_VARIANT ?? DEFAULT_MOCK_RECEIPT_VARIANT;
+
+  if (/^[a-z0-9-]+$/i.test(variant)) return variant;
+
+  return DEFAULT_MOCK_RECEIPT_VARIANT;
+};
+
+const getMockReceiptExtraction = async () => {
+  const mockFilePath = path.join(
+    process.cwd(),
+    "mocks",
+    "receipt-extraction",
+    `${getMockVariant()}.json`,
+  );
+  const mockFile = await readFile(mockFilePath, "utf8");
+
+  return JSON.parse(mockFile) as ReceiptExtraction;
 };
 
 const parseOpenAiJson = (content: string): ReceiptExtraction => {
@@ -113,10 +140,6 @@ export default async function handler(
     return res.status(401).json({ error: "Authentication is required" });
   }
 
-  if (!process.env.OPENAI_API_KEY) {
-    return res.status(500).json({ error: "OpenAI API key is not configured" });
-  }
-
   const image = typeof req.body?.image === "string" ? req.body.image : "";
   const metadata = getImageMetadata(image);
 
@@ -132,6 +155,21 @@ export default async function handler(
 
   if (metadata.size > MAX_IMAGE_SIZE_BYTES) {
     return res.status(400).json({ error: "Image is too large" });
+  }
+
+  if (isDevMode()) {
+    try {
+      return res
+        .status(200)
+        .json(sanitizeExtraction(await getMockReceiptExtraction()));
+    } catch (error) {
+      console.error("Failed to load mock receipt extraction:", error);
+      return res.status(500).json({ error: "Mock receipt extraction failed" });
+    }
+  }
+
+  if (!process.env.OPENAI_API_KEY) {
+    return res.status(500).json({ error: "OpenAI API key is not configured" });
   }
 
   const openAiResponse = await fetch(OPENAI_CHAT_COMPLETIONS_URL, {

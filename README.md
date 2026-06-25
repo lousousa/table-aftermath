@@ -46,12 +46,14 @@ http://localhost:3000/api/auth/callback/google
 3. Copy `.env.example` to `.env` and fill in:
 
 ```env
+APP_MODE=production
 GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
 NEXTAUTH_SECRET=
 NEXTAUTH_URL=http://localhost:3000
 OPENAI_API_KEY=
 OPENAI_RECEIPT_MODEL=gpt-4o-mini
+RECEIPT_EXTRACTION_MOCK_VARIANT=matching-total
 ```
 
 4. Copy `config/allowed-google-accounts.example.json` to `config/allowed-google-accounts.json` and add the Gmail accounts that are allowed to log in:
@@ -75,6 +77,25 @@ Authenticated users can import items from a restaurant or bar receipt image afte
 - `OPENAI_RECEIPT_MODEL` is optional and defaults to `gpt-4o-mini`.
 
 If the image does not look like a receipt, the app shows a warning instead of adding items. Imported items are added to the existing item list with all payer checkboxes unchecked.
+
+### Receipt import dev mode
+
+To test the receipt import UI without spending OpenAI credits, set:
+
+```env
+APP_MODE=dev
+RECEIPT_EXTRACTION_MOCK_VARIANT=matching-total
+```
+
+When `APP_MODE=dev`, uploaded images are still validated as image files, but the app skips the OpenAI request and returns one of the local mock JSON files from `mocks/receipt-extraction`.
+
+Available variants:
+
+- `matching-total` → valid items with a matching receipt total.
+- `mismatched-total` → valid items where the item sum does not match the total.
+- `not-detected` → invalid result where no receipt/items are detected.
+
+To change the mocked response, edit the corresponding JSON file. To add another variant, create a new `mocks/receipt-extraction/<variant-name>.json` file and set `RECEIPT_EXTRACTION_MOCK_VARIANT=<variant-name>`. Restart `npm run dev` after changing `.env`.
 
 ## That's it
 

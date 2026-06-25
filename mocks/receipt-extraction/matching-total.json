@@ -1,0 +1,25 @@
+{
+  "receiptDetected": true,
+  "items": [
+    {
+      "title": "Hambúrguer artesanal",
+      "price": 32.9
+    },
+    {
+      "title": "Batata frita",
+      "price": 18.5
+    },
+    {
+      "title": "Chopp IPA",
+      "price": 16.8
+    },
+    {
+      "title": "Água com gás",
+      "price": 6.8
+    }
+  ],
+  "total": 75,
+  "currency": "BRL",
+  "sumMatchesTotal": true,
+  "warning": null
+}

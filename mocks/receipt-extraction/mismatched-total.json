@@ -1,0 +1,21 @@
+{
+  "receiptDetected": true,
+  "items": [
+    {
+      "title": "Pizza margherita",
+      "price": 48
+    },
+    {
+      "title": "Refrigerante lata",
+      "price": 8.5
+    },
+    {
+      "title": "Sobremesa",
+      "price": 19.9
+    }
+  ],
+  "total": 86.4,
+  "currency": "BRL",
+  "sumMatchesTotal": false,
+  "warning": "A soma dos itens extraídos não corresponde ao total visível no recibo. Pode haver taxa de serviço, item ilegível ou desconto não extraído."
+}

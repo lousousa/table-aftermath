@@ -1,0 +1,8 @@
+{
+  "receiptDetected": false,
+  "items": [],
+  "total": null,
+  "currency": null,
+  "sumMatchesTotal": null,
+  "warning": "Não foi possível identificar uma comanda ou nota de restaurante/bar na imagem enviada."
+}
