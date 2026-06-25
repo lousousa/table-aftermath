@@ -18,6 +18,15 @@ export const CheckMarkIcon = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
+export const HistoryIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <path
+      fill="currentColor"
+      d="M13 3a9 9 0 0 0-8.95 8H2l3 3.5L8 11H6.06A7 7 0 1 1 8.1 16.9l-1.42 1.42A9 9 0 1 0 13 3Zm-1 5v5l4.25 2.52.75-1.23-3.5-2.08V8H12Z"
+    />
+  </svg>
+);
+
 export const GoogleIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" {...props}>
     <path

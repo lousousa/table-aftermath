@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { signIn, signOut, useSession } from "next-auth/react";
 
+import { clearSplitHistory } from "@/app/history";
 import { GoogleIcon } from "@/app/icons";
 import { t } from "@/app/i18n";
 
@@ -30,6 +31,11 @@ export default function PageFooter() {
   const isLoading = status === "loading";
   const isAuthenticated = status === "authenticated";
 
+  const clearHistoryAndNotify = () => {
+    clearSplitHistory();
+    window.dispatchEvent(new Event("table-aftermath:history-updated"));
+  };
+
   return (
     <footer className="text-center mt-4 py-4 border-gray-300 text-sm border-t-2">
       <div className="flex flex-col items-center gap-3">
@@ -52,7 +58,10 @@ export default function PageFooter() {
             <button
               className="rounded border border-gray-300 px-4 py-2 font-bold transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-60"
               disabled={isLoading}
-              onClick={() => signOut({ callbackUrl: "/" })}
+              onClick={() => {
+                clearHistoryAndNotify();
+                signOut({ callbackUrl: "/" });
+              }}
               type="button"
             >
               {t("auth.logout")}
@@ -62,7 +71,10 @@ export default function PageFooter() {
           <button
             className="inline-flex items-center gap-2 rounded border border-gray-300 px-4 py-2 font-bold transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-60"
             disabled={isLoading}
-            onClick={() => signIn("google", { callbackUrl: "/" })}
+            onClick={() => {
+              clearHistoryAndNotify();
+              signIn("google", { callbackUrl: "/" });
+            }}
             type="button"
           >
             <GoogleIcon className="h-5 w-5" aria-hidden="true" />
@@ -75,7 +87,7 @@ export default function PageFooter() {
           <a className="font-bold" href="https://github.com/lousousa">
             @lousousa
           </a>
-          <span> ● v.1.1 ● 2024</span>
+          <span> ● v.1.2 ● 2026</span>
         </div>
       </div>
     </footer>

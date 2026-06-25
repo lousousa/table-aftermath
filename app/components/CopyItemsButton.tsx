@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import { saveCurrentSplitToHistory } from "@/app/history";
 import { t } from "@/app/i18n";
 
 export default function CopyItemsButton() {
@@ -14,6 +15,8 @@ export default function CopyItemsButton() {
       const content = Array.from(wrappers).map((wrapper) => wrapper.innerText);
 
       await navigator.clipboard.writeText(content.join("\n"));
+      saveCurrentSplitToHistory();
+      window.dispatchEvent(new Event("table-aftermath:history-updated"));
 
       setCopyCreated(true);
 

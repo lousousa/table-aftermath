@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import { saveCurrentSplitToHistory } from "@/app/history";
 import { t } from "@/app/i18n";
 
 export default function CopyResultsButton() {
@@ -17,6 +18,8 @@ export default function CopyResultsButton() {
       text = `${text}\n\n${total}`;
 
       await navigator.clipboard.writeText(text);
+      saveCurrentSplitToHistory();
+      window.dispatchEvent(new Event("table-aftermath:history-updated"));
 
       setCopyCreated(true);
 

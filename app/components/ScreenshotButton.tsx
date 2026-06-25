@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
+import { saveCurrentSplitToHistory } from "@/app/history";
 import { t } from "@/app/i18n";
 import type { RootState } from "@/app/store";
 import { formatCurrency } from "@/app/utils";
@@ -301,6 +302,8 @@ export default function ScreenshotButton() {
         setStatus(t("share.screenshotDownloaded"));
       }
 
+      saveCurrentSplitToHistory();
+      window.dispatchEvent(new Event("table-aftermath:history-updated"));
       window.setTimeout(() => setStatus(null), 1500);
     } catch (error) {
       console.error("failed to create screenshot", error);
@@ -309,6 +312,8 @@ export default function ScreenshotButton() {
       const dataUrl = canvas?.toDataURL("image/png");
       if (dataUrl) window.open(dataUrl, "_blank");
 
+      saveCurrentSplitToHistory();
+      window.dispatchEvent(new Event("table-aftermath:history-updated"));
       setStatus(t("share.screenshotGenerated"));
       window.setTimeout(() => setStatus(null), 1500);
     }

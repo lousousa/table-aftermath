@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useSession } from "next-auth/react";
 import { Inter } from "next/font/google";
@@ -13,6 +13,7 @@ import AddItemButton from "@/app/components/AddItemButton";
 import SaveItemForm from "@/app/components/SaveItemForm";
 import ReceiptUploader from "@/app/components/ReceiptUploader";
 import ResultsSection from "@/app/components/ResultsSection";
+import HistoryButton from "@/app/components/HistoryButton";
 
 import { addPayer, clearPayers } from "@/app/store/reducers/payers";
 import type { RootState } from "@/app/store";
@@ -30,9 +31,15 @@ export default function Home() {
   const { status } = useSession();
 
   const [payersCount, setPayersCount] = useState<number | "">(0);
+  const skipNextPayersSetup = useRef(false);
 
   useEffect(() => {
     if (!payersCount) return;
+
+    if (skipNextPayersSetup.current) {
+      skipNextPayersSetup.current = false;
+      return;
+    }
 
     dispatch(clearPayers());
 
@@ -53,6 +60,13 @@ export default function Home() {
       <div className="p-4 max-w-lg mx-auto" style={{ minHeight: "80vh" }}>
         <div>
           <PayerCountInput setPayersCount={setPayersCount} />
+
+          <HistoryButton
+            setPayersCount={setPayersCount}
+            onBeforeRestore={() => {
+              skipNextPayersSetup.current = true;
+            }}
+          />
 
           {payersCount > 0 && (
             <div>

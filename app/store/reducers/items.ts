@@ -47,6 +47,10 @@ const slice = createSlice({
     addItems: (state, action) => {
       state.list.push(...action.payload);
     },
+    restoreItems: (state, action) => {
+      state.list = action.payload;
+      state.stagingItem = null;
+    },
     removeItemById: (state, action) => {
       state.list = state.list.filter((item) => item.id !== action.payload);
     },
@@ -61,6 +65,7 @@ export const {
   persistStagingItem,
   clearStagingItem,
   addItems,
+  restoreItems,
   removeItemById,
   reset,
 } = slice.actions;
