@@ -50,6 +50,8 @@ GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
 NEXTAUTH_SECRET=
 NEXTAUTH_URL=http://localhost:3000
+OPENAI_API_KEY=
+OPENAI_RECEIPT_MODEL=gpt-4o-mini
 ```
 
 4. Copy `config/allowed-google-accounts.example.json` to `config/allowed-google-accounts.json` and add the Gmail accounts that are allowed to log in:
@@ -62,6 +64,17 @@ NEXTAUTH_URL=http://localhost:3000
 ```
 
 Accounts that are not listed will be redirected back to the app with a login warning.
+
+## Receipt image import
+
+Authenticated users can import items from a restaurant or bar receipt image after setting the number of payers.
+
+- Supported image types: JPG, PNG, and WEBP.
+- The image is sent to OpenAI from the server API route and is not stored by the app.
+- `OPENAI_API_KEY` is required for this feature.
+- `OPENAI_RECEIPT_MODEL` is optional and defaults to `gpt-4o-mini`.
+
+If the image does not look like a receipt, the app shows a warning instead of adding items. Imported items are added to the existing item list with all payer checkboxes unchecked.
 
 ## That's it
 

@@ -1,57 +1,59 @@
-import { Payment, Results } from '@/app/types'
-import { createSlice } from '@reduxjs/toolkit'
+import { Payment, Results } from "@/app/types";
+import { createSlice } from "@reduxjs/toolkit";
 
 type PaymentsState = {
-  list: Payment[],
-  results: Results | null
-}
+  list: Payment[];
+  results: Results | null;
+};
 
 const initialState: PaymentsState = {
   list: [],
-  results: null
-}
+  results: null,
+};
 
 const slice = createSlice({
-  name: 'payments',
+  name: "payments",
   initialState,
   reducers: {
     addPayment: (state, action) => {
-      state.list.push(action.payload)
+      state.list.push(action.payload);
+    },
+    addPayments: (state, action) => {
+      state.list.push(...action.payload);
     },
     togglePaid: (state, action) => {
-      const { payerId, itemId, paid } = action.payload
+      const { payerId, itemId, paid } = action.payload;
 
-      const payment = state.list.find(payment =>
-        payment.payerId === payerId &&
-        payment.itemId === itemId
-      )
+      const payment = state.list.find(
+        (payment) => payment.payerId === payerId && payment.itemId === itemId,
+      );
 
-      if (payment) payment.paid = paid
+      if (payment) payment.paid = paid;
     },
     setResults: (state, action) => {
       if (state.results) {
         state.results = {
           ...state.results,
-          ...action.payload
-        }
-      } else
-        state.results = action.payload
+          ...action.payload,
+        };
+      } else state.results = action.payload;
     },
     removePaymentByItemId: (state, action) => {
-      state.list = state.list.filter(item => item.itemId !== action.payload)
+      state.list = state.list.filter((item) => item.itemId !== action.payload);
     },
     reset: () => {
-      return initialState
-    }
-  }
-})
+      return initialState;
+    },
+  },
+});
 
 export const {
   addPayment,
+  addPayments,
   togglePaid,
   setResults,
   removePaymentByItemId,
-  reset
-} = slice.actions
+  reset,
+} = slice.actions;
 
-export default slice.reducer
+export default slice.reducer;
