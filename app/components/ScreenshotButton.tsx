@@ -54,14 +54,10 @@ const getResultsTotalText = (
     const itemsAdd10Percent = add10Percent(itemsTotal);
 
     if (totalAdd10Percent !== itemsAdd10Percent) {
-      return `${t("results.total")}: ${formatCurrency(totalAdd10Percent)} (${t("results.missing")} ${formatCurrency(itemsAdd10Percent - totalAdd10Percent)})`;
+      return `${t("results.total")}: ${formatCurrency(currentTotal)} + 10% = ${formatCurrency(totalAdd10Percent)} (${t("results.missing")} ${formatCurrency(itemsAdd10Percent - totalAdd10Percent)})`;
     }
 
-    if (showCalculation) {
-      return `${t("results.total")}: ${formatCurrency(currentTotal)} (${formatCurrency(totalAdd10Percent)})`;
-    }
-
-    return `${t("results.total")}: ${formatCurrency(totalAdd10Percent)}`;
+    return `${t("results.total")}: ${formatCurrency(currentTotal)} + 10% = ${formatCurrency(totalAdd10Percent)}`;
   }
 
   if (currentTotal !== Number(itemsTotal.toFixed(2))) {

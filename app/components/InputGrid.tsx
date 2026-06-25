@@ -151,7 +151,7 @@ export default function InputGrid() {
         <h2 className="font-bold">{t("items.title")}</h2>
       </div>
 
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto pb-2">
         <div className="flex">
           <div className="flex flex-wrap w-full">
             {itemsList.map((item) => (

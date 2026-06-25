@@ -13,7 +13,6 @@ import AddItemButton from "@/app/components/AddItemButton";
 import SaveItemForm from "@/app/components/SaveItemForm";
 import ReceiptUploader from "@/app/components/ReceiptUploader";
 import ResultsSection from "@/app/components/ResultsSection";
-import HistoryButton from "@/app/components/HistoryButton";
 
 import { addPayer, clearPayers } from "@/app/store/reducers/payers";
 import type { RootState } from "@/app/store";
@@ -33,6 +32,28 @@ export default function Home() {
 
   const [payersCount, setPayersCount] = useState<number | "">(0);
   const skipNextPayersSetup = useRef(false);
+
+  useEffect(() => {
+    const handleHistoryRestored = (event: Event) => {
+      const { payersCount } = (event as CustomEvent<{ payersCount: number }>)
+        .detail;
+
+      skipNextPayersSetup.current = true;
+      setPayersCount(payersCount);
+    };
+
+    window.addEventListener(
+      "table-aftermath:history-restored",
+      handleHistoryRestored,
+    );
+
+    return () => {
+      window.removeEventListener(
+        "table-aftermath:history-restored",
+        handleHistoryRestored,
+      );
+    };
+  }, []);
 
   useEffect(() => {
     if (!payersCount) return;
@@ -58,16 +79,9 @@ export default function Home() {
     <div className={`${inter.className}`}>
       <PageHeader />
 
-      <div className="p-4 max-w-lg mx-auto" style={{ minHeight: "80vh" }}>
+      <div className="p-4 max-w-lg mx-auto" style={{ minHeight: "83vh" }}>
         <div>
           <PayerCountInput setPayersCount={setPayersCount} />
-
-          <HistoryButton
-            setPayersCount={setPayersCount}
-            onBeforeRestore={() => {
-              skipNextPayersSetup.current = true;
-            }}
-          />
 
           {payersCount > 0 && (
             <div>
@@ -78,7 +92,7 @@ export default function Home() {
               )}
 
               {!currentItem && !currentPayer && (
-                <div className="mt-4 flex justify-center">
+                <div className="mt-2 flex justify-center">
                   <AddItemButton />
                 </div>
               )}

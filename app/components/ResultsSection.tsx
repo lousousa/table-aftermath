@@ -34,13 +34,9 @@ export default function ResultsSection() {
       let itemsAdd10Percent = parseFloat(add10Percent(itemsTotal));
 
       if (totalAdd10Percent !== itemsAdd10Percent) {
-        checkedResults = `${t("results.total")}: ${formatCurrency(totalAdd10Percent)} (${t("results.missing")} ${formatCurrency(itemsAdd10Percent - totalAdd10Percent)})`;
+        checkedResults = `${t("results.total")}: ${formatCurrency(currentResults.total)} + 10% = ${formatCurrency(totalAdd10Percent)} (${t("results.missing")} ${formatCurrency(itemsAdd10Percent - totalAdd10Percent)})`;
       } else {
-        if (currentResults.showCalculation) {
-          checkedResults = `${t("results.total")}: ${formatCurrency(currentResults.total)} (${formatCurrency(totalAdd10Percent)})`;
-        } else {
-          checkedResults = `${t("results.total")}: ${formatCurrency(totalAdd10Percent)}`;
-        }
+        checkedResults = `${t("results.total")}: ${formatCurrency(currentResults.total)} + 10% = ${formatCurrency(totalAdd10Percent)}`;
       }
     } else {
       if (currentResults.total !== parseFloat(itemsTotal.toFixed(2))) {

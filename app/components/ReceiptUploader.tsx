@@ -268,7 +268,7 @@ export default function ReceiptUploader() {
   };
 
   return (
-    <section className="mt-4 rounded border border-gray-300 bg-gray-50 p-4">
+    <section className="mt-2 mb-4 rounded border border-gray-300 bg-gray-50 p-4">
       <h2 className="font-bold">{t("receipt.title")}</h2>
       <p className="mt-1 text-sm text-gray-600">{t("receipt.description")}</p>
 
