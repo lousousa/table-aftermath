@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
+import { t } from "@/app/i18n";
 import type { RootState } from "@/app/store";
 import { formatCurrency } from "@/app/utils";
 
@@ -52,21 +53,21 @@ const getResultsTotalText = (
     const itemsAdd10Percent = add10Percent(itemsTotal);
 
     if (totalAdd10Percent !== itemsAdd10Percent) {
-      return `total: ${formatCurrency(totalAdd10Percent)} (falta ${formatCurrency(itemsAdd10Percent - totalAdd10Percent)})`;
+      return `${t("results.total")}: ${formatCurrency(totalAdd10Percent)} (${t("results.missing")} ${formatCurrency(itemsAdd10Percent - totalAdd10Percent)})`;
     }
 
     if (showCalculation) {
-      return `total: ${formatCurrency(currentTotal)} (${formatCurrency(totalAdd10Percent)})`;
+      return `${t("results.total")}: ${formatCurrency(currentTotal)} (${formatCurrency(totalAdd10Percent)})`;
     }
 
-    return `total: ${formatCurrency(totalAdd10Percent)}`;
+    return `${t("results.total")}: ${formatCurrency(totalAdd10Percent)}`;
   }
 
   if (currentTotal !== Number(itemsTotal.toFixed(2))) {
-    return `total: ${formatCurrency(currentTotal)} (falta ${formatCurrency(itemsTotal - currentTotal)})`;
+    return `${t("results.total")}: ${formatCurrency(currentTotal)} (${t("results.missing")} ${formatCurrency(itemsTotal - currentTotal)})`;
   }
 
-  return `total: ${formatCurrency(currentTotal)}`;
+  return `${t("results.total")}: ${formatCurrency(currentTotal)}`;
 };
 
 export default function ScreenshotButton() {
@@ -118,7 +119,7 @@ export default function ScreenshotButton() {
 
     ctx.fillStyle = "#000000";
     ctx.font = "700 22px Arial, sans-serif";
-    ctx.fillText("pagantes:", padding, y);
+    ctx.fillText(t("payers.title"), padding, y);
     y += 16;
 
     ctx.font = "700 16px Arial, sans-serif";
@@ -136,7 +137,7 @@ export default function ScreenshotButton() {
 
     ctx.fillStyle = "#000000";
     ctx.font = "700 22px Arial, sans-serif";
-    ctx.fillText("itens / pagamentos:", padding, y);
+    ctx.fillText(t("items.title"), padding, y);
     y += 12;
 
     const boardX = contentWidth - padding - boardWidth;
@@ -202,7 +203,7 @@ export default function ScreenshotButton() {
 
     y += itemRowsHeight + 24;
 
-    const resultsBoxHeight = resultsRowsHeight + 34 + 12;
+    const resultsBoxHeight = resultsRowsHeight + 46;
     drawRoundedRect(
       ctx,
       padding,
@@ -217,7 +218,7 @@ export default function ScreenshotButton() {
     y += 34;
     ctx.fillStyle = "#000000";
     ctx.font = "700 22px Arial, sans-serif";
-    ctx.fillText("divisão:", padding + 24, y);
+    ctx.fillText(t("results.title"), padding + 24, y);
     y += 28;
 
     ctx.font = "400 20px Arial, sans-serif";
@@ -290,14 +291,14 @@ export default function ScreenshotButton() {
               [blob.type]: blob,
             }),
           ]);
-          setStatus("screenshot copiado!");
+          setStatus(t("share.screenshotCopied"));
         } catch {
           downloadBlob(blob);
-          setStatus("screenshot baixado!");
+          setStatus(t("share.screenshotDownloaded"));
         }
       } else {
         downloadBlob(blob);
-        setStatus("screenshot baixado!");
+        setStatus(t("share.screenshotDownloaded"));
       }
 
       window.setTimeout(() => setStatus(null), 1500);
@@ -308,7 +309,7 @@ export default function ScreenshotButton() {
       const dataUrl = canvas?.toDataURL("image/png");
       if (dataUrl) window.open(dataUrl, "_blank");
 
-      setStatus("screenshot gerado!");
+      setStatus(t("share.screenshotGenerated"));
       window.setTimeout(() => setStatus(null), 1500);
     }
   };
@@ -316,7 +317,7 @@ export default function ScreenshotButton() {
   return (
     <div>
       <button className="underline" onClick={() => takeScreenshot()}>
-        tirar screenshot
+        {t("share.screenshot")}
       </button>
 
       {status && <span className="text-blue-300 font-bold ml-4">{status}</span>}

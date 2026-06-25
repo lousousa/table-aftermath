@@ -1,25 +1,28 @@
-import { useDispatch } from 'react-redux'
+import { useDispatch } from "react-redux";
 
-import { setStagingItem } from '@/app/store/reducers/items'
+import { setStagingItem } from "@/app/store/reducers/items";
+import { t } from "@/app/i18n";
 
 export default function AddItemButton() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const addItem = () => {
-    dispatch(setStagingItem({
-      id: Date.now(),
-      price: 0,
-      title: '',
-      isCreating: true
-    }))
-  }
+    dispatch(
+      setStagingItem({
+        id: Date.now(),
+        price: 0,
+        title: "",
+        isCreating: true,
+      }),
+    );
+  };
 
   return (
     <button
       className="block underline text-blue-600 font-bold"
       onClick={() => addItem()}
     >
-      (+) adicionar item
+      {t("items.add")}
     </button>
-  )
+  );
 }

@@ -1,54 +1,49 @@
-import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import { reset as resetPayers } from '@/app/store/reducers/payers'
-import { reset as resetItems } from '@/app/store/reducers/items'
-import { reset as resetPayments } from '@/app/store/reducers/payments'
-import type { RootState } from '@/app/store'
+import { reset as resetPayers } from "@/app/store/reducers/payers";
+import { reset as resetItems } from "@/app/store/reducers/items";
+import { reset as resetPayments } from "@/app/store/reducers/payments";
+import { t } from "@/app/i18n";
+import type { RootState } from "@/app/store";
 
 type Props = {
-  setPayersCount: React.Dispatch<React.SetStateAction<number | ''>>
-}
+  setPayersCount: React.Dispatch<React.SetStateAction<number | "">>;
+};
 
 export default function PayerCountInput({ setPayersCount }: Props) {
-  const payersList = useSelector((state: RootState) => state.payers.list)
+  const payersList = useSelector((state: RootState) => state.payers.list);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const [currentCount, setCurrentCount] = useState('')
+  const [currentCount, setCurrentCount] = useState("");
 
   const onPayersCountChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    if (e.target.value === '')
-      return setCurrentCount('')
+    if (e.target.value === "") return setCurrentCount("");
 
-    let count = parseInt(e.target.value)
-    if (isNaN(count) || count === 0) count = 1
-    if (count > 10) count = 10
+    let count = parseInt(e.target.value);
+    if (isNaN(count) || count === 0) count = 1;
+    if (count > 10) count = 10;
 
-    setCurrentCount(count.toString())
-  }
+    setCurrentCount(count.toString());
+  };
 
   const handleSubmit = (e: React.SyntheticEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    if (!currentCount.length) return
+    if (!currentCount.length) return;
 
-    dispatch(resetPayers())
-    dispatch(resetItems())
-    dispatch(resetPayments())
+    dispatch(resetPayers());
+    dispatch(resetItems());
+    dispatch(resetPayments());
 
-    setPayersCount(parseInt(currentCount))
-  }
+    setPayersCount(parseInt(currentCount));
+  };
 
   return (
-    <form
-      className="flex items-center mt-4"
-      onSubmit={handleSubmit}
-    >
-      <label
-        className="mr-2 font-bold whitespace-nowrap"
-      >
-        quantidade de pagantes:
+    <form className="flex items-center mt-4" onSubmit={handleSubmit}>
+      <label className="mr-2 font-bold whitespace-nowrap">
+        {t("payers.countLabel")}
       </label>
 
       <select
@@ -57,32 +52,20 @@ export default function PayerCountInput({ setPayersCount }: Props) {
         onChange={onPayersCountChange}
       >
         {!currentCount.length && (
-          <option>
-            - selecione -
-          </option>
+          <option>{t("payers.selectPlaceholder")}</option>
         )}
 
-        { (new Array(10).fill(1)).map((_, idx) => (
-          <option
-            key={`current_count_${idx}`}
-          >
-            {idx + 1}
-          </option>
-        )) }
+        {new Array(10).fill(1).map((_, idx) => (
+          <option key={`current_count_${idx}`}>{idx + 1}</option>
+        ))}
       </select>
 
-      {
-        currentCount.length > 0 &&
-        payersList.length !== parseInt(currentCount) &&
-        (
-          <button
-            type="submit"
-            className="ml-2 underline"
-          >
-            confirmar
+      {currentCount.length > 0 &&
+        payersList.length !== parseInt(currentCount) && (
+          <button type="submit" className="ml-2 underline">
+            {t("payers.confirm")}
           </button>
-        )
-      }
+        )}
     </form>
-  )
+  );
 }

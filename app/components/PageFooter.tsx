@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 import { GoogleIcon } from "@/app/icons";
+import { t } from "@/app/i18n";
 
 export default function PageFooter() {
   const { data: session, status } = useSession();
@@ -14,11 +15,9 @@ export default function PageFooter() {
     const error = url.searchParams.get("error");
 
     if (error === "AccessDenied") {
-      setAuthError("Login não permitido para esta conta Google.");
+      setAuthError(t("auth.notAllowed"));
     } else if (error) {
-      setAuthError(
-        "Não foi possível concluir o login com Google. Tente novamente.",
-      );
+      setAuthError(t("auth.genericError"));
     }
 
     if (error) {
@@ -47,7 +46,7 @@ export default function PageFooter() {
           <div className="flex flex-col items-center gap-2">
             {session?.user?.email && (
               <span className="text-gray-600">
-                logado como {session.user.email}
+                {t("auth.loggedInAs", { email: session.user.email })}
               </span>
             )}
             <button
@@ -56,7 +55,7 @@ export default function PageFooter() {
               onClick={() => signOut({ callbackUrl: "/" })}
               type="button"
             >
-              sair
+              {t("auth.logout")}
             </button>
           </div>
         ) : (
@@ -67,12 +66,12 @@ export default function PageFooter() {
             type="button"
           >
             <GoogleIcon className="h-5 w-5" aria-hidden="true" />
-            entrar com Google
+            {t("auth.loginWithGoogle")}
           </button>
         )}
 
         <div>
-          <span>desenvolvido por </span>
+          <span>{t("footer.developedBy")}</span>
           <a className="font-bold" href="https://github.com/lousousa">
             @lousousa
           </a>

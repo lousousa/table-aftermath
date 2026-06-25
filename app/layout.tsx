@@ -1,23 +1,22 @@
-import '@/app/globals.css'
-import Provider from '@/app/store/provider'
+import "@/app/globals.css";
+import { getDisplayLanguage, t } from "@/app/i18n";
+import Provider from "@/app/store/provider";
 
 export const metadata = {
-  title: 'calculadora de bar',
-  description: 'ferramenta para calcular e dividir entre as pessoas a conta do bar.',
-}
+  title: t("metadata.title"),
+  description: t("metadata.description"),
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang={getDisplayLanguage()}>
       <body>
-        <Provider>
-          {children}
-        </Provider>
+        <Provider>{children}</Provider>
       </body>
     </html>
-  )
+  );
 }

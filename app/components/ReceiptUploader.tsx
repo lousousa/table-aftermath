@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
+import { t } from "@/app/i18n";
 import { addItems } from "@/app/store/reducers/items";
 import { addPayments } from "@/app/store/reducers/payments";
 import type { RootState } from "@/app/store";
@@ -28,10 +29,10 @@ const readFileAsDataUrl = (file: File) =>
 
     reader.onload = () => {
       if (typeof reader.result === "string") resolve(reader.result);
-      else reject(new Error("Não foi possível ler a imagem."));
+      else reject(new Error(t("receipt.readImageError")));
     };
 
-    reader.onerror = () => reject(new Error("Não foi possível ler a imagem."));
+    reader.onerror = () => reject(new Error(t("receipt.readImageError")));
     reader.readAsDataURL(file);
   });
 
@@ -85,13 +86,13 @@ export default function ReceiptUploader() {
     if (!file) return;
 
     if (!ACCEPTED_IMAGE_TYPES.includes(file.type)) {
-      setError("Envie uma imagem nos formatos JPG, PNG ou WEBP.");
+      setError(t("receipt.invalidType"));
       resetInput();
       return;
     }
 
     if (file.size > MAX_IMAGE_SIZE_BYTES) {
-      setError("A imagem precisa ter no máximo 8 MB.");
+      setError(t("receipt.tooLarge"));
       resetInput();
       return;
     }
@@ -111,34 +112,27 @@ export default function ReceiptUploader() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data?.error ?? "Não foi possível processar a imagem.");
+        throw new Error(t("receipt.processError"));
       }
 
       const extraction = data as ReceiptExtraction;
 
       if (!extraction.receiptDetected || !extraction.items.length) {
-        setError(
-          extraction.warning ??
-            "Não foi possível identificar uma comanda ou nota na imagem.",
-        );
+        setError(extraction.warning ?? t("receipt.notDetected"));
         return;
       }
 
       importItems(extraction.items);
 
       const totalWarning =
-        extraction.sumMatchesTotal === false
-          ? " A soma dos itens não bate com o total detectado, confira os valores."
-          : "";
+        extraction.sumMatchesTotal === false ? t("receipt.totalMismatch") : "";
 
       setMessage(
-        `${extraction.items.length} itens importados da imagem.${totalWarning}`,
+        `${t("receipt.importedItems", { count: extraction.items.length })}${totalWarning}`,
       );
     } catch (error) {
       setError(
-        error instanceof Error
-          ? error.message
-          : "Não foi possível processar a imagem.",
+        error instanceof Error ? error.message : t("receipt.processError"),
       );
     } finally {
       setIsLoading(false);
@@ -148,14 +142,11 @@ export default function ReceiptUploader() {
 
   return (
     <section className="mt-4 rounded border border-gray-300 bg-gray-50 p-4">
-      <h2 className="font-bold">importar itens por foto</h2>
-      <p className="mt-1 text-sm text-gray-600">
-        Envie uma foto da comanda/nota para tentar preencher os itens
-        automaticamente.
-      </p>
+      <h2 className="font-bold">{t("receipt.title")}</h2>
+      <p className="mt-1 text-sm text-gray-600">{t("receipt.description")}</p>
 
       <label className="mt-3 block">
-        <span className="sr-only">foto da comanda ou nota</span>
+        <span className="sr-only">{t("receipt.inputLabel")}</span>
         <input
           ref={fileInputRef}
           accept={[...ACCEPTED_IMAGE_EXTENSIONS, ...ACCEPTED_IMAGE_TYPES].join(
@@ -169,7 +160,7 @@ export default function ReceiptUploader() {
       </label>
 
       {isLoading && (
-        <p className="mt-2 text-sm text-gray-600">lendo a imagem com IA...</p>
+        <p className="mt-2 text-sm text-gray-600">{t("receipt.loading")}</p>
       )}
 
       {message && (

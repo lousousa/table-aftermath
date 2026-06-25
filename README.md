@@ -47,6 +47,8 @@ http://localhost:3000/api/auth/callback/google
 
 ```env
 APP_MODE=production
+NEXT_PUBLIC_DISPLAY_LANGUAGE=pt-br
+NEXT_PUBLIC_DISPLAY_CURRENCY=BRL
 GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
 NEXTAUTH_SECRET=
@@ -66,6 +68,25 @@ RECEIPT_EXTRACTION_MOCK_VARIANT=matching-total
 ```
 
 Accounts that are not listed will be redirected back to the app with a login warning.
+
+## Display language and currency
+
+The app display language and currency are configured independently so each server/build can choose its own combination.
+
+```env
+# Valid values: pt-br, en-us
+NEXT_PUBLIC_DISPLAY_LANGUAGE=pt-br
+
+# Valid values: BRL, USD
+NEXT_PUBLIC_DISPLAY_CURRENCY=BRL
+```
+
+For example, you can use `NEXT_PUBLIC_DISPLAY_LANGUAGE=en-us` with `NEXT_PUBLIC_DISPLAY_CURRENCY=BRL`.
+
+Display text lives in:
+
+- `app/i18n/pt-br.json`
+- `app/i18n/en-us.json`
 
 ## Receipt image import
 

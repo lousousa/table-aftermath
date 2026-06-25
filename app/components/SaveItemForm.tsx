@@ -1,77 +1,78 @@
-import { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import CurrencyInput from '@/app/components/CurrencyInput'
+import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import CurrencyInput from "@/app/components/CurrencyInput";
+import { t } from "@/app/i18n";
 
-import { setStagingItem, clearStagingItem, persistStagingItem } from '@/app/store/reducers/items'
-import { addPayment } from '@/app/store/reducers/payments'
-import type { RootState } from '@/app/store'
+import {
+  setStagingItem,
+  clearStagingItem,
+  persistStagingItem,
+} from "@/app/store/reducers/items";
+import { addPayment } from "@/app/store/reducers/payments";
+import type { RootState } from "@/app/store";
 
 export default function AddItemForm() {
-  const payersList = useSelector((state: RootState) => state.payers.list)
-  const paymentsList = useSelector((state: RootState) => state.payments.list)
-  const currentItem = useSelector((state: RootState) => state.items.stagingItem)
-  const dispatch = useDispatch()
+  const payersList = useSelector((state: RootState) => state.payers.list);
+  const paymentsList = useSelector((state: RootState) => state.payments.list);
+  const currentItem = useSelector(
+    (state: RootState) => state.items.stagingItem,
+  );
+  const dispatch = useDispatch();
 
-  const [paidByAll, setPaidByAll] = useState<boolean>(true)
-  const [price, setPrice] = useState<string>('')
+  const [paidByAll, setPaidByAll] = useState<boolean>(true);
+  const [price, setPrice] = useState<string>("");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const input: {[key: string]: string | boolean} = {}
+    const input: { [key: string]: string | boolean } = {};
 
-    if (e.target.name === 'paidByAll')
-      setPaidByAll(e.target.checked)
+    if (e.target.name === "paidByAll") setPaidByAll(e.target.checked);
 
-    if (e.target.type === 'text')
-      input[e.target.name] = e.target.value
+    if (e.target.type === "text") input[e.target.name] = e.target.value;
 
-    dispatch(setStagingItem({...input}))
-  }
+    dispatch(setStagingItem({ ...input }));
+  };
 
   const handleCancel = (e: React.MouseEvent) => {
-    e.preventDefault()
-    dispatch(clearStagingItem())
-  }
+    e.preventDefault();
+    dispatch(clearStagingItem());
+  };
 
   const saveItem = (e: React.SyntheticEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    if (!currentItem) return
+    if (!currentItem) return;
 
     if (currentItem.isCreating) {
-      const checkboxPaidByAll: HTMLInputElement | null =
-        document.querySelector('form [name=paidByAll]')
+      const checkboxPaidByAll: HTMLInputElement | null = document.querySelector(
+        "form [name=paidByAll]",
+      );
 
-      payersList.forEach(payer => {
-        const find = paymentsList.find(payment =>
-          payment.payerId === payer.id &&
-          payment.itemId === currentItem.id
-        )
+      payersList.forEach((payer) => {
+        const find = paymentsList.find(
+          (payment) =>
+            payment.payerId === payer.id && payment.itemId === currentItem.id,
+        );
 
         if (!find) {
-          dispatch(addPayment({
-            payerId: payer.id,
-            itemId: currentItem.id,
-            paid: Boolean(checkboxPaidByAll?.checked)
-          }))
+          dispatch(
+            addPayment({
+              payerId: payer.id,
+              itemId: currentItem.id,
+              paid: Boolean(checkboxPaidByAll?.checked),
+            }),
+          );
         }
-      })
+      });
     }
 
-    dispatch(setStagingItem({ price: parseFloat(price.replace(',', '.')) }))
-    dispatch(persistStagingItem())
-  }
+    dispatch(setStagingItem({ price: parseFloat(price.replace(",", ".")) }));
+    dispatch(persistStagingItem());
+  };
 
   return (
-    <form
-      className="mt-4 bg-gray-200 p-4 rounded"
-      onSubmit={saveItem}
-    >
+    <form className="mt-4 bg-gray-200 p-4 rounded" onSubmit={saveItem}>
       <div>
-        <label
-          className="block"
-        >
-          preço:
-        </label>
+        <label className="block">{t("forms.price")}</label>
 
         <CurrencyInput
           setStateAction={setPrice}
@@ -83,11 +84,7 @@ export default function AddItemForm() {
       </div>
 
       <div>
-        <label
-          className="block mt-2"
-        >
-          descrição (opcional):
-        </label>
+        <label className="block mt-2">{t("forms.description")}</label>
 
         <input
           name="title"
@@ -98,9 +95,7 @@ export default function AddItemForm() {
       </div>
 
       {currentItem?.isCreating && (
-        <div
-          className="mt-2 text-right"
-        >
+        <div className="mt-2 text-right">
           <input
             id="paid_by_all_checkbox"
             name="paidByAll"
@@ -109,33 +104,28 @@ export default function AddItemForm() {
             onChange={handleInputChange}
           />
 
-          <label
-            className="ml-2"
-            htmlFor="paid_by_all_checkbox"
-          >
-            todos pagam
+          <label className="ml-2" htmlFor="paid_by_all_checkbox">
+            {t("forms.allPay")}
           </label>
         </div>
       )}
 
-      <div
-        className="mt-2 text-right"
-      >
+      <div className="mt-2 text-right">
         <button
           type="button"
           className="text-red-600 underline font-bold"
           onClick={handleCancel}
         >
-          cancelar
+          {t("forms.cancel")}
         </button>
 
         <button
           type="submit"
           className="text-blue-600 underline font-bold ml-4"
         >
-          salvar
+          {t("forms.save")}
         </button>
       </div>
     </form>
-  )
+  );
 }

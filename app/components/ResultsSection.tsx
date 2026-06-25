@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { t } from "@/app/i18n";
 import { formatCurrency } from "@/app/utils";
 
 import ResultsOptions from "@/app/components/ResultsOptions";
@@ -33,19 +34,19 @@ export default function ResultsSection() {
       let itemsAdd10Percent = parseFloat(add10Percent(itemsTotal));
 
       if (totalAdd10Percent !== itemsAdd10Percent) {
-        checkedResults = `total: ${formatCurrency(totalAdd10Percent)} (falta ${formatCurrency(itemsAdd10Percent - totalAdd10Percent)})`;
+        checkedResults = `${t("results.total")}: ${formatCurrency(totalAdd10Percent)} (${t("results.missing")} ${formatCurrency(itemsAdd10Percent - totalAdd10Percent)})`;
       } else {
         if (currentResults.showCalculation) {
-          checkedResults = `total: ${formatCurrency(currentResults.total)} (${formatCurrency(totalAdd10Percent)})`;
+          checkedResults = `${t("results.total")}: ${formatCurrency(currentResults.total)} (${formatCurrency(totalAdd10Percent)})`;
         } else {
-          checkedResults = `total: ${formatCurrency(totalAdd10Percent)}`;
+          checkedResults = `${t("results.total")}: ${formatCurrency(totalAdd10Percent)}`;
         }
       }
     } else {
       if (currentResults.total !== parseFloat(itemsTotal.toFixed(2))) {
-        checkedResults = `total: ${formatCurrency(currentResults.total)} (falta ${formatCurrency(itemsTotal - currentResults.total)})`;
+        checkedResults = `${t("results.total")}: ${formatCurrency(currentResults.total)} (${t("results.missing")} ${formatCurrency(itemsTotal - currentResults.total)})`;
       } else {
-        checkedResults = `total: ${formatCurrency(currentResults.total)}`;
+        checkedResults = `${t("results.total")}: ${formatCurrency(currentResults.total)}`;
       }
     }
 
@@ -57,7 +58,7 @@ export default function ResultsSection() {
       {currentResults && currentResults.total > 0 && (
         <div className="mt-6">
           <div className="bg-gray-200 rounded p-4">
-            <h2 className="font-bold">divisão:</h2>
+            <h2 className="font-bold">{t("results.title")}</h2>
 
             <div id="results_content">
               {currentResults.payersData.map((payerData) => (
@@ -99,7 +100,7 @@ export default function ResultsSection() {
           <ResultsOptions />
 
           <div className="mt-4">
-            <h2 className="font-bold">compartilhar:</h2>
+            <h2 className="font-bold">{t("share.title")}</h2>
 
             <CopyItemsButton />
 
