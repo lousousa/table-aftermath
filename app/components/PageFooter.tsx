@@ -28,6 +28,14 @@ export default function PageFooter() {
     }
   }, []);
 
+  useEffect(() => {
+    if (!authError) return;
+
+    const timeout = window.setTimeout(() => setAuthError(null), 5000);
+
+    return () => window.clearTimeout(timeout);
+  }, [authError]);
+
   const isLoading = status === "loading";
   const isAuthenticated = status === "authenticated";
 

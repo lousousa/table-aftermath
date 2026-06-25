@@ -27,6 +27,7 @@ export default function Home() {
   const currentPayer = useSelector(
     (state: RootState) => state.payers.stagingPayer,
   );
+  const itemsList = useSelector((state: RootState) => state.items.list);
   const dispatch = useDispatch();
   const { status } = useSession();
 
@@ -70,9 +71,11 @@ export default function Home() {
 
           {payersCount > 0 && (
             <div>
-              {status === "authenticated" && <ReceiptUploader />}
-
               <InputGrid />
+
+              {status === "authenticated" && !itemsList.length && (
+                <ReceiptUploader />
+              )}
 
               {!currentItem && !currentPayer && (
                 <div className="mt-4 flex justify-center">

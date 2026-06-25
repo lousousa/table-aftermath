@@ -14,7 +14,7 @@ export default function PageHeader() {
           className="w-10"
         />
 
-        <h1 className="text-2xl text-white">
+        <h1 className="text-xl text-white">
           {t("app.titlePrefix")}{" "}
           <b className="italic">{t("app.titleEmphasis")}</b>
         </h1>
