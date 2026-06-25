@@ -173,7 +173,7 @@ export default function PageHeader() {
           >
             {!isAuthenticated && (
               <button
-                className="block w-full px-4 py-2 text-left transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-60"
+                className="block w-full px-4 py-2 text-right transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-60"
                 disabled={isLoading}
                 onClick={handleLogin}
                 type="button"

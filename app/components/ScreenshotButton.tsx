@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { saveCurrentSplitToHistory } from "@/app/history";
 import { t } from "@/app/i18n";
 import type { RootState } from "@/app/store";
+import type { Payer } from "@/app/types";
 import { formatCurrency } from "@/app/utils";
 
 const payerColors = [
@@ -67,6 +68,53 @@ const getResultsTotalText = (
   return `${t("results.total")}: ${formatCurrency(currentTotal)}`;
 };
 
+type PayerBox = {
+  payer: Payer;
+  idx: number;
+  x: number;
+  y: number;
+  width: number;
+};
+
+const getPayerBoxLayout = (
+  ctx: CanvasRenderingContext2D,
+  payersList: Payer[],
+  startY: number,
+  contentWidth: number,
+  padding: number,
+) => {
+  const boxHeight = 30;
+  const minBoxWidth = 34;
+  const horizontalPadding = 16;
+  const gap = 8;
+  const maxX = contentWidth - padding;
+  const maxBoxWidth = contentWidth - padding * 2;
+  const boxes: PayerBox[] = [];
+  let x = padding;
+  let y = startY;
+
+  payersList.forEach((payer, idx) => {
+    const measuredWidth = Math.ceil(ctx.measureText(payer.name).width);
+    const boxWidth = Math.min(
+      Math.max(measuredWidth + horizontalPadding, minBoxWidth),
+      maxBoxWidth,
+    );
+
+    if (x > padding && x + boxWidth > maxX) {
+      x = padding;
+      y += boxHeight + gap;
+    }
+
+    boxes.push({ payer, idx, x, y, width: boxWidth });
+    x += boxWidth + gap;
+  });
+
+  return {
+    boxes,
+    height: y - startY + boxHeight,
+  };
+};
+
 export default function ScreenshotButton() {
   const payersList = useSelector((state: RootState) => state.payers.list);
   const itemsList = useSelector((state: RootState) => state.items.list);
@@ -83,22 +131,32 @@ export default function ScreenshotButton() {
     const scale = 2;
     const padding = 20;
     const contentWidth = 640;
-    const payerBoxSize = 34;
-    const payerGap = 8;
     const itemRowHeight = 28;
     const boardCellSize = 24;
     const boardWidth = payersList.length * boardCellSize;
     const itemRowsHeight = Math.max(itemsList.length * itemRowHeight, 1);
     const resultsRowsHeight = currentResults.payersData.length * 26 + 48;
     const bottomPadding = padding;
-    const height =
-      padding +
-      128 +
-      itemRowsHeight +
-      24 +
-      resultsRowsHeight +
-      34 +
-      bottomPadding;
+    const payerTitleY = padding + 16;
+    const payerBoxesY = payerTitleY + 16;
+
+    const measurementCanvas = document.createElement("canvas");
+    const measurementCtx = measurementCanvas.getContext("2d");
+    if (!measurementCtx) return null;
+
+    measurementCtx.font = "700 16px Arial, sans-serif";
+    const payerBoxLayout = getPayerBoxLayout(
+      measurementCtx,
+      payersList,
+      payerBoxesY,
+      contentWidth,
+      padding,
+    );
+    const itemsTitleY = payerBoxesY + payerBoxLayout.height + 44;
+    const firstItemY = itemsTitleY + 12;
+    const resultsY = firstItemY + itemRowsHeight + 24;
+    const resultsBoxHeight = resultsRowsHeight + 46;
+    const height = resultsY + resultsBoxHeight + bottomPadding;
 
     const canvas = document.createElement("canvas");
     canvas.width = contentWidth * scale;
@@ -112,25 +170,24 @@ export default function ScreenshotButton() {
     ctx.fillRect(0, 0, contentWidth, height);
     ctx.textBaseline = "alphabetic";
 
-    let y = padding + 16;
+    let y = payerTitleY;
 
     ctx.fillStyle = "#000000";
     ctx.font = "700 22px Arial, sans-serif";
     ctx.fillText(t("payers.title"), padding, y);
-    y += 16;
 
     ctx.font = "700 16px Arial, sans-serif";
-    payersList.forEach((payer, idx) => {
-      const x = padding + idx * (payerBoxSize + payerGap);
-      drawRoundedRect(ctx, x, y, payerBoxSize, 30, 4);
-      ctx.fillStyle = payerColors[idx] ?? "#CBD5E1";
+    payerBoxLayout.boxes.forEach((box) => {
+      drawRoundedRect(ctx, box.x, box.y, box.width, 30, 4);
+      ctx.fillStyle = payerColors[box.idx] ?? "#CBD5E1";
       ctx.fill();
       ctx.fillStyle = "#111827";
       ctx.textAlign = "center";
-      ctx.fillText(payer.name, x + payerBoxSize / 2, y + 20);
+      ctx.fillText(box.payer.name, box.x + box.width / 2, box.y + 20);
     });
     ctx.textAlign = "left";
-    y += 74;
+
+    y = itemsTitleY;
 
     ctx.fillStyle = "#000000";
     ctx.font = "700 22px Arial, sans-serif";
@@ -140,7 +197,6 @@ export default function ScreenshotButton() {
     const boardX = contentWidth - padding - boardWidth;
     const itemTextX = padding;
     const lineEndX = boardX - 12;
-    const firstItemY = y;
 
     itemsList.forEach((item, itemIdx) => {
       const rowY = firstItemY + itemIdx * itemRowHeight;
@@ -200,7 +256,6 @@ export default function ScreenshotButton() {
 
     y += itemRowsHeight + 24;
 
-    const resultsBoxHeight = resultsRowsHeight + 46;
     drawRoundedRect(
       ctx,
       padding,

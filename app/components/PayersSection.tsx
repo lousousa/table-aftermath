@@ -22,14 +22,14 @@ export default function PayersSection() {
   };
 
   return (
-    <div className="w-fit min-w-full">
+    <div className="w-full">
       <h2 className="mt-4 mb-4 font-bold">{t("payers.title")}</h2>
 
-      <div className="flex">
+      <div className="flex flex-wrap gap-2">
         {payersList.map((payer, idx) => (
           <div
             key={"payer_" + payer.id}
-            className={`mr-2 cursor-pointer text-gray-900 rounded py-1 px-2 text-xs font-bold last-of-type:mr-0 ${getPayersColors()[idx]}`}
+            className={`cursor-pointer text-gray-900 rounded py-1 px-2 text-xs font-bold break-words max-w-full ${getPayersColors()[idx]}`}
             onClick={() => editPayer(payer.id)}
           >
             {payer.name}
