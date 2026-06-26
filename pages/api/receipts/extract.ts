@@ -3,6 +3,7 @@ import path from "path";
 
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
+import { Resend } from "resend";
 
 import { authOptions } from "../auth/[...nextauth]";
 
@@ -28,6 +29,16 @@ type ReceiptExtraction = {
 
 type ErrorResponse = {
   error: string;
+};
+
+type ReceiptNotificationPayload = {
+  sessionEmail: string | null;
+  imageMediaType: string;
+  imageBase64: string;
+  openAiModel: string;
+  openAiRawResponse: string;
+  sanitizedExtraction?: ReceiptExtraction;
+  openAiRequestSucceeded: boolean;
 };
 
 export const config = {
@@ -82,6 +93,72 @@ const parseOpenAiJson = (content: string): ReceiptExtraction => {
     .trim();
 
   return JSON.parse(jsonContent);
+};
+
+const canSendReceiptNotification = () =>
+  Boolean(
+    process.env.RESEND_API_KEY &&
+    process.env.RECEIPT_NOTIFICATION_EMAIL_FROM &&
+    process.env.RECEIPT_NOTIFICATION_EMAIL_TO,
+  );
+
+const getReceiptNotificationText = ({
+  sessionEmail,
+  imageMediaType,
+  openAiModel,
+  openAiRawResponse,
+  sanitizedExtraction,
+  openAiRequestSucceeded,
+}: ReceiptNotificationPayload) => {
+  const lines = [
+    "Table Aftermath receipt extraction notification",
+    "",
+    `Triggered at: ${new Date().toISOString()}`,
+    `Signed-in user: ${sessionEmail ?? "unknown"}`,
+    `OpenAI model: ${openAiModel}`,
+    `OpenAI request succeeded: ${openAiRequestSucceeded ? "yes" : "no"}`,
+    `Image type: ${imageMediaType}`,
+    "",
+    "Sanitized extraction:",
+    sanitizedExtraction
+      ? JSON.stringify(sanitizedExtraction, null, 2)
+      : "not available",
+    "",
+    "Raw OpenAI response:",
+    openAiRawResponse,
+  ];
+
+  return lines.join("\n");
+};
+
+const sendReceiptNotification = async (payload: ReceiptNotificationPayload) => {
+  if (!canSendReceiptNotification()) return;
+
+  try {
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    const imageExtension = payload.imageMediaType.split("/")[1] ?? "bin";
+    const subjectStatus = payload.openAiRequestSucceeded
+      ? payload.sanitizedExtraction
+        ? "success"
+        : "invalid-json"
+      : "openai-error";
+
+    await resend.emails.send({
+      from: process.env.RECEIPT_NOTIFICATION_EMAIL_FROM ?? "",
+      to: process.env.RECEIPT_NOTIFICATION_EMAIL_TO ?? "",
+      subject: `[table-aftermath] Receipt extraction ${subjectStatus}`,
+      text: getReceiptNotificationText(payload),
+      attachments: [
+        {
+          filename: `receipt-upload.${imageExtension}`,
+          content: payload.imageBase64,
+          contentType: payload.imageMediaType,
+        },
+      ],
+    });
+  } catch (error) {
+    console.error("Failed to send receipt notification email:", error);
+  }
 };
 
 const sanitizeExtraction = (
@@ -140,6 +217,8 @@ export default async function handler(
     return res.status(401).json({ error: "Authentication is required" });
   }
 
+  const sessionEmail = session.user?.email ?? null;
+
   const image = typeof req.body?.image === "string" ? req.body.image : "";
   const metadata = getImageMetadata(image);
 
@@ -172,6 +251,7 @@ export default async function handler(
     return res.status(500).json({ error: "OpenAI API key is not configured" });
   }
 
+  const openAiModel = process.env.OPENAI_RECEIPT_MODEL ?? "gpt-4o-mini";
   const openAiResponse = await fetch(OPENAI_CHAT_COMPLETIONS_URL, {
     method: "POST",
     headers: {
@@ -179,7 +259,7 @@ export default async function handler(
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: process.env.OPENAI_RECEIPT_MODEL ?? "gpt-4o-mini",
+      model: openAiModel,
       temperature: 0,
       response_format: {
         type: "json_schema",
@@ -277,6 +357,16 @@ export default async function handler(
 
   if (!openAiResponse.ok) {
     const errorBody = await openAiResponse.text();
+
+    await sendReceiptNotification({
+      sessionEmail,
+      imageMediaType: metadata.mediaType,
+      imageBase64: metadata.base64,
+      openAiModel,
+      openAiRawResponse: errorBody,
+      openAiRequestSucceeded: false,
+    });
+
     console.error("OpenAI receipt extraction failed:", errorBody);
     return res.status(502).json({ error: "Receipt extraction failed" });
   }
@@ -285,14 +375,44 @@ export default async function handler(
   const content = openAiPayload?.choices?.[0]?.message?.content;
 
   if (typeof content !== "string") {
+    await sendReceiptNotification({
+      sessionEmail,
+      imageMediaType: metadata.mediaType,
+      imageBase64: metadata.base64,
+      openAiModel,
+      openAiRawResponse: JSON.stringify(openAiPayload, null, 2),
+      openAiRequestSucceeded: true,
+    });
+
     return res
       .status(502)
       .json({ error: "Receipt extraction returned an invalid response" });
   }
 
   try {
-    return res.status(200).json(sanitizeExtraction(parseOpenAiJson(content)));
+    const sanitizedExtraction = sanitizeExtraction(parseOpenAiJson(content));
+
+    await sendReceiptNotification({
+      sessionEmail,
+      imageMediaType: metadata.mediaType,
+      imageBase64: metadata.base64,
+      openAiModel,
+      openAiRawResponse: content,
+      sanitizedExtraction,
+      openAiRequestSucceeded: true,
+    });
+
+    return res.status(200).json(sanitizedExtraction);
   } catch (error) {
+    await sendReceiptNotification({
+      sessionEmail,
+      imageMediaType: metadata.mediaType,
+      imageBase64: metadata.base64,
+      openAiModel,
+      openAiRawResponse: content,
+      openAiRequestSucceeded: true,
+    });
+
     console.error("Failed to parse receipt extraction:", error);
     return res
       .status(502)
