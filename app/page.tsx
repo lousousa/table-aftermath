@@ -14,24 +14,48 @@ import SaveItemForm from "@/app/components/SaveItemForm";
 import ReceiptUploader from "@/app/components/ReceiptUploader";
 import ResultsSection from "@/app/components/ResultsSection";
 
+import {
+  clearDraftHistory,
+  getStoredDraftFromHistory,
+  restoreDraftFromHistory,
+  saveCurrentDraftToHistory,
+} from "@/app/history";
 import { addPayer, clearPayers } from "@/app/store/reducers/payers";
 import type { RootState } from "@/app/store";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
-  const currentItem = useSelector(
-    (state: RootState) => state.items.stagingItem,
-  );
+  const payersList = useSelector((state: RootState) => state.payers.list);
   const currentPayer = useSelector(
     (state: RootState) => state.payers.stagingPayer,
   );
+  const currentItem = useSelector(
+    (state: RootState) => state.items.stagingItem,
+  );
   const itemsList = useSelector((state: RootState) => state.items.list);
+  const paymentsList = useSelector((state: RootState) => state.payments.list);
+  const currentResults = useSelector(
+    (state: RootState) => state.payments.results,
+  );
   const dispatch = useDispatch();
   const { status } = useSession();
 
   const [payersCount, setPayersCount] = useState<number | "">(0);
+  const [hasBootstrappedDraft, setHasBootstrappedDraft] = useState(false);
   const skipNextPayersSetup = useRef(false);
+
+  useEffect(() => {
+    const draft = getStoredDraftFromHistory();
+
+    if (draft) {
+      skipNextPayersSetup.current = true;
+      setPayersCount(draft.payersCount);
+      restoreDraftFromHistory();
+    }
+
+    setHasBootstrappedDraft(true);
+  }, []);
 
   useEffect(() => {
     const handleHistoryRestored = (event: Event) => {
@@ -74,6 +98,55 @@ export default function Home() {
       );
     }
   }, [dispatch, payersCount]);
+
+  useEffect(() => {
+    if (!hasBootstrappedDraft) return;
+
+    const hasDraftContent =
+      Boolean(payersCount) ||
+      Boolean(payersList.length) ||
+      Boolean(itemsList.length) ||
+      Boolean(paymentsList.length) ||
+      Boolean(currentPayer) ||
+      Boolean(currentItem) ||
+      Boolean(currentResults);
+
+    if (!hasDraftContent) {
+      clearDraftHistory();
+      return;
+    }
+
+    const persistDraft = () => {
+      const effectivePayersCount = payersCount || payersList.length;
+      saveCurrentDraftToHistory(effectivePayersCount);
+    };
+
+    persistDraft();
+
+    const handlePageHide = () => persistDraft();
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        persistDraft();
+      }
+    };
+
+    window.addEventListener("pagehide", handlePageHide);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      window.removeEventListener("pagehide", handlePageHide);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [
+    currentItem,
+    currentPayer,
+    currentResults,
+    hasBootstrappedDraft,
+    itemsList,
+    payersCount,
+    payersList,
+    paymentsList,
+  ]);
 
   return (
     <div className={`${inter.className}`}>

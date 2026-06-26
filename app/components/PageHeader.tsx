@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 import {
+  clearDraftHistory,
   clearSplitHistory,
   hasStoredSplitInHistory,
   isCurrentSplitEmpty,
@@ -87,6 +88,7 @@ export default function PageHeader() {
 
   const clearHistoryAndNotify = () => {
     clearSplitHistory();
+    clearDraftHistory();
     setHasHistory(false);
     window.dispatchEvent(new Event("table-aftermath:history-updated"));
   };

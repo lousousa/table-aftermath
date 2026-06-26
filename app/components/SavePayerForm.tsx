@@ -25,6 +25,12 @@ export default function SavePayerForm() {
     dispatch(persistStagingPayer());
   };
 
+  const handleBlur = () => {
+    if (!currentPayer?.name.trim()) return;
+
+    dispatch(persistStagingPayer());
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input: { [key: string]: string } = {};
 
@@ -44,6 +50,7 @@ export default function SavePayerForm() {
               name="name"
               className="w-full rounded outline-none py-1 px-2 text-right"
               onChange={handleInputChange}
+              onBlur={handleBlur}
               value={currentPayer.name}
               autoFocus
             />
