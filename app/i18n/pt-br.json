@@ -48,7 +48,7 @@
   "receipt.importedItems": "{count} itens importados da imagem.",
   "receipt.totalMismatch": " A soma dos itens não bate com o total detectado, confira os valores.",
   "receipt.title": "importar itens por foto",
-  "receipt.description": "Envie uma foto da comanda/nota para tentar preencher os itens automaticamente.",
+  "receipt.description": "envie uma foto da comanda/nota para tentar preencher os itens automaticamente.",
   "receipt.inputLabel": "foto da comanda ou nota",
   "receipt.loading": "lendo a imagem com IA..."
 }

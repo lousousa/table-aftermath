@@ -48,7 +48,7 @@
   "receipt.importedItems": "{count} items imported from the image.",
   "receipt.totalMismatch": " The item sum does not match the detected total, please review the values.",
   "receipt.title": "import items from photo",
-  "receipt.description": "Upload a receipt photo to try to fill in the items automatically.",
+  "receipt.description": "upload a receipt photo to try to fill in the items automatically.",
   "receipt.inputLabel": "bill or receipt photo",
   "receipt.loading": "reading the image with AI..."
 }
