@@ -3,6 +3,8 @@
 import { ReactNode } from "react";
 import { SessionProvider } from "next-auth/react";
 import { Provider as ReduxProvider } from "react-redux";
+
+import AllowedGoogleEmailGuard from "@/app/components/AllowedGoogleEmailGuard";
 import { store } from "@/app/store";
 
 type Props = {
@@ -12,7 +14,10 @@ type Props = {
 export default function Provider({ children }: Props) {
   return (
     <SessionProvider>
-      <ReduxProvider store={store}>{children}</ReduxProvider>
+      <ReduxProvider store={store}>
+        <AllowedGoogleEmailGuard />
+        {children}
+      </ReduxProvider>
     </SessionProvider>
   );
 }
