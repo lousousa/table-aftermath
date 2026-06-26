@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import CurrencyInput from "@/app/components/CurrencyInput";
 import { t } from "@/app/i18n";
+import { MAX_IMPORTED_ITEM_TITLE_LENGTH } from "@/app/utils";
 
 import {
   setStagingItem,
@@ -21,6 +22,9 @@ export default function AddItemForm() {
 
   const [paidByAll, setPaidByAll] = useState<boolean>(true);
   const [price, setPrice] = useState<string>("");
+  const itemTitleLength = currentItem?.title?.length ?? 0;
+  const trimmedTitle = currentItem?.title?.trim() ?? "";
+  const canSaveItem = trimmedTitle.length <= MAX_IMPORTED_ITEM_TITLE_LENGTH;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input: { [key: string]: string | boolean } = {};
@@ -40,7 +44,7 @@ export default function AddItemForm() {
   const saveItem = (e: React.SyntheticEvent) => {
     e.preventDefault();
 
-    if (!currentItem) return;
+    if (!currentItem || !canSaveItem) return;
 
     if (currentItem.isCreating) {
       const checkboxPaidByAll: HTMLInputElement | null = document.querySelector(
@@ -76,7 +80,7 @@ export default function AddItemForm() {
 
         <CurrencyInput
           setStateAction={setPrice}
-          maxLength={6}
+          maxLength={7}
           autoFocus={true}
           initialValue={currentItem?.price}
           customClasses="rounded outline-none py-1 px-2 w-full"
@@ -92,6 +96,16 @@ export default function AddItemForm() {
           onChange={handleInputChange}
           className="rounded outline-none py-1 px-2 text-right w-full"
         />
+
+        <div
+          className={`mt-1 text-right text-xs ${
+            itemTitleLength > MAX_IMPORTED_ITEM_TITLE_LENGTH
+              ? "text-red-600"
+              : "text-gray-500"
+          }`}
+        >
+          {itemTitleLength}/{MAX_IMPORTED_ITEM_TITLE_LENGTH}
+        </div>
       </div>
 
       {currentItem?.isCreating && (
@@ -119,12 +133,14 @@ export default function AddItemForm() {
           {t("forms.cancel")}
         </button>
 
-        <button
-          type="submit"
-          className="text-blue-600 underline font-bold ml-4"
-        >
-          {t("forms.save")}
-        </button>
+        {canSaveItem && (
+          <button
+            type="submit"
+            className="text-blue-600 underline font-bold ml-4"
+          >
+            {t("forms.save")}
+          </button>
+        )}
       </div>
     </form>
   );

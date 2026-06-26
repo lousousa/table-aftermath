@@ -1,5 +1,7 @@
 import { getDisplayCurrency } from "@/app/i18n";
 
+export const MAX_IMPORTED_ITEM_TITLE_LENGTH = 20;
+
 export const formatCurrency = (value: number | string) => {
   const currency = getDisplayCurrency();
   const amount = parseFloat(value.toString());

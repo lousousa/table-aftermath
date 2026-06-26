@@ -7,12 +7,18 @@ import {
 } from "@/app/store/reducers/payers";
 import { t } from "@/app/i18n";
 import type { RootState } from "@/app/store";
+import { MAX_IMPORTED_ITEM_TITLE_LENGTH } from "@/app/utils";
 
 export default function SavePayerForm() {
   const currentPayer = useSelector(
     (state: RootState) => state.payers.stagingPayer,
   );
   const dispatch = useDispatch();
+  const payerNameLength = currentPayer?.name.length ?? 0;
+  const trimmedName = currentPayer?.name.trim() ?? "";
+  const canSavePayer =
+    trimmedName.length > 0 &&
+    trimmedName.length <= MAX_IMPORTED_ITEM_TITLE_LENGTH;
 
   const handleCancel = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -22,11 +28,13 @@ export default function SavePayerForm() {
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
 
+    if (!canSavePayer) return;
+
     dispatch(persistStagingPayer());
   };
 
   const handleBlur = () => {
-    if (!currentPayer?.name.trim()) return;
+    if (!canSavePayer) return;
 
     dispatch(persistStagingPayer());
   };
@@ -54,6 +62,16 @@ export default function SavePayerForm() {
               value={currentPayer.name}
               autoFocus
             />
+
+            <div
+              className={`mt-1 text-right text-xs ${
+                payerNameLength > MAX_IMPORTED_ITEM_TITLE_LENGTH
+                  ? "text-red-600"
+                  : "text-gray-500"
+              }`}
+            >
+              {payerNameLength}/{MAX_IMPORTED_ITEM_TITLE_LENGTH}
+            </div>
           </div>
 
           <div className="mt-2 text-right">
@@ -65,7 +83,7 @@ export default function SavePayerForm() {
               {t("forms.cancel")}
             </button>
 
-            {currentPayer.name.length > 0 && (
+            {canSavePayer && (
               <button
                 type="submit"
                 className="text-blue-600 underline font-bold ml-4"

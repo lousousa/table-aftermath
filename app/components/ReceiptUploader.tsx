@@ -6,6 +6,7 @@ import { addItems } from "@/app/store/reducers/items";
 import { addPayments } from "@/app/store/reducers/payments";
 import type { RootState } from "@/app/store";
 import type { Item, Payment } from "@/app/types";
+import { MAX_IMPORTED_ITEM_TITLE_LENGTH } from "@/app/utils";
 
 const ACCEPTED_IMAGE_TYPES = [
   "image/jpeg",
@@ -25,7 +26,6 @@ const ACCEPTED_IMAGE_EXTENSIONS = [
 const MAX_UPLOAD_IMAGE_SIZE_BYTES = 4 * 1024 * 1024;
 const MAX_IMAGE_DIMENSION = 1800;
 const JPEG_QUALITY = 0.86;
-const MAX_IMPORTED_ITEM_TITLE_LENGTH = 20;
 
 type ReceiptExtraction = {
   receiptDetected: boolean;
